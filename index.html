@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Awarenessy! Mini App</title>
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color: #f0f0f0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 20px;
+      text-align: center;
+      max-width: 300px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Awarenessy! Mini App</h1>
+  <button id="checkUser">Проверить / Создать пользователя</button>
+  <div id="status"></div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // === Вставь сюда свои Project URL и Publishable Key ===
+    const supabaseUrl = "https://najicjitgyvtdrjaowig.supabase.co";
+    const supabaseKey = "sb_publishable_mqjiX2afN7dtivBeOcerWQ_iP2wm1uR";
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // разворачиваем Web App на весь экран
+
+    const statusDiv = document.getElementById("status");
+    const button = document.getElementById("checkUser");
+
+    button.addEventListener("click", async () => {
+      const telegramId = tg.initDataUnsafe.user.id;
+      statusDiv.textContent = "Проверка пользователя...";
+
+      try {
+        // Проверяем, есть ли пользователь
+        const { data, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("telegram_id", telegramId);
+
+        if (error) {
+          statusDiv.textContent = "Ошибка при проверке: " + error.message;
+          return;
+        }
+
+        if (data.length === 0) {
+          // Создаём нового пользователя
+          const { data: newUser, error: insertError } = await supabase
+            .from("users")
+            .insert([{ telegram_id: telegramId }])
+            .select();
+
+          if (insertError) {
+            statusDiv.textContent = "Ошибка создания пользователя: " + insertError.message;
+          } else {
+            statusDiv.textContent = "Создан новый пользователь: " + JSON.stringify(newUser[0], null, 2);
+          }
+        } else {
+          statusDiv.textContent = "Пользователь уже существует: " + JSON.stringify(data[0], null, 2);
+        }
+
+      } catch (err) {
+        statusDiv.textContent = "Ошибка: " + err.message;
+      }
+    });
+  </script>
+
+</body>
+</html>

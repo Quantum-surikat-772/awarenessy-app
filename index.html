@@ -50,8 +50,14 @@
     const button = document.getElementById("checkUser");
 
     button.addEventListener("click", async () => {
-      const telegramId = tg.initDataUnsafe.user.id;
-      statusDiv.textContent = "Проверка пользователя...";
+
+     console.log("Telegram object:", window.Telegram);
+     console.log("initDataUnsafe:", tg.initDataUnsafe);
+     console.log("User:", tg.initDataUnsafe?.user);
+
+     const telegramId = tg.initDataUnsafe?.user?.id;
+
+     statusDiv.textContent = "Проверка пользователя...";
 
       try {
         // Проверяем, есть ли пользователь
@@ -88,4 +94,5 @@
   </script>
 
 </body>
+
 </html>

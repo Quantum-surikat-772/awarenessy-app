@@ -9,87 +9,56 @@
 
   <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
 
-<body>
-  <h1>Awarenessy! Mini App</h1>
-  <button id="checkUser">Проверить / Создать пользователя</button>
-  <div id="status"></div>
+<script>
+const SUPABASE_URL = "https://najicjitgyvtdrjaowig.supabase.co";
+const SUPABASE_KEY = "sb_publishable_mqjiX2afN7dtivBeOcerWQ_iP2wm1uR";
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async function () {
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      const statusDiv = document.getElementById("status");
-      const button = document.getElementById("checkUser");
+document.getElementById("checkUser").addEventListener("click", async () => {
 
-      // ====== ВСТАВЬ СВОИ ДАННЫЕ ======
-      const SUPABASE_URL = "https://najicjitgyvtdrjaowig.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_mqjiX2afN7dtivBeOcerWQ_iP2wm1uR";
-      // =================================
+  const status = document.getElementById("status");
+  status.innerText = "Проверяем...";
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const tg = window.Telegram?.WebApp;
 
-      // Telegram WebApp
-      const tg = window.Telegram.WebApp;
-      tg.expand();
+  let telegramUser = tg?.initDataUnsafe?.user;
 
-      console.log("Telegram object:", tg);
-      console.log("initDataUnsafe:", tg.initDataUnsafe);
+  // Если открыто вне Telegram — используем тестового
+  if (!telegramUser) {
+    console.log("⚠️ Telegram user не получен, используем тестового");
+    telegramUser = {
+      id: 999999999,
+      first_name: "TestUser"
+    };
+  }
 
-      if (!tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-        statusDiv.textContent = "Ошибка: Telegram user не получен";
-        return;
-      }
-
-      const telegramId = tg.initDataUnsafe.user.id;
-      console.log("Telegram ID:", telegramId);
-
-      button.addEventListener("click", async () => {
-
-        statusDiv.textContent = "Проверка пользователя...";
-
-        try {
-          // Проверяем существует ли пользователь
-          const { data, error } = await supabaseClient
-            .from("users")
-            .select("*")
-            .eq("telegram_id", telegramId);
-
-          if (error) {
-            console.error("Ошибка при проверке:", error);
-            statusDiv.textContent = "Ошибка проверки пользователя";
-            return;
-          }
-
-          if (data.length > 0) {
-            statusDiv.textContent = "Пользователь уже существует ✅";
-            console.log("User found:", data);
-          } else {
-
-            // Создаём пользователя
-            const { data: newUser, error: insertError } = await supabaseClient
-              .from("users")
-              .insert([{ telegram_id: telegramId }])
-              .select();
-
-            if (insertError) {
-              console.error("Ошибка создания:", insertError);
-              statusDiv.textContent = "Ошибка создания пользователя ❌";
-            } else {
-              statusDiv.textContent = "Новый пользователь создан 🎉";
-              console.log("User created:", newUser);
-            }
-          }
-
-        } catch (err) {
-          console.error("Общая ошибка:", err);
-          statusDiv.textContent = "Критическая ошибка";
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .upsert([
+        {
+          telegram_id: telegramUser.id,
+          first_name: telegramUser.first_name
         }
+      ], { onConflict: "telegram_id" });
 
-      });
+    if (error) {
+      console.error("Supabase error:", error);
+      status.innerText = "Ошибка Supabase ❌";
+      return;
+    }
 
-    });
-  </script>
+    status.innerText = "Пользователь успешно создан / проверен ✅";
+
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    status.innerText = "Неожиданная ошибка ❌";
+  }
+
+});
+</script>
 
 </body>
 </html>

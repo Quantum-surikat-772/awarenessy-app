@@ -42,7 +42,7 @@
 
         try {
           const { data, error } = await supabase
-            .from("public.users")
+            .from("users")
             .upsert([
               {
                 telegram_id: telegramUser.id,
@@ -70,4 +70,5 @@
 
 </body>
 </html>
+
 

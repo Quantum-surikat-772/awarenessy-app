@@ -52,7 +52,7 @@
 
           if (error) {
             console.error("Supabase error:", error);
-            status.innerText = "Ошибка Supabase ❌";
+            status.innerText = "Ошибка: " + error.message;
             return;
           }
 
@@ -70,3 +70,4 @@
 
 </body>
 </html>
+

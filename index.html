@@ -66,8 +66,8 @@
           ], { onConflict: "telegram_id" });
 
         if (error) {
-          console.error("Supabase error:", error);
-          status.innerText = "Ошибка Supabase ❌";
+          console.error("FULL Supabase error:", JSON.stringify(error, null, 2));
+          status.innerText = "Ошибка: " + error.message;
           return;
         }
 
@@ -84,3 +84,4 @@
 
 </body>
 </html>
+

@@ -52,7 +52,9 @@
             id: 123456789,
             first_name: "TestUser"
           };
-          window.onload = () => button.click();
+          document.addEventListener("DOMContentLoaded", () => {
+            button.click();
+          });
         }
 
         console.log("Telegram user:", telegramUser);

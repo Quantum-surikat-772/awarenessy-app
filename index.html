@@ -1,106 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <title>Awarenessy Mini App</title>
 
-  <!-- Telegram WebApp -->
+  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Supabase v2 (UMD build) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body { background-color: #121212; color: #fff; font-family: sans-serif; padding: 20px; }
+    button { padding: 10px 20px; font-size: 16px; margin: 5px 0; cursor: pointer; }
+    #status { margin-top: 15px; }
+  </style>
 </head>
-
-<body style="background:#222;color:#fff;font-family:sans-serif;padding:20px;">
-
+<body>
   <h1>Awarenessy Mini App</h1>
 
-  <button id="checkUser" style="padding:10px 15px;font-size:16px;">
-    Проверить / Создать пользователя
-  </button>
-
+  <button id="checkUser">Проверить / Создать пользователя</button><br/>
   <button id="awareness">🧠 Я осознался</button>
-
-  <div id="status" style="margin-top:15px;"></div>
+  <div id="status"></div>
 
   <script>
-    console.log("Awarenessy VERSION 4");
-
-    // ====== ТВОИ ДАННЫЕ ======
     const SUPABASE_URL = "https://najicjitgyvtdrjaowig.supabase.co";
     const SUPABASE_KEY = "sb_publishable_mqjiX2afN7dtivBeOcerWQ_iP2wm1uR";
-    // ==========================
 
-    // Создаём клиент ОДИН раз
+    // Создаем клиент Supabase один раз
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const button = document.getElementById("checkUser");
+    const awarenessButton = document.getElementById("awareness");
     const status = document.getElementById("status");
 
+    // --- Кнопка 1: Проверить / Создать пользователя ---
     button.addEventListener("click", async () => {
-
       status.innerText = "Проверяем пользователя...";
-
       try {
-
-        // Получаем Telegram user
         const tg = window.Telegram?.WebApp;
         let telegramUser = tg?.initDataUnsafe?.user;
 
-        // Если открыто вне Telegram — используем тест
         if (!telegramUser) {
           console.log("⚠️ Telegram user не найден, используем тестового");
-          telegramUser = {
-            id: 123456789,
-            first_name: "TestUser"
-          };
-          document.addEventListener("DOMContentLoaded", () => {
-            button.click();
-          });
+          telegramUser = { id: 123456789, first_name: "TestUser" };
         }
-
-        console.log("Telegram user:", telegramUser);
 
         const { data, error } = await sb
           .from("users")
           .upsert([
-            {
-              telegram_id: telegramUser.id,
-              first_name: telegramUser.first_name
-            }
+            { telegram_id: telegramUser.id, first_name: telegramUser.first_name, nickname: telegramUser.first_name }
           ], { onConflict: "telegram_id" });
 
         if (error) {
-          console.error("FULL Supabase error:", JSON.stringify(error, null, 2));
-          status.innerText = "Ошибка: " + error.message;
+          console.error("Supabase error:", error);
+          status.innerText = "Ошибка Supabase ❌";
           return;
         }
 
-        console.log("Success:", data);
         status.innerText = "Пользователь успешно создан / обновлён ✅";
 
       } catch (err) {
         console.error("Unexpected error:", err);
         status.innerText = "Неожиданная ошибка ❌";
       }
-
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      button.click();
-    });
-
+    // --- Кнопка 2: "Я осознался" ---
+    awarenessButton.addEventListener("click", async () => {
       status.innerText = "Фиксируем момент осознанности...";
-
       try {
-
         const tg = window.Telegram?.WebApp;
         let telegramUser = tg?.initDataUnsafe?.user;
 
         if (!telegramUser) {
-          telegramUser = { id: 123456789 };
+          telegramUser = { id: 123456789 }; // тестовый юзер вне Telegram
         }
 
+        // Получаем ID пользователя
         const { data: user, error: userError } = await sb
           .from("users")
           .select("id")
@@ -109,6 +86,7 @@
 
         if (userError) throw userError;
 
+        // Создаем сессию осознанности
         const { error: insertError } = await sb
           .from("awareness_sessions")
           .insert({
@@ -121,57 +99,10 @@
         status.innerText = "Момент осознанности записан ✨";
 
       } catch (err) {
-
         console.error(err);
         status.innerText = "Ошибка записи ❌";
-
       }
-
     });
-
-    document.getElementById("awareness").addEventListener("click", async () => {
-
-      const status = document.getElementById("status");
-      status.innerText = "Фиксируем момент осознанности...";
-
-      try {
-        const tg = window.Telegram?.WebApp;
-        let telegramUser = tg?.initDataUnsafe?.user;
-
-        if (!telegramUser) {
-          telegramUser = { id: 123456789 }; // тестовый юзер, если открыт вне Telegram
-        }
-
-        // находим пользователя в базе
-        const { data: user, error: userError } = await sb
-          .from("users")
-          .select("id")
-          .eq("telegram_id", telegramUser.id)
-          .single();
-
-             if (userError) throw userError;
-
-             // создаем запись осознанности
-             const { error: insertError } = await sb
-               .from("awareness_sessions")
-               .insert({
-                 user_id: user.id,
-                 level: 1
-               });
-
-             if (insertError) throw insertError;
-
-             status.innerText = "Момент осознанности записан ✨";
-
-           } catch (err) {
-             console.error(err);
-             status.innerText = "Ошибка записи ❌";
-           }
-
-         });
-
   </script>
-
 </body>
 </html>
-

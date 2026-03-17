@@ -2,71 +2,97 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Awarenessy</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awarenessy Mini App</title>
 
 <style>
-
-body{
-background:#0f0f0f;
-color:white;
-font-family:sans-serif;
-text-align:center;
-padding:20px;
+body {
+  margin: 0;
+  background: #050505;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-h1{
-font-weight:400;
+#top {
+  height: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
 }
 
-#compass{
-width:220px;
-height:220px;
-border:2px solid #444;
-border-radius:50%;
-margin:30px auto;
-position:relative;
+#bottom {
+  height: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#center{
-width:12px;
-height:12px;
-background:#fff;
-border-radius:50%;
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+button {
+  padding: 10px 16px;
+  margin: 6px;
+  border: none;
+  border-radius: 8px;
+  background: #0f0;
+  color: #000;
+  font-size: 14px;
 }
 
-#needle{
-width:2px;
-height:90px;
-background:#00ffcc;
-position:absolute;
-bottom:50%;
-left:50%;
-transform-origin:bottom center;
-transform:rotate(0deg);
-transition:transform 0.6s ease;
+.hidden {
+  display: none;
 }
 
-button{
-padding:14px 26px;
-font-size:18px;
-border:none;
-border-radius:8px;
-background:#00aa88;
-color:white;
-margin-top:20px;
+/* Архикомпас */
+svg {
+  width: 300px;
+  height: 300px;
 }
 
-#stats{
-margin-top:20px;
-font-size:18px;
-color:#ddd;
+.segment {
+  fill: #111;
+  stroke: #333;
+  cursor: pointer;
+}
+
+.segment.active {
+  fill: #00ff99;
+}
+
+.center {
+  fill: #222;
+  cursor: pointer;
+}
+
+.center.active {
+  fill: #00ff99;
+}
+
+/* сетка */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background: #333;
 }
 
 </style>
@@ -74,110 +100,141 @@ color:#ddd;
 
 <body>
 
-<h1>Awarenessy</h1>
-
-<div id="compass">
-
-<div id="needle"></div>
-<div id="center"></div>
-
-</div>
-
-<button id="awareness">🧠 Я осознался</button>
-
-<div id="stats">
-Сегодня: <span id="today">0</span><br>
-Всего: <span id="total">0</span>
-</div>
-
-<div id="status"></div>
+<div id="top"></div>
+<div id="bottom"></div>
 
 <script>
 
-const SUPABASE_URL="https://najicjitgyvtdrjaowig.supabase.co"
-const SUPABASE_KEY="YOUR_KEY"
+let mode = null;
+let selectedDirection = null;
+let selectedDistance = null;
 
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+/* --- СЦЕНАРИИ --- */
 
-const needle=document.getElementById("needle")
-const todaySpan=document.getElementById("today")
-const totalSpan=document.getElementById("total")
-const status=document.getElementById("status")
+const scenarios = [
+  "В каком настроении ты был 5 минут назад?",
+  "В каком направлении твой дом?",
+  "Я наблюдаю...",
+  "ЭТО НЕ СОН?",
+  ""
+];
 
-let angle=0
-let userId=null
+/* --- СТАРТ --- */
 
-async function getUser(){
+function startScreen() {
+  const text = scenarios[Math.floor(Math.random()*scenarios.length)];
 
-const tg=window.Telegram?.WebApp
-let u=tg?.initDataUnsafe?.user
+  document.getElementById("top").innerHTML = `
+    <div>${text}</div>
+    <div style="margin-top:20px;">
+      <button onclick="enterMode('real')">ЯВЬ</button>
+      <button onclick="enterMode('dream')">СОН</button>
+    </div>
+  `;
 
-if(!u){
-u={id:999999,first_name:"Test"}
+  document.getElementById("bottom").innerHTML = "";
 }
 
-const {data,error}=await sb
-.from("users")
-.upsert({
-telegram_id:u.id,
-first_name:u.first_name,
-nickname:u.first_name
-},{onConflict:"telegram_id"})
-.select()
-.single()
+startScreen();
 
-userId=data.id
+/* --- ВХОД В РЕЖИМ --- */
 
-loadStats()
-
+function enterMode(m) {
+  mode = m;
+  stepTurnSouth();
 }
 
-async function loadStats(){
+/* --- ШАГИ ЯВИ --- */
 
-const {data}=await sb
-.from("awareness_sessions")
-.select("created_at")
-.eq("user_id",userId)
-
-const todayDate=new Date().toISOString().slice(0,10)
-
-let todayCount=0
-
-data.forEach(s=>{
-if(s.created_at.slice(0,10)==todayDate) todayCount++
-})
-
-todaySpan.innerText=todayCount
-totalSpan.innerText=data.length
-
+function stepTurnSouth() {
+  document.getElementById("top").innerHTML = `
+    <div>Повернись к Югу (Солнце в полдень)</div>
+    <button onclick="stepTime()">Готово</button>
+  `;
 }
 
-async function awareness(){
+function stepTime() {
+  const times = ["Рассвет","Утро","Полдень","Вечер","Закат","Ранняя ночь","Глубокая ночь","Перед рассветом"];
 
-status.innerText="Фиксируем..."
-
-const {error}=await sb
-.from("awareness_sessions")
-.insert({user_id:userId})
-
-if(error){
-status.innerText="Ошибка"
-return
+  document.getElementById("top").innerHTML = `
+    <div>Какое время суток?</div>
+    ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
+  `;
 }
 
-angle+=30
+/* --- СЕТКА --- */
 
-needle.style.transform=`rotate(${angle}deg)`
+function stepHome() {
+  document.getElementById("top").innerHTML = `
+    <div>Где твой Дом?</div>
+    <div class="grid">
+      <div class="cell" onclick="selectDir('nw')">↖</div>
+      <div class="cell" onclick="selectDir('n')">↑</div>
+      <div class="cell" onclick="selectDir('ne')">↗</div>
+      <div class="cell" onclick="selectDir('w')">←</div>
+      <div class="cell" onclick="selectCenter()">Я</div>
+      <div class="cell" onclick="selectDir('e')">→</div>
+      <div class="cell" onclick="selectDir('sw')">↙</div>
+      <div class="cell" onclick="selectDir('s')">↓</div>
+      <div class="cell" onclick="selectDir('se')">↘</div>
+    </div>
+  `;
 
-await loadStats()
-
-status.innerText="Момент осознанности ✨"
-
+  drawCompass();
 }
 
-document.getElementById("awareness").addEventListener("click",awareness)
+/* --- ВЫБОР --- */
 
-getUser()
+function selectCenter() {
+  selectedDirection = "center";
+  drawCompass(true);
+}
+
+function selectDir(dir) {
+  selectedDirection = dir;
+  highlightOpposite();
+  stepDistance();
+}
+
+/* --- ДИСТАНЦИЯ --- */
+
+function stepDistance() {
+  document.getElementById("top").innerHTML = `
+    <div>Как далеко ты от Дома?</div>
+    <button onclick="setDistance(1)">Близко</button>
+    <button onclick="setDistance(2)">Средне</button>
+    <button onclick="setDistance(3)">Далеко</button>
+  `;
+}
+
+function setDistance(d) {
+  selectedDistance = d;
+  highlightFinal();
+}
+
+/* --- КОМПАС --- */
+
+function drawCompass(center=false) {
+  let svg = `<svg viewBox="0 0 300 300">`;
+
+  // центр
+  svg += `<circle cx="150" cy="150" r="25" class="center ${center?'active':''}" />`;
+
+  svg += `</svg>`;
+
+  document.getElementById("bottom").innerHTML = svg;
+}
+
+/* --- ПОДСВЕТКА --- */
+
+function highlightOpposite() {
+  // пока упрощённо (потом добавим реальные сегменты)
+  drawCompass();
+}
+
+function highlightFinal() {
+  drawCompass();
+}
 
 </script>
 

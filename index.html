@@ -31,6 +31,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #050505;
 }
 
 button {
@@ -59,12 +60,11 @@ button {
 }
 
 #modeButtons {
-  position: fixed;
-  bottom: 20px;
-  width: 100%;
+  #modeButtons {
   display: flex;
   justify-content: center;
   gap: 10px;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -121,11 +121,21 @@ function startScreen() {
   drawCompass();
 }
 
+  function hideModeButtons() {
+  document.getElementById("modeButtons").style.display = "none";
+}
+
+function showModeButtons() {
+  document.getElementById("modeButtons").style.display = "flex";
+}
+
 startScreen();
 
 /* -------------------- РЕЖИМ -------------------- */
 
 function enterMode(mode) {
+  hideModeButtons(); // 🔥 скрыли
+  drawCompass(); // 🔥 гарантируем появление
   stepTurnSouth();
 }
 
@@ -235,6 +245,7 @@ function stepEmotion() {
       `).join("")}
     </div>
   `;
+  drawCompass();
 }
 
 function selectEmotion(color) {
@@ -244,6 +255,7 @@ function selectEmotion(color) {
   } else if (finalSegment) {
     coloredSegments[finalSegment] = color;
   }
+  showModeButtons();
 
   drawCompass();
 }

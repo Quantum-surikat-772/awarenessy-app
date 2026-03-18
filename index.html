@@ -139,6 +139,7 @@ function stepTurnSouth() {
 }
 
 function stepTime() {
+
   const times = ["Рассвет","Утро","Полдень","Вечер","Закат","Ранняя ночь","Глубокая ночь","Перед рассветом"];
 
   document.getElementById("top").innerHTML = `
@@ -147,6 +148,8 @@ function stepTime() {
       ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
     </div>
   `;
+
+  drawCompass(); // 🔥 ВАЖНО
 }
 
 function stepHome() {

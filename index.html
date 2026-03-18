@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Awarenessy Mini App</title>
+<title>Awarenessy</title>
 
 <style>
 body {
@@ -17,68 +17,35 @@ body {
 }
 
 #top {
-  height: 45%;
+  flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
   padding: 20px;
-  font-size: 18px;
 }
 
 #bottom {
-  height: 55%;
+  height: 50%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 button {
-  padding: 10px 16px;
-  margin: 6px;
+  padding: 10px 14px;
+  margin: 5px;
   border: none;
   border-radius: 8px;
-  background: #0f0;
-  color: #000;
   font-size: 14px;
 }
 
-.hidden {
-  display: none;
-}
-
-/* Архикомпас */
-svg {
-  width: 300px;
-  height: 300px;
-}
-
-.segment {
-  fill: #111;
-  stroke: #333;
-  cursor: pointer;
-}
-
-.segment.active {
-  fill: #00ff99;
-}
-
-.center {
-  fill: #222;
-  cursor: pointer;
-}
-
-.center.active {
-  fill: #00ff99;
-}
-
-/* сетка */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 50px);
   gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .cell {
@@ -86,15 +53,19 @@ svg {
   height: 50px;
   background: #111;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
-.cell:hover {
-  background: #333;
+#modeButtons {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
-
 </style>
 </head>
 
@@ -103,48 +74,62 @@ svg {
 <div id="top"></div>
 <div id="bottom"></div>
 
+<div id="modeButtons">
+  <button onclick="enterMode('real')">ЯВЬ</button>
+  <button onclick="enterMode('dream')">СОН</button>
+</div>
+
 <script>
 
-let mode = null;
+/* -------------------- СОСТОЯНИЕ -------------------- */
+
 let selectedDirection = null;
 let selectedDistance = null;
+let finalSegment = null;
+let activeSegments = [];
+let centerActive = false;
 
-/* --- СЦЕНАРИИ --- */
+let coloredSegments = {};
+let selectedEmotion = null;
 
-const scenarios = [
-  "В каком настроении ты был 5 минут назад?",
-  "В каком направлении твой дом?",
-  "Я наблюдаю...",
-  "ЭТО НЕ СОН?",
-  ""
+/* -------------------- ЦВЕТА -------------------- */
+
+const emotionColors = [
+  "#FFD700", // жёлтый
+  "#FFFFFF", // белый
+  "#4FC3F7", // голубой
+  "#26C6DA", // бирюзовый
+  "#4CAF50", // зелёный
+  "#000000", // чёрный
+  "#F44336", // красный
+  "#FF9800"  // оранжевый
 ];
 
-/* --- СТАРТ --- */
+/* -------------------- СЦЕНАРИИ -------------------- */
+
+const scenarios = [
+  "Я наблюдаю...",
+  "ЭТО НЕ СОН?",
+  "В каком настроении ты был 5 минут назад?",
+  "В каком направлении твой дом?"
+];
 
 function startScreen() {
   const text = scenarios[Math.floor(Math.random()*scenarios.length)];
 
-  document.getElementById("top").innerHTML = `
-    <div>${text}</div>
-    <div style="margin-top:20px;">
-      <button onclick="enterMode('real')">ЯВЬ</button>
-      <button onclick="enterMode('dream')">СОН</button>
-    </div>
-  `;
-
-  document.getElementById("bottom").innerHTML = "";
+  document.getElementById("top").innerHTML = `<div>${text}</div>`;
+  drawCompass();
 }
 
 startScreen();
 
-/* --- ВХОД В РЕЖИМ --- */
+/* -------------------- РЕЖИМ -------------------- */
 
-function enterMode(m) {
-  mode = m;
+function enterMode(mode) {
   stepTurnSouth();
 }
 
-/* --- ШАГИ ЯВИ --- */
+/* -------------------- ШАГИ -------------------- */
 
 function stepTurnSouth() {
   document.getElementById("top").innerHTML = `
@@ -158,15 +143,15 @@ function stepTime() {
 
   document.getElementById("top").innerHTML = `
     <div>Какое время суток?</div>
-    ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;">
+      ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
+    </div>
   `;
 }
 
-/* --- СЕТКА --- */
-
 function stepHome() {
   document.getElementById("top").innerHTML = `
-    <div>Где твой Дом?</div>
+    <div>В каком направлении твой Дом?</div>
     <div class="grid">
       <div class="cell" onclick="selectDir('nw')">↖</div>
       <div class="cell" onclick="selectDir('n')">↑</div>
@@ -179,24 +164,39 @@ function stepHome() {
       <div class="cell" onclick="selectDir('se')">↘</div>
     </div>
   `;
-
-  drawCompass();
 }
 
-/* --- ВЫБОР --- */
+/* -------------------- ВЫБОР -------------------- */
+
+const oppositeMap = {
+  n: "s", ne: "sw", e: "w", se: "nw",
+  s: "n", sw: "ne", w: "e", nw: "se"
+};
 
 function selectCenter() {
-  selectedDirection = "center";
-  drawCompass(true);
+  centerActive = true;
+  activeSegments = [];
+  finalSegment = null;
+  drawCompass();
+  stepEmotion();
 }
 
 function selectDir(dir) {
-  selectedDirection = dir;
-  highlightOpposite();
+  centerActive = false;
+
+  const opp = oppositeMap[dir];
+
+  activeSegments = [
+    `0_${opp}`,
+    `1_${opp}`,
+    `2_${opp}`
+  ];
+
+  drawCompass();
   stepDistance();
 }
 
-/* --- ДИСТАНЦИЯ --- */
+/* -------------------- ДИСТАНЦИЯ -------------------- */
 
 function stepDistance() {
   document.getElementById("top").innerHTML = `
@@ -208,11 +208,41 @@ function stepDistance() {
 }
 
 function setDistance(d) {
-  selectedDistance = d;
-  highlightFinal();
+  const dir = activeSegments[0].split("_")[1];
+
+  activeSegments = [];
+  finalSegment = `${d-1}_${dir}`;
+
+  drawCompass();
+  stepEmotion();
 }
 
-/* --- КОМПАС --- */
+/* -------------------- ЭМОЦИИ -------------------- */
+
+function stepEmotion() {
+  document.getElementById("top").innerHTML = `
+    <div>Какое состояние сейчас доминирует?</div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;">
+      ${emotionColors.map(c => `
+        <button style="background:${c};width:40px;height:40px;" 
+        onclick="selectEmotion('${c}')"></button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function selectEmotion(color) {
+
+  if (centerActive) {
+    coloredSegments["center"] = color;
+  } else if (finalSegment) {
+    coloredSegments[finalSegment] = color;
+  }
+
+  drawCompass();
+}
+
+/* -------------------- КОМПАС -------------------- */
 
 const centerX = 150;
 const centerY = 150;
@@ -223,15 +253,7 @@ const rings = [
   {inner: 95, outer: 130}
 ];
 
-const directions = [
-  "s", "sw", "w", "nw", "n", "ne", "e", "se"
-];
-
-let activeSegments = [];
-let finalSegment = null;
-let centerActive = false;
-
-/* --- геометрия --- */
+const directions = ["s","sw","w","nw","n","ne","e","se"];
 
 function polar(cx, cy, r, angle) {
   return {
@@ -255,16 +277,12 @@ function segmentPath(innerR, outerR, a0, a1) {
   `;
 }
 
-/* --- рендер --- */
-
 function drawCompass() {
 
   let svg = `<svg viewBox="0 0 300 300">`;
 
   const step = (Math.PI * 2) / 8;
-
-  // 🔥 СДВИГ 22.5°
-  const offset = -step / 2;
+  const offset = -step / 2; // 🔥 исправленный поворот
 
   rings.forEach((ring, rIndex) => {
 
@@ -279,26 +297,23 @@ function drawCompass() {
 
       if (activeSegments.includes(id)) fill = "#888";
       if (finalSegment === id) fill = "#ccc";
+      if (coloredSegments[id]) fill = coloredSegments[id];
 
-      svg += `
-        <path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-        fill="${fill}" stroke="#222"/>
-      `;
+      svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+        fill="${fill}" stroke="#222"/>`;
 
     });
 
   });
 
-  // центр (всегда видимый и кликабельный)
-  svg += `
-    <circle cx="150" cy="150" r="25"
-      fill="${centerActive ? '#ccc' : '#111'}"
-      stroke="#444"
-      onclick="selectCenter()"
-    />
-  `;
+  // центр
+  let centerFill = "#111";
+  if (centerActive) centerFill = "#ccc";
+  if (coloredSegments["center"]) centerFill = coloredSegments["center"];
 
-  // подписи сторон света
+  svg += `<circle cx="150" cy="150" r="25" fill="${centerFill}" stroke="#444"/>`;
+
+  // подписи
   svg += `
     <text x="150" y="20" text-anchor="middle" fill="#666">S</text>
     <text x="280" y="155" text-anchor="middle" fill="#666">W</text>
@@ -309,52 +324,6 @@ function drawCompass() {
   svg += `</svg>`;
 
   document.getElementById("bottom").innerHTML = svg;
-}
-
-/* --- логика --- */
-
-const oppositeMap = {
-  n: "s",
-  ne: "sw",
-  e: "w",
-  se: "nw",
-  s: "n",
-  sw: "ne",
-  w: "e",
-  nw: "se"
-};
-
-function selectCenter() {
-  centerActive = true;
-  activeSegments = [];
-  finalSegment = null;
-  drawCompass();
-}
-
-function selectDir(dir) {
-
-  centerActive = false;
-
-  const opp = oppositeMap[dir];
-
-  activeSegments = [
-    `0_${opp}`,
-    `1_${opp}`,
-    `2_${opp}`
-  ];
-
-  drawCompass();
-  stepDistance();
-}
-
-function setDistance(d) {
-
-  const dir = activeSegments[0].split("_")[1];
-
-  activeSegments = [];
-  finalSegment = `${d-1}_${dir}`;
-
-  drawCompass();
 }
 
 </script>

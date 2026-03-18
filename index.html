@@ -136,6 +136,7 @@ function stepTurnSouth() {
     <div>Повернись к Югу (Солнце в полдень)</div>
     <button onclick="stepTime()">Готово</button>
   `;
+  drawCompass();
 }
 
 function stepTime() {
@@ -167,6 +168,7 @@ function stepHome() {
       <div class="cell" onclick="selectDir('se')">↘</div>
     </div>
   `;
+  drawCompass();
 }
 
 /* -------------------- ВЫБОР -------------------- */
@@ -208,6 +210,7 @@ function stepDistance() {
     <button onclick="setDistance(2)">Средне</button>
     <button onclick="setDistance(3)">Далеко</button>
   `;
+  drawCompass();
 }
 
 function setDistance(d) {
@@ -216,8 +219,8 @@ function setDistance(d) {
   activeSegments = [];
   finalSegment = `${d-1}_${dir}`;
 
-  drawCompass();
   stepEmotion();
+  drawCompass();
 }
 
 /* -------------------- ЭМОЦИИ -------------------- */

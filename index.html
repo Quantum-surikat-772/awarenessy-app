@@ -214,25 +214,145 @@ function setDistance(d) {
 
 /* --- КОМПАС --- */
 
-function drawCompass(center=false) {
+/* --- НАСТРОЙКИ --- */
+
+const centerX = 150;
+const centerY = 150;
+
+const rings = [
+  {inner: 30, outer: 60},
+  {inner: 60, outer: 95},
+  {inner: 95, outer: 130}
+];
+
+/* порядок: ЮГ сверху */
+const directions = [
+  "s", "sw", "w", "nw", "n", "ne", "e", "se"
+];
+
+let activeSegments = [];
+let finalSegment = null;
+let centerActive = false;
+
+/* --- ВСПОМОГАТЕЛЬНЫЕ --- */
+
+function polarToCartesian(cx, cy, r, angle) {
+  return {
+    x: cx + r * Math.cos(angle),
+    y: cy + r * Math.sin(angle)
+  };
+}
+
+function createSegmentPath(innerR, outerR, startAngle, endAngle) {
+  const p1 = polarToCartesian(centerX, centerY, outerR, startAngle);
+  const p2 = polarToCartesian(centerX, centerY, outerR, endAngle);
+  const p3 = polarToCartesian(centerX, centerY, innerR, endAngle);
+  const p4 = polarToCartesian(centerX, centerY, innerR, startAngle);
+
+  return `
+    M ${p1.x} ${p1.y}
+    A ${outerR} ${outerR} 0 0 1 ${p2.x} ${p2.y}
+    L ${p3.x} ${p3.y}
+    A ${innerR} ${innerR} 0 0 0 ${p4.x} ${p4.y}
+    Z
+  `;
+}
+
+/* --- РЕНДЕР --- */
+
+function drawCompass() {
+
   let svg = `<svg viewBox="0 0 300 300">`;
 
+  const angleStep = (Math.PI * 2) / 8;
+
+  rings.forEach((ring, rIndex) => {
+
+    directions.forEach((dir, dIndex) => {
+
+      // смещение: ЮГ сверху
+      let angleStart = -Math.PI/2 + dIndex * angleStep;
+      let angleEnd = angleStart + angleStep;
+
+      const path = createSegmentPath(
+        ring.inner,
+        ring.outer,
+        angleStart,
+        angleEnd
+      );
+
+      const id = `${rIndex}_${dir}`;
+
+      let fill = "#0a0a0a";
+
+      if (activeSegments.includes(id)) fill = "#888";       // светло-серый
+      if (finalSegment === id) fill = "#ccc";               // выбранный
+
+      svg += `<path d="${path}" class="segment" fill="${fill}" stroke="#222"/>`;
+
+    });
+
+  });
+
   // центр
-  svg += `<circle cx="150" cy="150" r="25" class="center ${center?'active':''}" />`;
+  svg += `
+    <circle cx="150" cy="150" r="25"
+      fill="${centerActive ? '#ccc' : '#111'}"
+      stroke="#333"/>
+  `;
 
   svg += `</svg>`;
 
   document.getElementById("bottom").innerHTML = svg;
 }
 
-/* --- ПОДСВЕТКА --- */
+/* --- ЛОГИКА НАПРАВЛЕНИЙ --- */
 
-function highlightOpposite() {
-  // пока упрощённо (потом добавим реальные сегменты)
+const oppositeMap = {
+  n: "s",
+  ne: "sw",
+  e: "w",
+  se: "nw",
+  s: "n",
+  sw: "ne",
+  w: "e",
+  nw: "se"
+};
+
+/* --- ВЫБОР ДОМА --- */
+
+function selectCenter() {
+  centerActive = true;
+  activeSegments = [];
+  finalSegment = null;
   drawCompass();
 }
 
-function highlightFinal() {
+function selectDir(dir) {
+
+  centerActive = false;
+
+  const opposite = oppositeMap[dir];
+
+  activeSegments = [
+    `0_${opposite}`,
+    `1_${opposite}`,
+    `2_${opposite}`
+  ];
+
+  drawCompass();
+  stepDistance();
+}
+
+/* --- ДИСТАНЦИЯ --- */
+
+function setDistance(d) {
+
+  const dir = activeSegments[0].split("_")[1];
+
+  activeSegments = [];
+  finalSegment = `${d-1}_${dir}`;
+
   drawCompass();
 }
 

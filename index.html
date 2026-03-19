@@ -60,11 +60,13 @@ button {
 }
 
 #modeButtons {
-  #modeButtons {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 20px;
 }
 </style>
 </head>
@@ -134,16 +136,13 @@ startScreen();
 /* -------------------- РЕЖИМ -------------------- */
 
 function enterMode(mode) {
+  console.log("MODE CLICKED", mode);
 
-  hideModeButtons(); // скрыли кнопки
+  hideModeButtons();
 
-  // 🔥 полностью очищаем экран
-  document.getElementById("top").innerHTML = "";
+  document.getElementById("top").innerHTML = "<div>Переход...</div>";
 
-  // 🔥 рисуем следующий шаг
   stepTurnSouth();
-
-  // 🔥 гарантируем появление компаса
   drawCompass();
 }
 

@@ -134,9 +134,17 @@ startScreen();
 /* -------------------- РЕЖИМ -------------------- */
 
 function enterMode(mode) {
-  hideModeButtons(); // 🔥 скрыли
-  drawCompass(); // 🔥 гарантируем появление
+
+  hideModeButtons(); // скрыли кнопки
+
+  // 🔥 полностью очищаем экран
+  document.getElementById("top").innerHTML = "";
+
+  // 🔥 рисуем следующий шаг
   stepTurnSouth();
+
+  // 🔥 гарантируем появление компаса
+  drawCompass();
 }
 
 /* -------------------- ШАГИ -------------------- */

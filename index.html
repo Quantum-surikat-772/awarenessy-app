@@ -77,6 +77,9 @@ button {
   border-radius: 8px;
   margin: 5px;
 }
+.hidden {
+  display: none;
+}
 </style>
 </head>
 
@@ -84,7 +87,7 @@ button {
 
 <div id="top"></div>
 
-<div id="bottom">
+<div id="bottom" class="hidden">
   <div id="compass"></div>
 </div>
 
@@ -122,6 +125,9 @@ startScreen();
 
 function enterMode() {
   hideModeButtons();
+
+  // показать компас
+  document.getElementById("bottom").classList.remove("hidden");
 
   document.getElementById("top").innerHTML = "";
 

@@ -121,13 +121,17 @@ function startScreen() {
 
 startScreen();
 
+// гарантированно скрываем компас при запуске
+document.getElementById("bottom").classList.add("hidden");
+
 /* ---------------- MODE ---------------- */
 
 function enterMode() {
   hideModeButtons();
 
-  // показать компас
   document.getElementById("bottom").classList.remove("hidden");
+
+  drawCompass(); // ← вот сюда перенести
 
   document.getElementById("top").innerHTML = "";
 
@@ -226,15 +230,25 @@ function setDistance(d) {
 
 /* ---------------- EMOTION ---------------- */
 
-const emotionColors = [
-  "#FFD700","#FFFFFF","#4FC3F7","#26C6DA",
-  "#4CAF50","#000000","#F44336","#FF9800"
+const emotions = [
+  {name:"Радостное созидание", color:"#FFD700"},
+  {name:"Осознанное творчество", color:"#FFFFFF"},
+  {name:"Вдохновение", color:"#4FC3F7"},
+
+  {name:"Фантазии / пассивность", color:"#26C6DA"},
+  {name:"Нейтральное (пассивная вовлечённость)", color:"#808080"},
+  {name:"Тоска / зависимость", color:"#4CAF50"},
+
+  {name:"Агрессия / доминирование", color:"#F44336"},
+  {name:"Активность / соревнование", color:"#FF9800"},
+  {name:"Хаос / отчаяние", color:"#000000"}
 ];
 
 function stepEmotion() {
   document.getElementById("top").innerHTML = `
     <div>Какое состояние сейчас доминирует?</div>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;">
+    <div>Выбери до 3 состояний (по убыванию силы)</div>
       ${emotionColors.map(c => `
         <button style="background:${c};width:40px;height:40px"
         onclick="selectEmotion('${c}')"></button>
@@ -245,14 +259,25 @@ function stepEmotion() {
 
 function selectEmotion(color) {
 
+  if (selectedEmotions.length < 3) {
+    selectedEmotions.push(color);
+  }
+
+  // применяем только ПЕРВУЮ (главную)
+  const mainColor = selectedEmotions[0];
+
   if (centerActive) {
-    coloredSegments["center"] = color;
+    coloredSegments["center"] = mainColor;
   } else {
-    coloredSegments[finalSegment] = color;
+    coloredSegments[finalSegment] = mainColor;
   }
 
   drawCompass();
-  showModeButtons();
+
+  // если выбрали 3 — завершаем
+  if (selectedEmotions.length === 3) {
+    showModeButtons();
+  }
 }
 
 /* ---------------- COMPASS ---------------- */

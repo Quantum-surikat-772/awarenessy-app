@@ -248,28 +248,21 @@ const emotions = [
 
 function stepEmotion() {
 
-  const emotions = [
-    {name:"Радостное созидание", color:"#FFD700"},
-    {name:"Осознанное творчество", color:"#FFFFFF"},
-    {name:"Вдохновение", color:"#4FC3F7"},
-    {name:"Фантазии / пассивность", color:"#26C6DA"},
-    {name:"Нейтральное", color:"#808080"},
-    {name:"Тоска / зависимость", color:"#4CAF50"},
-    {name:"Агрессия / доминирование", color:"#F44336"},
-    {name:"Активность / соревнование", color:"#FF9800"},
-    {name:"Хаос / отчаяние", color:"#000000"}
-  ];
+  document.getElementById("top").innerHTML = `
+    <div>Какое состояние сейчас доминирует?</div>
 
-  let html = `<div>Какое состояние сейчас доминирует?</div>`;
-  html += `<div style="display:flex;flex-direction:column;gap:8px;margin-top:20px;">`;
+    <button onclick="selectEmotion('#FFD700')">Радостное созидание</button>
+    <button onclick="selectEmotion('#FFFFFF')">Осознанное творчество</button>
+    <button onclick="selectEmotion('#4FC3F7')">Вдохновение</button>
 
-  emotions.forEach(e => {
-    html += `<button onclick="selectEmotion('${e.color}')">${e.name}</button>`;
-  });
+    <button onclick="selectEmotion('#26C6DA')">Фантазии / пассивность</button>
+    <button onclick="selectEmotion('#808080')">Нейтральное</button>
+    <button onclick="selectEmotion('#4CAF50')">Тоска / зависимость</button>
 
-  html += `</div>`;
-
-  document.getElementById("top").innerHTML = html;
+    <button onclick="selectEmotion('#F44336')">Агрессия / доминирование</button>
+    <button onclick="selectEmotion('#FF9800')">Активность / соревнование</button>
+    <button onclick="selectEmotion('#000000')">Хаос / отчаяние</button>
+  `;
 }
 
 function selectEmotion(color) {

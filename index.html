@@ -87,7 +87,7 @@ button {
 
 <div id="top"></div>
 
-<div id="bottom"
+<div id="bottom">
   <div id="compass"></div>
 </div>
 
@@ -106,6 +106,7 @@ let activeSegments = [];
 let finalSegment = null;
 let centerActive = false;
 let coloredSegments = {};
+let selectedEmotions = [];
 
 /* ---------------- START ---------------- */
 
@@ -118,21 +119,19 @@ const scenarios = [
 
 function startScreen() {
   const text = scenarios[Math.floor(Math.random()*scenarios.length)];
+
+  document.getElementById("top").innerHTML = `<div>${text}</div>`;
+
   document.getElementById("bottom").style.display = "none";
 }
 
 startScreen();
 
-// гарантированно скрываем компас при запуске
-document.getElementById("bottom").classList.add("hidden");
-
 /* ---------------- MODE ---------------- */
 
 function enterMode() {
-  function enterMode() {
   hideModeButtons();
 
-  // показать компас
   document.getElementById("bottom").style.display = "flex";
 
   drawCompass();

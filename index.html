@@ -92,8 +92,8 @@ button {
 </div>
 
 <div id="modeButtons">
-  <button onclick="enterMode('wake')">ЯВЬ</button>
-  <button onclick="enterMode('dream')">СОН</button>
+  <button onclick="enterMode()">ЯВЬ</button>
+  <button onclick="enterMode()">СОН</button>
 </div>
 
 <script>
@@ -105,10 +105,7 @@ alert("JS работает");
 let activeSegments = [];
 let finalSegment = null;
 let centerActive = false;
-let data = {
-  wake: {},
-  dream: {}
-};
+let coloredSegments = {};
 let currentMode = null; // "wake" или "dream"
 
 /* ---------------- START ---------------- */
@@ -132,10 +129,7 @@ startScreen();
 
 /* ---------------- MODE ---------------- */
 
-function enterMode(mode) {
-
-  currentMode = mode;
-
+function enterMode() {
   hideModeButtons();
 
   document.getElementById("bottom").style.display = "flex";
@@ -274,12 +268,10 @@ function stepEmotion() {
 
 function selectEmotion(color) {
 
-  const storage = data[currentMode];
-
   if (centerActive) {
-    storage["center"] = color;
+    coloredSegments["center"] = color;
   } else {
-    storage[finalSegment] = color;
+    coloredSegments[finalSegment] = color;
   }
 
   drawCompass();
@@ -342,9 +334,8 @@ function drawCompass() {
 
       if (activeSegments.includes(id)) fill = "#888";
       if (finalSegment === id) fill = "#ccc";
-      const storage = data[currentMode] || {};
-
-      if (storage[id]) fill = storage[id];
+      if (coloredSegments[id]) fill = coloredSegments[id];
+      if (coloredSegments["center"]) centerFill = coloredSegments["center"];
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
       fill="${fill}" stroke="#222"/>`;

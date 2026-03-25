@@ -87,7 +87,7 @@ button {
 
 <div id="top"></div>
 
-<div id="bottom" class="hidden">
+<div id="bottom"
   <div id="compass"></div>
 </div>
 
@@ -116,7 +116,7 @@ const scenarios = [
 
 function startScreen() {
   const text = scenarios[Math.floor(Math.random()*scenarios.length)];
-  document.getElementById("top").innerHTML = `<div>${text}</div>`;
+  document.getElementById("bottom").style.display = "none";
 }
 
 startScreen();
@@ -127,11 +127,13 @@ document.getElementById("bottom").classList.add("hidden");
 /* ---------------- MODE ---------------- */
 
 function enterMode() {
+  function enterMode() {
   hideModeButtons();
 
-  document.getElementById("bottom").classList.remove("hidden");
+  // показать компас
+  document.getElementById("bottom").style.display = "flex";
 
-  drawCompass(); // ← вот сюда перенести
+  drawCompass();
 
   document.getElementById("top").innerHTML = "";
 
@@ -245,16 +247,29 @@ const emotions = [
 ];
 
 function stepEmotion() {
-  document.getElementById("top").innerHTML = `
-    <div>Какое состояние сейчас доминирует?</div>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;">
-    <div>Выбери до 3 состояний (по убыванию силы)</div>
-      ${emotionColors.map(c => `
-        <button style="background:${c};width:40px;height:40px"
-        onclick="selectEmotion('${c}')"></button>
-      `).join("")}
-    </div>
-  `;
+
+  const emotions = [
+    {name:"Радостное созидание", color:"#FFD700"},
+    {name:"Осознанное творчество", color:"#FFFFFF"},
+    {name:"Вдохновение", color:"#4FC3F7"},
+    {name:"Фантазии / пассивность", color:"#26C6DA"},
+    {name:"Нейтральное", color:"#808080"},
+    {name:"Тоска / зависимость", color:"#4CAF50"},
+    {name:"Агрессия / доминирование", color:"#F44336"},
+    {name:"Активность / соревнование", color:"#FF9800"},
+    {name:"Хаос / отчаяние", color:"#000000"}
+  ];
+
+  let html = `<div>Какое состояние сейчас доминирует?</div>`;
+  html += `<div style="display:flex;flex-direction:column;gap:8px;margin-top:20px;">`;
+
+  emotions.forEach(e => {
+    html += `<button onclick="selectEmotion('${e.color}')">${e.name}</button>`;
+  });
+
+  html += `</div>`;
+
+  document.getElementById("top").innerHTML = html;
 }
 
 function selectEmotion(color) {

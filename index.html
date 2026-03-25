@@ -130,15 +130,9 @@ startScreen();
 /* ---------------- MODE ---------------- */
 
 function enterMode() {
-  hideModeButtons();
+  alert("enterMode работает");
 
-  document.getElementById("bottom").style.display = "flex";
-
-  drawCompass();
-
-  document.getElementById("top").innerHTML = "";
-
-  stepTurnSouth();
+  document.getElementById("top").innerHTML = "вход выполнен";
 }
 
 /* ---------------- STEPS ---------------- */

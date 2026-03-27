@@ -123,6 +123,14 @@ button:active {
   color: #fff !important;
 }
 
+#bottom {
+  height: 50%;
+  display: none; /* СКРЫВАЕМ НА СТАРТЕ */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 </style>
 </head>
 
@@ -163,6 +171,10 @@ const scenarios = [
   "ЭТО НЕ СОН?",
   "В каком настроении ты был 5 минут назад?",
   "В каком направлении твой Дом?"
+  {
+  type: "image",
+  src: "https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+  }
 ];
 
 const text = scenarios[Math.floor(Math.random()*scenarios.length)];
@@ -177,6 +189,19 @@ document.body.style.background = bg;
 document.getElementById("top").innerHTML = `<div>${text}</div>`;
 
 startScreen();
+
+function startScreen() {
+
+  const item = scenarios[Math.floor(Math.random()*scenarios.length)];
+
+  if (typeof item === "string") {
+    document.getElementById("top").innerHTML = `<div>${item}</div>`;
+  } else {
+    document.getElementById("top").innerHTML = `
+      <img src="${item.src}" style="max-width:200px;">
+    `;
+  }
+}
 
 /* ---------- MODE ---------- */
 

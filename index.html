@@ -186,55 +186,44 @@ startScreen();
 function startScreen() {
 
   const scenarios = [
-    { type: "text", content: "Я наблюдаю..." },
-    { type: "text", content: "В каком настроении ты был 5 минут назад?" },
-    { type: "text", content: "В каком направлении твой Дом?" },
-
-    { type: "alert", content: "ЭТО НЕ СОН?" },
-
-    {
-      type: "image",
-      src: "https://i.postimg.cc/zXp9BVGf/Hands-1.png"
-    }
+    "text1",
+    "text2",
+    "text3",
+    "alert",
+    "image"
   ];
 
   const random = scenarios[Math.floor(Math.random() * scenarios.length)];
 
-  // сброс фона
+  // сброс
   document.body.style.background = "#050505";
 
-  // --- СЦЕНАРИИ ---
-
-  if (random.type === "text") {
-
-    document.getElementById("top").innerHTML = `
-      <div>${random.content}</div>
-    `;
-
+  if (random === "text1") {
+    document.getElementById("top").innerHTML = "Я наблюдаю...";
   }
 
-  if (random.type === "alert") {
+  if (random === "text2") {
+    document.getElementById("top").innerHTML = "В каком настроении ты был 5 минут назад?";
+  }
 
+  if (random === "text3") {
+    document.getElementById("top").innerHTML = "В каком направлении твой Дом?";
+  }
+
+  if (random === "alert") {
     document.body.style.background = "#ff0000";
-
     document.getElementById("top").innerHTML = `
       <div style="font-size:28px;font-weight:bold;">
-        ${random.content}
+        ЭТО НЕ СОН?
       </div>
     `;
-
   }
 
-  if (random.type === "image") {
-
+  if (random === "image") {
     document.getElementById("top").innerHTML = `
-      <img src="${random.src}" style="
-        width: 80%;
-        max-width: 280px;
-        opacity: 0.9;
-      ">
+      <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+      style="width:80%;max-width:280px;">
     `;
-
   }
 
   showModeButtons();

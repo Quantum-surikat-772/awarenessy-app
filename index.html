@@ -77,10 +77,6 @@ body {
   filter: drop-shadow(0 0 6px currentColor);
 }
 
-#compassContainer {
-  display: none;
-}
-
 #modeButtons {
   position: fixed;
   bottom: 20px;
@@ -144,16 +140,17 @@ button:active {
 <div id="top"></div>
 
 <div id="bottom">
-  <div id="compass"></div>
-</div>
 
-  <!-- фон -->
-  <img src="https://i.postimg.cc/QNqFwP2P/compass.png" id="compassBg">
+  <div id="compassContainer">
 
-  <!-- твой SVG -->
-  <div id="compass"></div>
+    <!-- фон -->
+    <img src="https://i.postimg.cc/QNqFwP2P/compass.png" id="compassBg">
 
-</div>
+    <!-- SVG компаса -->
+    <div id="compass"></div>
+
+  </div>
+
 </div>
 
 <div id="modeButtons">
@@ -176,23 +173,12 @@ const scenarios = [
   "Я наблюдаю...",
   "ЭТО НЕ СОН?",
   "В каком настроении ты был 5 минут назад?",
-  "В каком направлении твой Дом?"
+  "В каком направлении твой Дом?",
   {
-  type: "image",
-  src: "https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+    type: "image",
+    src: "https://i.postimg.cc/zXp9BVGf/Hands-1.png"
   }
 ];
-
-const text = scenarios[Math.floor(Math.random()*scenarios.length)];
-
-let bg = "#050505";
-
-if (text === "ЭТО НЕ СОН?") {
-  bg = "#200000";
-}
-
-document.body.style.background = bg;
-document.getElementById("top").innerHTML = `<div>${text}</div>`;
 
 startScreen();
 

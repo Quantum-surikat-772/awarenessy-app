@@ -18,6 +18,7 @@ body {
 }
 
 #top {
+  border: 1px solid red;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -192,13 +193,33 @@ startScreen();
 
 function startScreen() {
 
-  const item = scenarios[Math.floor(Math.random()*scenarios.length)];
+  const scenarios = [
+    "Я наблюдаю...",
+    "В каком настроении ты был 5 минут назад?",
+    "В каком направлении твой Дом?"
+  ];
 
-  if (typeof item === "string") {
-    document.getElementById("top").innerHTML = `<div>${item}</div>`;
-  } else {
+  const random = scenarios[Math.floor(Math.random()*scenarios.length)];
+
+  // шанс красного экрана
+  const isNotDream = Math.random() < 0.3;
+
+  if (isNotDream) {
+
+    document.body.style.background = "#ff0000";
+
     document.getElementById("top").innerHTML = `
-      <img src="${item.src}" style="max-width:200px;">
+      <div style="font-size:28px;font-weight:bold;">
+        ЭТО НЕ СОН?
+      </div>
+    `;
+
+  } else {
+
+    document.body.style.background = "#050505";
+
+    document.getElementById("top").innerHTML = `
+      <div>${random}</div>
     `;
   }
 }

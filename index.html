@@ -275,14 +275,11 @@ function stepDistance() {
 }
 
 function setDistance(d) {
-  const dir = activeSegments[0].split("_")[1];
+
+  const opp = activeSegments[0].split("_")[1];
 
   activeSegments = [];
-  finalSegment = `${d-1}_${dir}`;
-
-  drawCompass();
-  stepEmotion();
-}
+  finalSegment = `${d-1}_${opp}`;
 
 /* ---------- EMOTION ---------- */
 

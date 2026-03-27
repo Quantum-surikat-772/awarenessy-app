@@ -77,6 +77,10 @@ body {
   filter: drop-shadow(0 0 6px currentColor);
 }
 
+#compassContainer {
+  display: none;
+}
+
 #modeButtons {
   position: fixed;
   bottom: 20px;
@@ -228,8 +232,11 @@ function startScreen() {
 /* ---------- MODE ---------- */
 
 function enterMode() {
-  hideModeButtons();
 
+  document.getElementById("compassContainer").style.display = "block";
+  
+  hideModeButtons();
+  
   document.getElementById("bottom").style.display = "flex";
 
   drawCompass();

@@ -80,7 +80,7 @@ body {
   position: fixed;
   bottom: 20px;
   width: 100%;
-  display: flex;
+  display: none;
   justify-content: center;
   gap: 20px;
 }
@@ -165,10 +165,16 @@ const scenarios = [
   "В каком направлении твой Дом?"
 ];
 
-function startScreen() {
-  const text = scenarios[Math.floor(Math.random()*scenarios.length)];
-  document.getElementById("top").innerHTML = `<div>${text}</div>`;
+const text = scenarios[Math.floor(Math.random()*scenarios.length)];
+
+let bg = "#050505";
+
+if (text === "ЭТО НЕ СОН?") {
+  bg = "#200000";
 }
+
+document.body.style.background = bg;
+document.getElementById("top").innerHTML = `<div>${text}</div>`;
 
 startScreen();
 
@@ -276,10 +282,14 @@ function stepDistance() {
 
 function setDistance(d) {
 
-  const opp = activeSegments[0].split("_")[1];
+  const dir = activeSegments[0].split("_")[1];
 
   activeSegments = [];
-  finalSegment = `${d-1}_${opp}`;
+  finalSegment = `${d-1}_${dir}`;
+
+  drawCompass();
+  stepEmotion();
+}
 
 /* ---------- EMOTION ---------- */
 
@@ -377,7 +387,7 @@ function drawCompass() {
 
       const id = `${rIndex}_${dir}`;
 
-      let fill = "#0a0a0a";
+      let fill = "transparent";
 
       if (activeSegments.includes(id)) fill = "#666";
       if (finalSegment === id) fill = "#aaa";

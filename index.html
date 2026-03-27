@@ -70,7 +70,8 @@ body {
 }
 
 #compass svg path {
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
+  mix-blend-mode: screen;
 }
 
 #compass svg path[fill]:not([fill="#0a0a0a"]) {
@@ -177,6 +178,12 @@ const scenarios = [
   {
     type: "image",
     src: "https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+    <img src="${random.src}" style="
+      width: 80%;
+      max-width: 280px;
+      opacity: 0.9;
+     filter: drop-shadow(0 0 20px rgba(0,150,255,0.5));
+    ">
   }
 ];
 
@@ -185,33 +192,55 @@ startScreen();
 function startScreen() {
 
   const scenarios = [
-    "Я наблюдаю...",
-    "В каком настроении ты был 5 минут назад?",
-    "В каком направлении твой Дом?"
+    { type: "text", content: "Я наблюдаю..." },
+    { type: "text", content: "В каком настроении ты был 5 минут назад?" },
+    { type: "text", content: "В каком направлении твой Дом?" },
+
+    { type: "alert", content: "ЭТО НЕ СОН?" },
+
+    {
+      type: "image",
+      src: "https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+    }
   ];
 
-  const random = scenarios[Math.floor(Math.random()*scenarios.length)];
+  const random = scenarios[Math.floor(Math.random() * scenarios.length)];
 
-  // шанс красного экрана
-  const isNotDream = Math.random() < 0.3;
+  // сброс фона
+  document.body.style.background = "#050505";
 
-  if (isNotDream) {
+  // --- СЦЕНАРИИ ---
+
+  if (random.type === "text") {
+
+    document.getElementById("top").innerHTML = `
+      <div>${random.content}</div>
+    `;
+
+  }
+
+  if (random.type === "alert") {
 
     document.body.style.background = "#ff0000";
 
     document.getElementById("top").innerHTML = `
       <div style="font-size:28px;font-weight:bold;">
-        ЭТО НЕ СОН?
+        ${random.content}
       </div>
     `;
 
-  } else {
+  }
 
-    document.body.style.background = "#050505";
+  if (random.type === "image") {
 
     document.getElementById("top").innerHTML = `
-      <div>${random}</div>
+      <img src="${random.src}" style="
+        width: 80%;
+        max-width: 280px;
+        opacity: 0.9;
+      ">
     `;
+
   }
 
   showModeButtons();

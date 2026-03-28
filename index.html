@@ -184,40 +184,28 @@ const scenarios = [
 startScreen();
 
 function startScreen() {
-  const isVideo = Math.random() < 0.15;
 
-if (random === "video") {
+  document.body.style.background = "#050505";
 
-  document.getElementById("top").innerHTML = `
-    <video autoplay muted loop playsinline
-      style="width:90%;max-width:260px;max-height:40vh;object-fit:contain;opacity:0.95;">
-      
-      <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
-    
-    </video>
-  `;
-
-}
-
-  showModeButtons();
-  return;
-}
-
-  const scenarios = [
-    const scenarios = [
-      "text1",
-      "text2",
-      "text3",
-      "alert",
-      "image",
-      "video"
-    ];
+  const scenarios = ["text1", "text2", "text3", "alert", "image"];
 
   const random = scenarios[Math.floor(Math.random() * scenarios.length)];
 
-  // сброс
-  document.body.style.background = "#050505";
+  const isVideo = Math.random() < 0.15;
 
+  // 🎥 ВИДЕО (редко)
+  if (isVideo) {
+    document.getElementById("top").innerHTML = `
+      <video autoplay muted loop playsinline
+        style="width:90%;max-width:260px;max-height:40vh;object-fit:contain;opacity:0.95;">
+        <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
+      </video>
+    `;
+    showModeButtons();
+    return;
+  }
+
+  // 🧠 ТЕКСТЫ
   if (random === "text1") {
     document.getElementById("top").innerHTML = "Я наблюдаю...";
   }
@@ -230,6 +218,7 @@ if (random === "video") {
     document.getElementById("top").innerHTML = "В каком направлении твой Дом?";
   }
 
+  // 🔴 АЛЕРТ
   if (random === "alert") {
     document.body.style.background = "#ff0000";
     document.getElementById("top").innerHTML = `
@@ -239,17 +228,12 @@ if (random === "video") {
     `;
   }
 
+  // 🤖 РУКИ
   if (random === "image") {
-
     document.getElementById("top").innerHTML = `
       <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
       style="width:90%;max-width:260px;opacity:0.95;">
     `;
-
-  }
-
-  if (!document.getElementById("top").innerHTML) {
-    document.getElementById("top").innerHTML = "Я наблюдаю...";
   }
 
   showModeButtons();

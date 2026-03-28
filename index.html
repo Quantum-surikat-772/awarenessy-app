@@ -184,6 +184,26 @@ const scenarios = [
 startScreen();
 
 function startScreen() {
+  const isVideo = Math.random() < 0.15;
+
+if (isVideo) {
+
+  document.body.style.background = "#050505";
+
+  document.getElementById("top").innerHTML = `
+    <video autoplay muted loop playsinline style="
+      width: 120%;
+      max-width: 380px;
+      transform: scale(1.25);
+      opacity: 0.95;
+    ">
+      <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
+    </video>
+  `;
+
+  showModeButtons();
+  return;
+}
 
   const scenarios = [
     "text1",
@@ -219,11 +239,18 @@ function startScreen() {
     `;
   }
 
-  if (random === "image") {
+  if (random.type === "image") {
+
     document.getElementById("top").innerHTML = `
-      <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
-      style="width:80%;max-width:280px;">
+      <img src="${random.src}" style="
+        width: 110%;
+        max-width: 360px;
+        transform: scale(1.2);
+        opacity: 0.95;
+        filter: drop-shadow(0 0 25px rgba(0,150,255,0.4));
+      ">
     `;
+
   }
 
   showModeButtons();

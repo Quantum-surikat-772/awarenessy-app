@@ -191,12 +191,13 @@ if (isVideo) {
   document.body.style.background = "#050505";
 
   document.getElementById("top").innerHTML = `
-    <video autoplay muted loop playsinline style="
-      width: 120%;
-      max-width: 380px;
-      transform: scale(1.25);
+    style="
+      width: 90%;
+      max-width: 260px;
+      height: auto;
+      transform: scale(1);
       opacity: 0.95;
-    ">
+    "
       <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
     </video>
   `;
@@ -250,7 +251,10 @@ if (isVideo) {
         filter: drop-shadow(0 0 25px rgba(0,150,255,0.4));
       ">
     `;
+  }
 
+  if (!document.getElementById("top").innerHTML) {
+  document.getElementById("top").innerHTML = "Я наблюдаю...";
   }
 
   showModeButtons();
@@ -259,6 +263,8 @@ if (isVideo) {
 /* ---------- MODE ---------- */
 
 function enterMode() {
+
+  document.body.style.background = "#050505";
 
   document.getElementById("compassContainer").style.display = "block";
   

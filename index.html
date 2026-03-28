@@ -186,33 +186,32 @@ startScreen();
 function startScreen() {
   const isVideo = Math.random() < 0.15;
 
-if (isVideo) {
-
-  document.body.style.background = "#050505";
+if (random === "video") {
 
   document.getElementById("top").innerHTML = `
-    style="
-      width: 90%;
-      max-width: 260px;
-      height: auto;
-      transform: scale(1);
-      opacity: 0.95;
-    "
+    <video autoplay muted loop playsinline
+      style="width:90%;max-width:260px;max-height:40vh;object-fit:contain;opacity:0.95;">
+      
       <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
+    
     </video>
   `;
+
+}
 
   showModeButtons();
   return;
 }
 
   const scenarios = [
-    "text1",
-    "text2",
-    "text3",
-    "alert",
-    "image"
-  ];
+    const scenarios = [
+      "text1",
+      "text2",
+      "text3",
+      "alert",
+      "image",
+      "video"
+    ];
 
   const random = scenarios[Math.floor(Math.random() * scenarios.length)];
 
@@ -240,21 +239,17 @@ if (isVideo) {
     `;
   }
 
-  if (random.type === "image") {
+  if (random === "image") {
 
     document.getElementById("top").innerHTML = `
-      <img src="${random.src}" style="
-        width: 110%;
-        max-width: 360px;
-        transform: scale(1.2);
-        opacity: 0.95;
-        filter: drop-shadow(0 0 25px rgba(0,150,255,0.4));
-      ">
+      <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+      style="width:90%;max-width:260px;opacity:0.95;">
     `;
+
   }
 
   if (!document.getElementById("top").innerHTML) {
-  document.getElementById("top").innerHTML = "Я наблюдаю...";
+    document.getElementById("top").innerHTML = "Я наблюдаю...";
   }
 
   showModeButtons();

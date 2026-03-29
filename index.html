@@ -191,28 +191,6 @@ function startScreen() {
 
   const random = scenarios[Math.floor(Math.random() * scenarios.length)];
 
-  const isVideo = Math.random() < 0.15;
-
-  // 🎥 ВИДЕО (редко)
-  if (isVideo) {
-    document.getElementById("top").innerHTML = `
-      <video autoplay muted loop playsinline
-        style="
-          width:100%;
-          height:100%;
-          object-fit:cover;
-          position:absolute;
-          top:0;
-          left:0;
-          opacity:0.95;
-        ">
-        <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
-      </video>
-    `;
-    showModeButtons();
-    return;
-  }
-
   // 🧠 ТЕКСТЫ
   if (random === "text1") {
     document.getElementById("top").innerHTML = "Я наблюдаю...";
@@ -240,13 +218,9 @@ function startScreen() {
   if (random === "image") {
     document.getElementById("top").innerHTML = `
       <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
-      style="
-        width:120%;
-        max-width:none;
-        transform:scale(1.2);
-        opacity:0.95;
-      ">
-  }
+      style="width:80%;max-width:300px;">
+    `;
+}
 
   showModeButtons();
 }

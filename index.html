@@ -133,6 +133,17 @@ button:active {
   width: 100%;
 }
 
+.fade {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 </style>
 </head>
 
@@ -193,22 +204,22 @@ function startScreen() {
 
   // 🧠 ТЕКСТЫ
   if (random === "text1") {
-    document.getElementById("top").innerHTML = "Я наблюдаю...";
+    document.getElementById("top").innerHTML = `<div class="fade">"Я наблюдаю...";
   }
 
   if (random === "text2") {
-    document.getElementById("top").innerHTML = "В каком настроении ты был 5 минут назад?";
+    document.getElementById("top").innerHTML = `<div class="fade">"В каком настроении ты был 5 минут назад?";
   }
 
   if (random === "text3") {
-    document.getElementById("top").innerHTML = "В каком направлении твой Дом?";
+    document.getElementById("top").innerHTML = `<div class="fade">"В каком направлении твой Дом?";
   }
 
   // 🔴 АЛЕРТ
   if (random === "alert") {
     document.body.style.background = "#ff0000";
     document.getElementById("top").innerHTML = `
-      <div style="font-size:28px;font-weight:bold;">
+      <div style="fade" style="font-size:28px;font-weight:bold;">
         ЭТО НЕ СОН?
       </div>
     `;
@@ -217,7 +228,8 @@ function startScreen() {
   // 🤖 РУКИ
   if (random === "image") {
   document.getElementById("top").innerHTML = `
-    <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
+    <img class="fade"
+      src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
     style="
       width:100%;
       max-width:none;

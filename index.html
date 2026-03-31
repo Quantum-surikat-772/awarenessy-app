@@ -225,9 +225,13 @@ function startScreen() {
   else if (random === "image") {
     top.innerHTML = `
       <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
-      transform: scale(1.4);
-      style="width:100%;">
-    `;
+      style="
+        width:140%;
+        max-width:none;
+        margin-left:-20%;
+        opacity:0.95;
+     ">
+   `;
   }
 
   // 👇 ВСЕГДА выполняется

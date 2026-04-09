@@ -61,12 +61,18 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  opacity: 0.35;
+  filter: blur(2px) contrast(1.2);
+  transform: scale(1.05);
 }
 
 #compass {
   position: absolute;
   width: 100%;
   height: 100%;
+
+  backdrop-filter: blur(2px);
 }
 
 #compass svg path {
@@ -482,10 +488,14 @@ function drawCompass() {
 
       if (activeSegments.includes(id)) fill = "#666";
       if (finalSegment === id) fill = "#aaa";
-      if (coloredSegments[id]) fill = coloredSegments[id] + "88";
+      if (coloredSegments[id]) {
+        fill = coloredSegments[id] + "99";
+      }
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-      fill="${fill}" stroke="#222"/>`;
+      fill="${fill}"
+      stroke="${fill}"
+      stroke-width="0.5"/>`;
 
     });
 

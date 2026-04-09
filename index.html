@@ -72,11 +72,37 @@ body {
 #compass svg path {
   transition: all 0.4s ease;
   mix-blend-mode: screen;
+
+  filter:
+    drop-shadow(0 0 4px currentColor)
+    drop-shadow(0 0 12px currentColor)
+    drop-shadow(0 0 24px currentColor);
+
+  opacity: 0.85;
 }
 
-#compass svg path[fill]:not([fill="#0a0a0a"]) {
-  filter: drop-shadow(0 0 6px currentColor);
+@keyframes glowPulse {
+  0% {
+    filter:
+      drop-shadow(0 0 4px currentColor)
+      drop-shadow(0 0 10px currentColor)
+      drop-shadow(0 0 20px currentColor);
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 6px currentColor)
+      drop-shadow(0 0 18px currentColor)
+      drop-shadow(0 0 36px currentColor);
+  }
+  100% {
+    filter:
+      drop-shadow(0 0 4px currentColor)
+      drop-shadow(0 0 10px currentColor)
+      drop-shadow(0 0 20px currentColor);
+  }
 }
+
+animation: glowPulse 2.5s ease-in-out infinite;
 
 #modeButtons {
   position: fixed;

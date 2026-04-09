@@ -323,6 +323,26 @@ function stepTurnSouth() {
   `;
 }
 
+function stepTime() {
+
+  const times = ["Рассвет","Утро","Полдень","Вечер","Закат","Ночь"];
+
+  document.getElementById("top").innerHTML = `
+    <div>Какое время суток?</div>
+
+    <div style="
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:8px;
+      margin-top:15px;
+      width:100%;
+      max-width:300px;
+    ">
+      ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
+    </div>
+  `;
+}
+
 function stepHome() {
   document.getElementById("top").innerHTML = `
     <div>Где твой Дом?</div>
@@ -534,7 +554,35 @@ function drawCompass() {
 
   });
 
-  let centerColor = coloredSegments["center"] || "#4FC3F7";
+  let centerColor = null;
+
+// если выбран центр, но нет эмоции
+if (centerActive && !coloredSegments["center"]) {
+  centerColor = "#ffffff88"; // мягкий белый
+}
+
+// если есть эмоция
+if (coloredSegments["center"]) {
+  centerColor = coloredSegments["center"];
+}
+
+// рисуем только если есть цвет
+if (centerColor) {
+
+  let centerRadius = 32;
+
+  svg += `
+  <circle cx="150" cy="150" r="${centerRadius}"
+    fill="${centerColor}"
+    opacity="0.9"
+  />
+
+  <circle cx="150" cy="150" r="${centerRadius}"
+    fill="url(#centerGlow)"
+    style="mix-blend-mode: screen;"
+  />
+  `;
+}
 
   let centerRadius = 32; // чуть больше
 

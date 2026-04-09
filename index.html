@@ -571,10 +571,31 @@ function drawCompass() {
 
   let centerRadius = 32;
 
+  // всегда рисуем "стекло"
   svg += `
   <circle cx="150" cy="150" r="${centerRadius}"
-    fill="${centerColor}"
-    opacity="0.9"
+    fill="rgba(255,255,255,0.03)"
+  />
+  `;
+
+  // если выбран центр (без эмоции)
+  if (centerActive && !coloredSegments["center"]) {
+    svg += `
+    <circle cx="150" cy="150" r="${centerRadius}"
+      fill="rgba(255,255,255,0.08)"
+    />
+    `;
+  }
+
+  // если есть эмоция
+  if (coloredSegments["center"]) {
+
+  let color = coloredSegments["center"];
+
+  svg += `
+  <circle cx="150" cy="150" r="${centerRadius}"
+    fill="${color}"
+    opacity="0.95"
   />
 
   <circle cx="150" cy="150" r="${centerRadius}"
@@ -583,20 +604,6 @@ function drawCompass() {
   />
   `;
 }
-
-  let centerRadius = 32; // чуть больше
-
-  svg += `
-  <circle cx="150" cy="150" r="${centerRadius}"
-    fill="${centerColor}"
-    opacity="0.9"
-  />
-
-  <circle cx="150" cy="150" r="${centerRadius}"
-    fill="url(#centerGlow)"
-    style="mix-blend-mode: screen;"
-  />
-  `;
 
   document.getElementById("compass").innerHTML = svg;
 }

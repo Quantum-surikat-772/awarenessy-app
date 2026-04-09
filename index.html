@@ -468,9 +468,17 @@ function drawCompass() {
 
   svg += `<defs>
 
+    <!-- свечение сегментов -->
     <radialGradient id="glowGradient" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="white" stop-opacity="0.9"/>
-      <stop offset="40%" stop-color="white" stop-opacity="0.4"/>
+      <stop offset="0%" stop-color="white" stop-opacity="1"/>
+      <stop offset="50%" stop-color="white" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- мощный центр -->
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="white" stop-opacity="1"/>
+      <stop offset="30%" stop-color="white" stop-opacity="0.7"/>
       <stop offset="100%" stop-color="white" stop-opacity="0"/>
     </radialGradient>
 
@@ -501,8 +509,8 @@ function drawCompass() {
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
       fill="${fill}"
-      stroke="${fill}"
-      stroke-width="0.5"/>`;
+      stroke="rgba(255,255,255,0.15)"
+      stroke-width="1"
 
       if (glow) {
         svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
@@ -514,15 +522,21 @@ function drawCompass() {
 
   });
 
-  let centerFill = "transparent";
+  let centerColor = coloredSegments["center"] || "#4FC3F7";
 
-  if (centerActive) centerFill = "#aaa";
-  if (coloredSegments["center"]) centerFill = coloredSegments["center"] + "AA";
+  let centerRadius = 32; // чуть больше
 
-  svg += `<circle cx="150" cy="150" r="25"
-    fill="${centerFill}" stroke="none"/>`;
+  svg += `
+  <circle cx="150" cy="150" r="${centerRadius}"
+    fill="${centerColor}"
+    opacity="0.9"
+  />
 
-  svg += `</svg>`;
+  <circle cx="150" cy="150" r="${centerRadius}"
+    fill="url(#centerGlow)"
+    style="mix-blend-mode: screen;"
+  />
+  `;
 
   document.getElementById("compass").innerHTML = svg;
 }

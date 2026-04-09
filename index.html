@@ -108,7 +108,9 @@ animation: glowPulse 2.5s ease-in-out infinite;
   position: fixed;
   bottom: 20px;
   width: 100%;
+
   display: none;
+  flex-direction: row;   /* 👈 ВАЖНО */
   justify-content: center;
   gap: 20px;
 }
@@ -230,7 +232,6 @@ function startScreen() {
 
   const random = scenarios[Math.floor(Math.random() * scenarios.length)];
 
-  // 👇 ОДНА логика выбора
   if (random === "text1") {
     top.innerHTML = "Я наблюдаю...";
   } 
@@ -251,14 +252,12 @@ function startScreen() {
   else if (random === "image") {
     top.innerHTML = `
       <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
-      style="
-        width:100%;
-        max-width:none;
-        transform: scale(1.2);
-        opacity:0.95;
-     ">
-   `;
+      style="width:100%; transform: scale(1.2); opacity:0.95;">
+    `;
   }
+
+  showModeButtons();
+}
 
   // 👇 ВСЕГДА выполняется
   showModeButtons();
@@ -286,28 +285,42 @@ function enterMode() {
 /* ---------- STEPS ---------- */
 
 function stepTurnSouth() {
-  document.getElementById("top").innerHTML = `
-    <div>Повернись к Югу (Солнце в полдень)</div>
-    <button onclick="stepTime()">Готово</button>
-  `;
-}
 
-function stepTime() {
+  const top = document.getElementById("top");
 
-  const times = ["Рассвет","Утро","Полдень","Вечер","Закат","Ночь"];
-
-  document.getElementById("top").innerHTML = `
-    <div>Какое время суток?</div>
-
+  top.innerHTML = `
     <div style="
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:8px;
-      margin-top:15px;
-      width:100%;
-      max-width:300px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      gap:20px;
     ">
-      ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
+
+      <div style="
+        font-size:20px;
+        text-align:center;
+        line-height:1.4;
+        opacity:0;
+        animation: fadeIn 1s forwards;
+      ">
+        Повернись к Югу<br>
+        <span style="font-size:14px; opacity:0.7;">
+          (там, где Солнце в полдень)
+        </span>
+      </div>
+
+      <button onclick="stepTime()"
+        style="
+          width:140px;
+          opacity:0;
+          animation: fadeIn 1s forwards;
+          animation-delay:0.6s;
+        ">
+        Готово
+      </button>
+
     </div>
   `;
 }

@@ -556,18 +556,18 @@ function drawCompass() {
 
   let centerColor = null;
 
-// если выбран центр, но нет эмоции
-if (centerActive && !coloredSegments["center"]) {
-  centerColor = "#ffffff88"; // мягкий белый
-}
+  // если выбран центр, но нет эмоции
+  if (centerActive && !coloredSegments["center"]) {
+    centerColor = "#ffffff88"; // мягкий белый
+  }
 
-// если есть эмоция
-if (coloredSegments["center"]) {
-  centerColor = coloredSegments["center"];
-}
+  // если есть эмоция
+  if (coloredSegments["center"]) {
+    centerColor = coloredSegments["center"];
+  }
 
-// рисуем только если есть цвет
-if (centerColor) {
+  // рисуем только если есть цвет
+  if (centerColor) {
 
   let centerRadius = 32;
 

@@ -466,6 +466,16 @@ function drawCompass() {
 
   let svg = `<svg viewBox="0 0 300 300">`;
 
+  svg += `<defs>
+
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="white" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+
+  </defs>`;
+
   const step = (Math.PI*2)/8;
   const offset = -step/2;
 
@@ -479,26 +489,38 @@ function drawCompass() {
       const id = `${rIndex}_${dir}`;
 
       let fill = "transparent";
+      let glow = "";
 
       if (activeSegments.includes(id)) fill = "#666";
       if (finalSegment === id) fill = "#aaa";
+
       if (coloredSegments[id]) {
-        fill = coloredSegments[id] + "99";
+        fill = coloredSegments[id] + "CC";
+        glow = "url(#glowGradient)";
       }
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-      fill="${fill}" stroke="#222"/>`;
+      fill="${fill}"
+      stroke="${fill}"
+      stroke-width="0.5"/>`;
+
+      if (glow) {
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="url(#glowGradient)"
+          style="mix-blend-mode: screen;" />`;
+      }
 
     });
 
   });
 
-  let centerFill = "#111";
+  let centerFill = "transparent";
+
   if (centerActive) centerFill = "#aaa";
-  if (coloredSegments["center"]) centerFill = coloredSegments["center"];
+  if (coloredSegments["center"]) centerFill = coloredSegments["center"] + "AA";
 
   svg += `<circle cx="150" cy="150" r="25"
-  fill="${centerFill}" stroke="#444"/>`;
+    fill="${centerFill}" stroke="none"/>`;
 
   svg += `</svg>`;
 

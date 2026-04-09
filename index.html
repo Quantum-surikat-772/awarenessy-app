@@ -569,22 +569,16 @@ function drawCompass() {
   // рисуем только если есть цвет
   if (centerColor) {
 
+  // ---------- CENTER ----------
+
   let centerRadius = 32;
 
-  // всегда рисуем "стекло"
-  svg += `
-  <circle cx="150" cy="150" r="${centerRadius}"
-    fill="rgba(255,255,255,0.03)"
-  />
-  `;
+  // лёгкая "линза" всегда
+  svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="rgba(255,255,255,0.03)" />`;
 
-  // если выбран центр (без эмоции)
+  // если выбран центр (но без эмоции)
   if (centerActive && !coloredSegments["center"]) {
-    svg += `
-    <circle cx="150" cy="150" r="${centerRadius}"
-      fill="rgba(255,255,255,0.08)"
-    />
-    `;
+    svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="rgba(255,255,255,0.08)" />`;
   }
 
   // если есть эмоция
@@ -592,18 +586,10 @@ function drawCompass() {
 
   let color = coloredSegments["center"];
 
-  svg += `
-  <circle cx="150" cy="150" r="${centerRadius}"
-    fill="${color}"
-    opacity="0.95"
-  />
+    svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="${color}" opacity="0.95" />`;
 
-  <circle cx="150" cy="150" r="${centerRadius}"
-    fill="url(#centerGlow)"
-    style="mix-blend-mode: screen;"
-  />
-  `;
-}
+    svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="url(#centerGlow)" style="mix-blend-mode: screen;" />`;
+  }
 
   document.getElementById("compass").innerHTML = svg;
 }

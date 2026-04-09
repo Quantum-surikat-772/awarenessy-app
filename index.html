@@ -500,9 +500,10 @@ function drawCompass() {
   svg += `<defs>
 
     <!-- свечение сегментов -->
-    <radialGradient id="glowGradient" cx="50%" cy="50%" r="70%">
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="80%">
       <stop offset="0%" stop-color="white" stop-opacity="1"/>
-      <stop offset="50%" stop-color="white" stop-opacity="0.4"/>
+      <stop offset="30%" stop-color="white" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="white" stop-opacity="0.2"/>
       <stop offset="100%" stop-color="white" stop-opacity="0"/>
     </radialGradient>
 
@@ -534,7 +535,7 @@ function drawCompass() {
       if (finalSegment === id) fill = "#aaa";
 
       if (coloredSegments[id]) {
-        fill = coloredSegments[id] + "CC";
+        fill = coloredSegments[id];
         glow = "url(#glowGradient)";
       }
 

@@ -79,6 +79,8 @@ body {
     drop-shadow(0 0 24px currentColor);
 
   opacity: 0.85;
+
+  animation: glowPulse 2.5s ease-in-out infinite; /* 👈 сюда */
 }
 
 @keyframes glowPulse {
@@ -256,10 +258,6 @@ function startScreen() {
     `;
   }
 
-  showModeButtons();
-}
-
-  // 👇 ВСЕГДА выполняется
   showModeButtons();
 }
 
@@ -521,9 +519,10 @@ function drawCompass() {
       }
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-      fill="${fill}"
-      stroke="rgba(255,255,255,0.15)"
-      stroke-width="1"
+        fill="${fill}"
+        stroke="rgba(255,255,255,0.15)"
+        stroke-width="1"
+      />`;
 
       if (glow) {
         svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"

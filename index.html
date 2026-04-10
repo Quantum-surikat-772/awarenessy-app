@@ -70,17 +70,8 @@ body {
 }
 
 #compass svg path {
-  transition: all 0.4s ease;
-  mix-blend-mode: screen;
-
-  filter:
-    drop-shadow(0 0 4px currentColor)
-    drop-shadow(0 0 12px currentColor)
-    drop-shadow(0 0 24px currentColor);
-
-  opacity: 0.85;
-
-  animation: glowPulse 2.5s ease-in-out infinite; /* 👈 сюда */
+  transition: all 0.3s ease;
+  opacity: 1;
 }
 
 @keyframes glowPulse {
@@ -551,8 +542,7 @@ function drawCompass() {
 
       if (glow) {
         svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-          fill="url(#glowGradient)"
-          style="mix-blend-mode: screen;" />`;
+          fill="url(#glowGradient)" />`;
       }
 
     });

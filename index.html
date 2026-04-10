@@ -386,7 +386,6 @@ function selectDir(dir) {
 /* ---------- DISTANCE ---------- */
 
 function stepDistance() {
-  let selectedDirection = null;
   document.getElementById("top").innerHTML = `
     <div>Как далеко?</div>
     <button onclick="setDistance(1)">Близко</button>
@@ -530,9 +529,17 @@ function drawCompass() {
       let strokeWidth = 1;
 
       if (activeSegments.includes(id)) {
+
+      if (centerActive) {
+        // мягкая подсветка дома
+        strokeColor = "rgba(255,255,255,0.3)";
+        strokeWidth = 1.5;
+      } else {
+        // обычная подсветка
         strokeColor = "rgba(255,255,255,0.6)";
         strokeWidth = 2;
       }
+    }
 
       if (finalSegment === id) {
         strokeColor = "white";

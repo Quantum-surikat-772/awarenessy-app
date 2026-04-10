@@ -396,11 +396,14 @@ function stepDistance() {
 
 function setDistance(d) {
 
-  // берём ПРОТИВОПОЛОЖНОЕ направление
-  const dir = oppositeMap[selectedDirection];
+  if (!selectedDirection) return; // защита
 
-  activeSegments = [];
-  finalSegment = `${d-1}_${dir}`;
+  // инверсия ТОЛЬКО ЗДЕСЬ
+  const inverted = oppositeMap[selectedDirection];
+
+  activeSegments = []; // убираем предварительную подсветку
+
+  finalSegment = `${d-1}_${inverted}`;
 
   drawCompass();
   stepEmotion();

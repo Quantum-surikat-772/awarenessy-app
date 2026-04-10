@@ -370,14 +370,13 @@ function selectDir(dir) {
 
   centerActive = false;
 
-  selectedDirection = dir; // сохраняем оригинал
+  selectedDirection = dir; // сохраняем выбор
 
-  const opp = oppositeMap[dir];
-
+  // показываем РЕАЛЬНОЕ направление дома (без инверсии)
   activeSegments = [
-    `0_${opp}`,
-    `1_${opp}`,
-    `2_${opp}`
+    `0_${dir}`,
+    `1_${dir}`,
+    `2_${dir}`
   ];
 
   drawCompass();

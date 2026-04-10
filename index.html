@@ -534,13 +534,12 @@ function drawCompass() {
       if (activeSegments.includes(id)) {
 
       if (centerActive) {
-        // мягкая подсветка дома
-        strokeColor = "rgba(255,255,255,0.3)";
-        strokeWidth = 1.5;
-      } else {
-        // обычная подсветка
+        // режим "Я" → дом светится мягко, но заметно
         strokeColor = "rgba(255,255,255,0.6)";
         strokeWidth = 2;
+      } else {
+        strokeColor = "rgba(255,255,255,0.7)";
+        strokeWidth = 2.5;
       }
     }
 

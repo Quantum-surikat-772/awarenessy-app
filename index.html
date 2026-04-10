@@ -398,6 +398,7 @@ function stepDistance() {
 
 function setDistance(d) {
 
+  // берём ПРОТИВОПОЛОЖНОЕ направление
   const dir = oppositeMap[selectedDirection];
 
   activeSegments = [];
@@ -526,8 +527,21 @@ function drawCompass() {
       let fill = "transparent";
       let glow = "";
 
-      if (activeSegments.includes(id)) fill = "#666";
-      if (finalSegment === id) fill = "#aaa";
+      let strokeColor = "rgba(255,255,255,0.15)";
+      let strokeWidth = 1;
+
+      let strokeColor = "rgba(255,255,255,0.15)";
+      let strokeWidth = 1;
+
+      if (activeSegments.includes(id)) {
+        strokeColor = "rgba(255,255,255,0.6)";
+        strokeWidth = 2;
+      }
+
+      if (finalSegment === id) {
+        strokeColor = "white";
+        strokeWidth = 3;
+      }
 
       if (coloredSegments[id]) {
         fill = coloredSegments[id];
@@ -536,8 +550,8 @@ function drawCompass() {
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
         fill="${fill}"
-        stroke="rgba(255,255,255,0.15)"
-        stroke-width="1"
+        stroke="${strokeColor}"
+        stroke-width="${strokeWidth}"
       />`;
 
       if (glow) {

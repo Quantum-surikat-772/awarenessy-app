@@ -530,9 +530,6 @@ function drawCompass() {
       let strokeColor = "rgba(255,255,255,0.15)";
       let strokeWidth = 1;
 
-      let strokeColor = "rgba(255,255,255,0.15)";
-      let strokeWidth = 1;
-
       if (activeSegments.includes(id)) {
         strokeColor = "rgba(255,255,255,0.6)";
         strokeWidth = 2;
@@ -545,7 +542,7 @@ function drawCompass() {
 
       if (coloredSegments[id]) {
         fill = coloredSegments[id];
-        glow = "url(#glowGradient)";
+        glow = true;
       }
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"

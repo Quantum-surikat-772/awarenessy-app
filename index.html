@@ -370,14 +370,17 @@ function selectDir(dir) {
 
   centerActive = false;
 
-  selectedDirection = dir; // сохраняем выбор
+  selectedDirection = dir;
+  lastDirection = dir;
 
-  // показываем РЕАЛЬНОЕ направление дома (без инверсии)
+  // показываем где Дом (без инверсии)
   activeSegments = [
     `0_${dir}`,
     `1_${dir}`,
     `2_${dir}`
   ];
+
+  finalSegment = null;
 
   drawCompass();
   stepDistance();
@@ -396,14 +399,15 @@ function stepDistance() {
 
 function setDistance(d) {
 
-  if (!selectedDirection) return; // защита
+  if (!selectedDirection) return;
 
-  // инверсия ТОЛЬКО ЗДЕСЬ
-  const inverted = oppositeMap[selectedDirection];
+  centerActive = false;
 
-  activeSegments = []; // убираем предварительную подсветку
+  // 🔥 ВОТ ЕДИНСТВЕННОЕ МЕСТО ИНВЕРСИИ
+  const invertedDir = oppositeMap[selectedDirection];
 
-  finalSegment = `${d-1}_${inverted}`;
+  activeSegments = [];
+  finalSegment = `${d-1}_${invertedDir}`;
 
   drawCompass();
   stepEmotion();

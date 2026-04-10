@@ -379,6 +379,8 @@ function selectDir(dir) {
 
   centerActive = false;
 
+  selectedDirection = dir; // сохраняем оригинал
+
   const opp = oppositeMap[dir];
 
   activeSegments = [
@@ -394,6 +396,7 @@ function selectDir(dir) {
 /* ---------- DISTANCE ---------- */
 
 function stepDistance() {
+  let selectedDirection = null;
   document.getElementById("top").innerHTML = `
     <div>Как далеко?</div>
     <button onclick="setDistance(1)">Близко</button>
@@ -404,7 +407,7 @@ function stepDistance() {
 
 function setDistance(d) {
 
-  const dir = activeSegments[0].split("_")[1];
+  const dir = oppositeMap[selectedDirection];
 
   activeSegments = [];
   finalSegment = `${d-1}_${dir}`;
@@ -508,9 +511,10 @@ function drawCompass() {
     </radialGradient>
 
     <!-- мощный центр -->
-    <radialGradient id="centerGlow" cx="50%" cy="50%" r="60%">
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="80%">
       <stop offset="0%" stop-color="white" stop-opacity="1"/>
-      <stop offset="30%" stop-color="white" stop-opacity="0.7"/>
+      <stop offset="30%" stop-color="white" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="white" stop-opacity="0.2"/>
       <stop offset="100%" stop-color="white" stop-opacity="0"/>
     </radialGradient>
 

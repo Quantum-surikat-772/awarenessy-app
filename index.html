@@ -445,17 +445,17 @@ function stepEmotion() {
       max-width:300px;
     ">
 
-      <button onclick="selectEmotion('#FFD700')">Радостное созидание</button>
+      <button onclick="selectEmotion('#FFD700')">Радость, позитивная деятельность</button>
       <button onclick="selectEmotion('#FFFFFF')">Осознанное творчество</button>
-      <button onclick="selectEmotion('#4FC3F7')">Вдохновение</button>
+      <button onclick="selectEmotion('#3F51B5')">Вдохновение, спокойствие, творчество</button>
 
-      <button onclick="selectEmotion('#26C6DA')">Фантазии</button>
-      <button onclick="selectEmotion('#808080')">Нейтральное</button>
-      <button onclick="selectEmotion('#4CAF50')">Тоска</button>
+      <button onclick="selectEmotion('#26C6DA')">Фантазёрство, пассивность</button>
+      <button onclick="selectEmotion('#808080')">Нейтральное, пассивное вовлечение</button>
+      <button onclick="selectEmotion('#4CAF50')">Тоска, испуг, зависимость</button>
 
-      <button onclick="selectEmotion('#F44336')">Агрессия</button>
-      <button onclick="selectEmotion('#FF9800')">Активность</button>
-      <button onclick="selectEmotion('#000000')">Хаос</button>
+      <button onclick="selectEmotion('#F44336')">Гнев, агрессия, превосходство</button>
+      <button onclick="selectEmotion('#FF9800')">Самоуверенность, соревновательность</button>
+      <button onclick="selectEmotion('#000000')">Хаос, ужас, отсутствие контроля</button>
 
     </div>
   `;
@@ -552,11 +552,6 @@ function drawCompass() {
       let strokeWidth = 1;
 
       // мягкое сияние дома (когда нет эмоции)
-      if (activeSegments.includes(id) && !finalSegment && !coloredSegments[id]) {
-        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-          fill="url(#glowGradient)" opacity="0.25" />`;
-      }
-    }
 
       if (finalSegment === id) {
         strokeColor = "white";

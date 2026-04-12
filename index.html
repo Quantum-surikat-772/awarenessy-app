@@ -358,11 +358,36 @@ const oppositeMap = {
   s:"n", sw:"ne", w:"e", nw:"se"
 };
 
+let selectedDirection = null; // что выбрал пользователь (Дом)
+let lastDirection = null;     // запоминаем для режима "Я"
+
+// --- выбор направления ДОМА ---
+function selectDir(dir) {
+
+  centerActive = false;
+
+  selectedDirection = dir;
+  lastDirection = dir;
+
+  // показываем ГДЕ ДОМ (без инверсии)
+  activeSegments = [
+    `0_${dir}`,
+    `1_${dir}`,
+    `2_${dir}`
+  ];
+
+  finalSegment = null;
+
+  drawCompass();
+  stepDistance();
+}
+
+// --- выбор центра (Я) ---
 function selectCenter() {
 
   centerActive = true;
 
-  // НЕ очищаем направление, а показываем Дом
+  // показываем где Дом (мягко)
   if (lastDirection) {
     activeSegments = [
       `0_${lastDirection}`,
@@ -375,26 +400,6 @@ function selectCenter() {
 
   drawCompass();
   stepEmotion();
-}
-
-function selectDir(dir) {
-
-  centerActive = false;
-
-  selectedDirection = dir;
-  lastDirection = dir;
-
-  // показываем где Дом (без инверсии)
-  activeSegments = [
-    `0_${dir}`,
-    `1_${dir}`,
-    `2_${dir}`
-  ];
-
-  finalSegment = null;
-
-  drawCompass();
-  stepDistance();
 }
 
 /* ---------- DISTANCE ---------- */
@@ -414,11 +419,11 @@ function setDistance(d) {
 
   centerActive = false;
 
-  // 🔥 ВОТ ЕДИНСТВЕННОЕ МЕСТО ИНВЕРСИИ
-  const invertedDir = oppositeMap[selectedDirection];
+  // 🔥 ЕДИНСТВЕННОЕ место инверсии
+  const inverted = oppositeMap[selectedDirection];
 
   activeSegments = [];
-  finalSegment = `${d-1}_${invertedDir}`;
+  finalSegment = `${d-1}_${inverted}`;
 
   drawCompass();
   stepEmotion();

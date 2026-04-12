@@ -551,15 +551,10 @@ function drawCompass() {
       let strokeColor = "rgba(255,255,255,0.15)";
       let strokeWidth = 1;
 
-      if (activeSegments.includes(id)) {
-
-      if (centerActive) {
-        // режим "Я" → дом светится мягко, но заметно
-        strokeColor = "rgba(255,255,255,0.6)";
-        strokeWidth = 2;
-      } else {
-        strokeColor = "rgba(255,255,255,0.7)";
-        strokeWidth = 2.5;
+      // мягкое сияние дома (когда нет эмоции)
+      if (activeSegments.includes(id) && !finalSegment && !coloredSegments[id]) {
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="url(#glowGradient)" opacity="0.25" />`;
       }
     }
 

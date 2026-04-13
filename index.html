@@ -354,32 +354,26 @@ function stepHome() {
 /* ---------- LOGIC ---------- */
 
 const oppositeMap = {
-  n:"s",
-  ne:"sw",
-  e:"w",
-  se:"nw",
-  s:"n",
-  sw:"ne",
-  w:"e",
-  nw:"se"
+  n:"s", ne:"sw", e:"w", se:"nw",
+  s:"n", sw:"ne", w:"e", nw:"se"
 };
 
-let selectedDirection = null; // что выбрал пользователь (Дом)
-let lastDirection = null;     // запоминаем для режима "Я"
+let selectedDirection = null; // выбор пользователя (Дом)
+let invertedDirection = null; // куда показываем (Я)
 
-// --- выбор направления ДОМА ---
+/* --- выбор направления --- */
 function selectDir(dir) {
 
   centerActive = false;
 
-  selectedDirection = dir;   // сохраняем выбор
-  lastDirection = dir;
+  selectedDirection = dir;
+  invertedDirection = oppositeMap[dir]; // СРАЗУ считаем инверсию
 
-  // показываем где ДОМ (без инверсии)
+  // 🔥 ВСЕГДА показываем инверсию (никаких прыжков потом)
   activeSegments = [
-    `0_${dir}`,
-    `1_${dir}`,
-    `2_${dir}`
+    `0_${invertedDirection}`,
+    `1_${invertedDirection}`,
+    `2_${invertedDirection}`
   ];
 
   finalSegment = null;
@@ -388,17 +382,16 @@ function selectDir(dir) {
   stepDistance();
 }
 
-// --- выбор центра (Я) ---
+/* --- выбор центра --- */
 function selectCenter() {
 
   centerActive = true;
 
-  // показываем где Дом (мягко)
-  if (lastDirection) {
+  if (selectedDirection) {
     activeSegments = [
-      `0_${lastDirection}`,
-      `1_${lastDirection}`,
-      `2_${lastDirection}`
+      `0_${invertedDirection}`,
+      `1_${invertedDirection}`,
+      `2_${invertedDirection}`
     ];
   }
 
@@ -421,24 +414,17 @@ function stepDistance() {
 
 function setDistance(d) {
 
-  if (!selectedDirection) return;
+  if (!invertedDirection) return;
 
   centerActive = false;
 
-  // 🔥 ИНВЕРСИЯ ТОЛЬКО ЗДЕСЬ
-  const inverted = oppositeMap[selectedDirection];
+  activeSegments = [];
 
-  finalSegment = `${d-1}_${inverted}`;
+  finalSegment = `${d-1}_${invertedDirection}`;
 
   drawCompass();
   stepEmotion();
 }
-
-  // оставляем старое направление на мгновение
-  setTimeout(() => {
-    activeSegments = [];
-  drawCompass();
-  }, 120);
 
 /* ---------- EMOTION ---------- */
 
@@ -557,20 +543,41 @@ function drawCompass() {
       const id = `${rIndex}_${dir}`;
 
       let fill = "transparent";
-      let glow = false;
 
-      let strokeColor = "rgba(255,255,255,0.15)";
-      let strokeWidth = 1;
-
-      // 🔥 ПОКАЗЫВАЕМ ДОМ (до выбора дистанции)
+      /* --- 1. ПОДСВЕТКА НАПРАВЛЕНИЯ (мягкое гало) --- */
       if (activeSegments.includes(id) && !finalSegment) {
 
-        // мягкое гало Дома
         svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
           fill="url(#glowGradient)"
           opacity="0.35"
         />`;
+      }
 
+      /* --- 2. ВЫБРАННЫЙ СЕГМЕНТ (дистанция) --- */
+      if (finalSegment === id) {
+
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="url(#glowGradient)"
+          opacity="0.5"
+        />`;
+      }
+
+      /* --- 3. ЭМОЦИЯ --- */
+      if (coloredSegments[id]) {
+
+        let color = coloredSegments[id];
+
+        // основной цвет
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="${color}"
+          opacity="0.9"
+        />`;
+
+        // центральное свечение
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="url(#glowGradient)"
+          style="mix-blend-mode: screen;"
+        />`;
       }
 
       // мягкое сияние дома (когда нет эмоции)

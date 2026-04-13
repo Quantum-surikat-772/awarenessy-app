@@ -258,19 +258,24 @@ function enterMode() {
 
   document.body.style.background = "#050505";
 
-  document.getElementById("compassContainer").style.display = "block";
-  
-  hideModeButtons();
-  
+  // ❗️ УБИРАЕМ ВСЁ с первого экрана
+  const top = document.getElementById("top");
+  top.innerHTML = "";
+  top.classList.remove("fade");
+
+  // ❗️ Показываем компас
   document.getElementById("bottom").style.display = "flex";
+
+  // ❗️ Прячем кнопки
+  hideModeButtons();
 
   drawCompass();
 
-  document.getElementById("top").innerHTML = "";
-
-  stepTurnSouth();
+  // ❗️ ВАЖНО: сначала экран чистый — потом шаг
+  setTimeout(() => {
+    stepTurnSouth();
+  }, 50);
 }
-
 /* ---------- STEPS ---------- */
 
 function stepTurnSouth() {
@@ -462,7 +467,6 @@ function selectEmotion(color) {
   }
 
   drawCompass();
-  showModeButtons();
 }
 
 /* ---------- COMPASS ---------- */

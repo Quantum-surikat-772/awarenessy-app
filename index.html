@@ -366,10 +366,10 @@ function selectDir(dir) {
 
   centerActive = false;
 
-  selectedDirection = dir;
+  selectedDirection = dir;   // сохраняем выбор
   lastDirection = dir;
 
-  // показываем ГДЕ ДОМ (без инверсии)
+  // показываем где ДОМ (без инверсии)
   activeSegments = [
     `0_${dir}`,
     `1_${dir}`,
@@ -419,7 +419,7 @@ function setDistance(d) {
 
   centerActive = false;
 
-  // 🔥 ЕДИНСТВЕННОЕ место инверсии
+  // 🔥 ИНВЕРСИЯ ТОЛЬКО ЗДЕСЬ
   const inverted = oppositeMap[selectedDirection];
 
   activeSegments = [];

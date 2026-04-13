@@ -671,6 +671,35 @@ function showModeButtons() {
   document.getElementById("modeButtons").style.display = "flex";
 }
 
+document.getElementById("modeButtons").style.display = "flex";
+
+function enterMode() {
+
+  document.body.style.background = "#050505";
+
+  const top = document.getElementById("top");
+  const bottom = document.getElementById("bottom");
+
+  top.innerHTML = "<h1>TEST</h1>";
+
+  bottom.style.display = "flex";
+
+  drawCompass();
+
+  setTimeout(() => {
+    stepTurnSouth();
+  }, 300);
+}
+
+function stepTurnSouth() {
+  document.getElementById("top").innerHTML = `
+    <div style="text-align:center;">
+      <h2>Повернись к Югу</h2>
+      <button onclick="stepTime()">Готово</button>
+    </div>
+  `;
+}
+
 </script>
 
 </body>

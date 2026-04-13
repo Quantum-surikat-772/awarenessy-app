@@ -256,25 +256,27 @@ function startScreen() {
 
 function enterMode() {
 
+  console.log("ENTER MODE");
+
   document.body.style.background = "#050505";
 
-  // ❗️ УБИРАЕМ ВСЁ с первого экрана
   const top = document.getElementById("top");
+  const bottom = document.getElementById("bottom");
+
+  // очищаем верх
   top.innerHTML = "";
-  top.classList.remove("fade");
+  top.style.display = "flex";
 
-  // ❗️ Показываем компас
-  document.getElementById("bottom").style.display = "flex";
+  // показываем компас
+  bottom.style.display = "flex";
 
-  // ❗️ Прячем кнопки
+  // скрываем кнопки
   hideModeButtons();
 
   drawCompass();
 
-  // ❗️ ВАЖНО: сначала экран чистый — потом шаг
-  setTimeout(() => {
-    stepTurnSouth();
-  }, 50);
+  // ❗️ПРЯМОЙ вызов без setTimeout
+  stepTurnSouth();
 }
 /* ---------- STEPS ---------- */
 

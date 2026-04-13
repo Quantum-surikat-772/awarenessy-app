@@ -354,8 +354,14 @@ function stepHome() {
 /* ---------- LOGIC ---------- */
 
 const oppositeMap = {
-  n:"s", ne:"sw", e:"w", se:"nw",
-  s:"n", sw:"ne", w:"e", nw:"se"
+  n:"s",
+  ne:"sw",
+  e:"w",
+  se:"nw",
+  s:"n",
+  sw:"ne",
+  w:"e",
+  nw:"se"
 };
 
 let selectedDirection = null; // что выбрал пользователь (Дом)
@@ -422,7 +428,6 @@ function setDistance(d) {
   // 🔥 ИНВЕРСИЯ ТОЛЬКО ЗДЕСЬ
   const inverted = oppositeMap[selectedDirection];
 
-  activeSegments = [];
   finalSegment = `${d-1}_${inverted}`;
 
   drawCompass();
@@ -546,10 +551,21 @@ function drawCompass() {
       const id = `${rIndex}_${dir}`;
 
       let fill = "transparent";
-      let glow = "";
+      let glow = false;
 
       let strokeColor = "rgba(255,255,255,0.15)";
       let strokeWidth = 1;
+
+      // 🔥 ПОКАЗЫВАЕМ ДОМ (до выбора дистанции)
+      if (activeSegments.includes(id) && !finalSegment) {
+
+        fill = "#888";
+
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="url(#glowGradient)"
+          opacity="0.25"
+        />`;
+      }
 
       // мягкое сияние дома (когда нет эмоции)
 
@@ -560,7 +576,7 @@ function drawCompass() {
 
       if (coloredSegments[id]) {
         fill = coloredSegments[id];
-        glow = true;
+        glow = false;
       }
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"

@@ -434,6 +434,12 @@ function setDistance(d) {
   stepEmotion();
 }
 
+  // оставляем старое направление на мгновение
+  setTimeout(() => {
+    activeSegments = [];
+  drawCompass();
+  }, 120);
+
 /* ---------- EMOTION ---------- */
 
 function stepEmotion() {
@@ -559,12 +565,12 @@ function drawCompass() {
       // 🔥 ПОКАЗЫВАЕМ ДОМ (до выбора дистанции)
       if (activeSegments.includes(id) && !finalSegment) {
 
-        fill = "#888";
-
+        // мягкое гало Дома
         svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
           fill="url(#glowGradient)"
-          opacity="0.25"
+          opacity="0.35"
         />`;
+
       }
 
       // мягкое сияние дома (когда нет эмоции)
@@ -575,8 +581,14 @@ function drawCompass() {
       }
 
       if (coloredSegments[id]) {
+
         fill = coloredSegments[id];
-        glow = false;
+
+        // свечение из центра сегмента
+        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+          fill="url(#glowGradient)"
+          style="mix-blend-mode: screen;"
+        />`;
       }
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"

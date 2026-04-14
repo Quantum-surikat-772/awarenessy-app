@@ -368,14 +368,13 @@ const oppositeMap = {
 };
 
 let selectedDirection = null; // выбор пользователя (Дом)
-let invertedDirection = null; // куда показываем (Я)
-
+  
 /* --- выбор направления --- */
 function selectDir(dir) {
 
   centerActive = false;
 
-  // инверсия ТОЛЬКО ЗДЕСЬ
+  // ❗️инверсия только здесь
   currentDirection = oppositeMap[dir];
 
   activeSegments = [
@@ -424,6 +423,7 @@ function setDistance(d) {
 
   activeSegments = [];
 
+  // ❗️используем уже инвертированное направление
   finalSegment = `${d-1}_${currentDirection}`;
 
   drawCompass();

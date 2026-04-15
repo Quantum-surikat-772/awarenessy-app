@@ -270,15 +270,15 @@ function enterMode() {
   // скрываем кнопки
 hideModeButtons();
 
-// 👇 сначала скрываем компас
-bottom.style.display = "none";
-bottom.style.opacity = 0;
+  // 👇 сначала скрываем компас
+  bottom.style.display = "none";
+  bottom.style.opacity = 0;
 
-// 👇 очищаем верх (чёрная пустота)
-top.innerHTML = "";
+  // 👇 очищаем верх (чёрная пустота)
+  top.innerHTML = "";
 
-// 🕳️ ФАЗА 1 — микропауза (пустота)
-setTimeout(() => {
+  // 🕳️ ФАЗА 1 — микропауза (пустота)
+  setTimeout(() => {
 
   // 🌌 ФАЗА 2 — появляется компас
   drawCompass();

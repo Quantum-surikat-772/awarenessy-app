@@ -370,25 +370,12 @@ function selectDir(dir) {
 
   centerActive = false;
 
-  // 👉 направление, куда указал пользователь
   userDirection = dir;
 
-  // 🔥 ЖЁСТКАЯ инверсия (без шансов сломаться)
-  const map = {
-    n: "s",
-    s: "n",
-    e: "w",
-    w: "e",
-    ne: "sw",
-    sw: "ne",
-    nw: "se",
-    se: "nw"
-  };
+  const index = directions.indexOf(dir);
+  const oppositeIndex = (index + 4) % 8;
 
-  compassDirection = map[dir];
-
-  console.log("USER:", dir);
-  console.log("COMPASS:", compassDirection);
+  compassDirection = directions[oppositeIndex];
 
   activeSegments = [
     `0_${compassDirection}`,
@@ -499,7 +486,7 @@ const rings = [
   {inner:95, outer:130}
 ];
 
-const directions = ["s","sw","w","nw","n","ne","e","se"];
+const directions = ["n","ne","e","se","s","sw","w","nw"];
 
 function polar(cx, cy, r, angle) {
   return {
@@ -561,7 +548,7 @@ function drawCompass() {
   let a1 = a0 + step;
 
   // 👉 внешнее "расширенное" гало
-  const outerGlow = segmentPath(ring.inner - 10, ring.outer + 12, a0, a1);
+  const outerGlow = segmentPath(ring.inner - 20, ring.outer + 25, a0, a1);
 
   svg += `<path d="${outerGlow}"
     fill="url(#glowGradient)"

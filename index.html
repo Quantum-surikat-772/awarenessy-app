@@ -101,9 +101,8 @@ animation: glowPulse 2.5s ease-in-out infinite;
   position: fixed;
   bottom: 20px;
   width: 100%;
-
-  display: none;
-  flex-direction: row;   /* 👈 ВАЖНО */
+  display: flex;          /* 👈 ВРЕМЕННО СТАВИМ FLEX */
+  flex-direction: row;    /* 👈 обязательно */
   justify-content: center;
   gap: 20px;
 }
@@ -213,7 +212,9 @@ const scenarios = [
   }
 ];
 
-startScreen();
+window.onload = () => {
+  startScreen();
+};
 
 function startScreen() {
 
@@ -248,6 +249,7 @@ function startScreen() {
       style="width:100%; transform: scale(1.2); opacity:0.95;">
     `;
   }
+  document.getElementById("modeButtons").style.display = "flex";
 
   showModeButtons();
 }
@@ -256,45 +258,22 @@ function startScreen() {
 
 function enterMode() {
 
-  console.log("ENTER MODE");
-
-  document.body.style.background = "#050505";
-
   const top = document.getElementById("top");
   const bottom = document.getElementById("bottom");
 
-  // очищаем верх
+  document.body.style.background = "#050505";
+
+  hideModeButtons();
+
   top.innerHTML = "";
   top.style.display = "flex";
 
-  // скрываем кнопки
-hideModeButtons();
-
-  // 👇 сначала скрываем компас
-  bottom.style.display = "none";
-  bottom.style.opacity = 0;
-
-  // 👇 очищаем верх (чёрная пустота)
-  top.innerHTML = "";
-
-  // 🕳️ ФАЗА 1 — микропауза (пустота)
-  setTimeout(() => {
-
-  // 🌌 ФАЗА 2 — появляется компас
-  drawCompass();
   bottom.style.display = "flex";
 
-  setTimeout(() => {
-    bottom.style.transition = "opacity 0.8s ease";
-    bottom.style.opacity = 1;
-  }, 50);
+  drawCompass();
 
-  // 🧭 ФАЗА 3 — текст и кнопка
-  setTimeout(() => {
-    stepTurnSouth();
-  }, 600);
-
-}, 200);
+  stepTurnSouth();
+}
 /* ---------- STEPS ---------- */
 
 function stepTurnSouth() {

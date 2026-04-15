@@ -367,21 +367,28 @@ const oppositeMap = {
   s:"n", sw:"ne", w:"e", nw:"se"
 };
 
-let selectedDirection = null; // выбор пользователя (Дом)
+let userDirection = null;     // куда пользователь указал Дом
+let compassDirection = null; // что рисует компас (инверсия)
   
 /* --- выбор направления --- */
 function selectDir(dir) {
 
   centerActive = false;
 
-  // ❗️инверсия только здесь
-  currentDirection = oppositeMap[dir];
+  // 👉 запоминаем выбор пользователя
+  userDirection = dir;
 
+  // 👉 сразу делаем инверсию (ОДИН РАЗ)
+  compassDirection = oppositeMap[dir];
+
+  // 👉 показываем ВСЕ кольца в этом направлении
   activeSegments = [
-    `0_${currentDirection}`,
-    `1_${currentDirection}`,
-    `2_${currentDirection}`
+    `0_${compassDirection}`,
+    `1_${compassDirection}`,
+    `2_${compassDirection}`
   ];
+
+  finalSegment = null;
 
   drawCompass();
   stepDistance();
@@ -390,15 +397,14 @@ function selectDir(dir) {
 /* --- выбор центра --- */
 function selectCenter() {
 
-  currentDirection = null;
-
   centerActive = true;
 
-  if (selectedDirection) {
+  // 👉 если уже был выбран Дом — показываем его гало
+  if (compassDirection) {
     activeSegments = [
-      `0_${invertedDirection}`,
-      `1_${invertedDirection}`,
-      `2_${invertedDirection}`
+      `0_${compassDirection}`,
+      `1_${compassDirection}`,
+      `2_${compassDirection}`
     ];
   }
 
@@ -424,7 +430,7 @@ function setDistance(d) {
   activeSegments = [];
 
   // ❗️используем уже инвертированное направление
-  finalSegment = `${d-1}_${currentDirection}`;
+  finalSegment = `${d-1}_${compassDirection}`;
 
   drawCompass();
   stepEmotion();

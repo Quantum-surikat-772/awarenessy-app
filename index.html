@@ -325,7 +325,7 @@ function stepTurnSouth() {
 
 function stepTime() {
 
-  const times = ["Рассвет","Утро","Полдень","Вечер","Закат","Ночь"];
+  const times = ["Рассвет","Утро","День","Вечер","Закат","Ночь"];
 
   document.getElementById("top").innerHTML = `
     <div>Какое время суток?</div>
@@ -548,7 +548,7 @@ function drawCompass() {
   let a1 = a0 + step;
 
   // 👉 внешнее "расширенное" гало
-  const outerGlow = segmentPath(ring.inner - 20, ring.outer + 25, a0, a1);
+  const outerGlow = segmentPath(ring.inner - 20, ring.outer + 35, a0, a1);
 
   svg += `<path d="${outerGlow}"
     fill="url(#glowGradient)"

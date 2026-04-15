@@ -40,7 +40,7 @@ body {
   margin: 2px;
   font-size: 13px;
 
-  transition: 0.2s;
+  transition: opacity 0.8s ease;
 }
 
 #compass {
@@ -267,17 +267,34 @@ function enterMode() {
   top.innerHTML = "";
   top.style.display = "flex";
 
-  // показываем компас
+  // скрываем кнопки
+hideModeButtons();
+
+// 👇 сначала скрываем компас
+bottom.style.display = "none";
+bottom.style.opacity = 0;
+
+// 👇 очищаем верх (чёрная пустота)
+top.innerHTML = "";
+
+// 🕳️ ФАЗА 1 — микропауза (пустота)
+setTimeout(() => {
+
+  // 🌌 ФАЗА 2 — появляется компас
+  drawCompass();
   bottom.style.display = "flex";
 
-  // скрываем кнопки
-  hideModeButtons();
+  setTimeout(() => {
+    bottom.style.transition = "opacity 0.8s ease";
+    bottom.style.opacity = 1;
+  }, 50);
 
-  drawCompass();
+  // 🧭 ФАЗА 3 — текст и кнопка
+  setTimeout(() => {
+    stepTurnSouth();
+  }, 600);
 
-  // ❗️ПРЯМОЙ вызов без setTimeout
-  stepTurnSouth();
-}
+}, 200);
 /* ---------- STEPS ---------- */
 
 function stepTurnSouth() {

@@ -373,6 +373,9 @@ let compassDirection = null; // что рисует компас (инверси
 /* --- выбор направления --- */
 function selectDir(dir) {
 
+  console.log("USER:", userDirection);
+  console.log("COMPASS:", compassDirection);
+
   centerActive = false;
 
   // 👉 запоминаем выбор пользователя

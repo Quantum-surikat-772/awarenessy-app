@@ -548,14 +548,25 @@ function drawCompass() {
   let a1 = a0 + step;
 
   // 👉 внешнее "расширенное" гало
-  const outerGlow = segmentPath(ring.inner - 20, ring.outer + 35, a0, a1);
+  // --- МОЩНОЕ ГАЛО ДОМА (двойной слой) ---
 
-  svg += `<path d="${outerGlow}"
+  const outerGlow1 = segmentPath(ring.inner - 25, ring.outer + 30, a0, a1);
+  const outerGlow2 = segmentPath(ring.inner - 40, ring.outer + 45, a0, a1);
+
+  // внутренний яркий слой
+  svg += `<path d="${outerGlow1}"
     fill="url(#glowGradient)"
-    opacity="1.2"
+    opacity="1.4"
     style="mix-blend-mode: screen;"
   />`;
-}
+
+  // внешний мягкий ореол
+  svg += `<path d="${outerGlow2}"
+    fill="url(#glowGradient)"
+    opacity="0.6"
+    style="mix-blend-mode: screen; filter: blur(10px);"
+  />`;
+  }
   const step = (Math.PI*2)/8;
   const offset = -step/2;
 

@@ -549,8 +549,8 @@ function drawCompass() {
     let a1 = a0 + step;
 
     svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-      fill="url(#glowGradient)"
-      style="mix-blend-mode: screen;"
+      fill="url(#centerGlow)"
+      style="mix-blend-mode: screen; opacity: 1;"
     />`;
   }
 

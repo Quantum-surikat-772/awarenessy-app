@@ -541,12 +541,12 @@ function drawCompass() {
   </defs>`;
 
   // мягкое гало дома (если выбран Я)
-  if (centerActive && currentDirection) {
+  if (centerActive && compassDirection) {
 
-    const id = `1_${currentDirection}`; // среднее кольцо
+    const id = `1_${compassDirection}`; // среднее кольцо
 
     const ring = rings[1];
-    const dIndex = directions.indexOf(currentDirection);
+    const dIndex = directions.indexOf(compassDirection);
 
     const step = (Math.PI*2)/8;
     const offset = -step/2;

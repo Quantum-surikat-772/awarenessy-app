@@ -198,6 +198,7 @@ let activeSegments = [];
 let finalSegment = null;
 let centerActive = false;
 let coloredSegments = {};
+let homeDirection = null; // ← ВАЖНО
 
 /* ---------- START ---------- */
 
@@ -368,6 +369,8 @@ function selectDir(dir) {
 
   userDirection = dir;
 
+  homeDirection = dir; // 🔥 ВОТ ЭТО ГЛАВНОЕ
+
   const index = directions.indexOf(dir);
   const oppositeIndex = (index + 4) % 8;
 
@@ -532,10 +535,10 @@ function drawCompass() {
   </defs>`;
 
   // мягкое гало дома (если выбран Я)
-  if (centerActive && compassDirection) {
+  if (centerActive && homeDirection) {
 
-  const ring = rings[2]; // внешнее кольцо
-  const dIndex = directions.indexOf(compassDirection);
+  const ring = rings[2];
+  const dIndex = directions.indexOf(homeDirection);
 
   const step = (Math.PI*2)/8;
   const offset = -step/2;
@@ -543,26 +546,21 @@ function drawCompass() {
   let a0 = -Math.PI/2 + offset + dIndex*step;
   let a1 = a0 + step;
 
-  // 👉 внешнее "расширенное" гало
-  // --- МОЩНОЕ ГАЛО ДОМА (двойной слой) ---
-
   const outerGlow1 = segmentPath(ring.inner - 25, ring.outer + 30, a0, a1);
   const outerGlow2 = segmentPath(ring.inner - 40, ring.outer + 45, a0, a1);
 
-  // внутренний яркий слой
   svg += `<path d="${outerGlow1}"
     fill="url(#glowGradient)"
     opacity="1.4"
     style="mix-blend-mode: screen;"
   />`;
 
-  // внешний мягкий ореол
   svg += `<path d="${outerGlow2}"
     fill="url(#glowGradient)"
     opacity="0.6"
     style="mix-blend-mode: screen; filter: blur(10px);"
   />`;
-  }
+}
   const step = (Math.PI*2)/8;
   const offset = -step/2;
 

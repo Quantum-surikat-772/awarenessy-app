@@ -365,6 +365,8 @@ let compassDirection = null; // что рисует компас (инверси
 /* --- выбор направления --- */
 function selectDir(dir) {
 
+  coloredSegments = {};
+  finalSegment = null;
   centerActive = false;
 
   userDirection = dir;
@@ -391,16 +393,15 @@ function selectDir(dir) {
 /* --- выбор центра --- */
 function selectCenter() {
 
+  coloredSegments = {};
+  finalSegment = null;
+  activeSegments = [];
+
   centerActive = true;
 
-  // 👉 если уже был выбран Дом — показываем его гало
-  if (compassDirection) {
-    activeSegments = [
-      `0_${compassDirection}`,
-      `1_${compassDirection}`,
-      `2_${compassDirection}`
-    ];
-  }
+  drawCompass();
+  stepEmotion();
+}
 
   finalSegment = null;
 

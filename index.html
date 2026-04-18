@@ -530,23 +530,25 @@ function drawCompass() {
   // мягкое гало дома (если выбран Я)
   if (centerActive && homeDirection) {
 
-  const ring = rings[2];
+  const ring = rings[2];   // внешний круг
+
   const dIndex = directions.indexOf(homeDirection);
 
-  const step = (Math.PI*2)/8;
-  const offset = -step/2;
+  const step = (Math.PI * 2) / 8;
+  const offset = -step / 2;
 
-  let a0 = -Math.PI/2 + offset + dIndex*step;
+  let a0 = -Math.PI/2 + offset + dIndex * step;
   let a1 = a0 + step;
 
-  const outerGlow1 = segmentPath(ring.inner - 25, ring.outer + 30, a0, a1);
-  const outerGlow2 = segmentPath(ring.inner - 40, ring.outer + 45, a0, a1);
-
-  svg += `<path d="${outerGlow1}"
+  svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
     fill="url(#glowGradient)"
-    opacity="1.4"
-    style="mix-blend-mode: screen;"
+    style="
+      mix-blend-mode:screen;
+      filter:blur(8px);
+      opacity:1;
+    "
   />`;
+}
 
   svg += `<path d="${outerGlow2}"
     fill="url(#glowGradient)"

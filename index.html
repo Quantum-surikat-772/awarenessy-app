@@ -536,7 +536,7 @@ function drawCompass() {
     opacity="0.6"
     style="mix-blend-mode: screen; filter: blur(10px);"
   />`;
-}
+  
   const step = (Math.PI*2)/8;
   const offset = -step/2;
 
@@ -571,6 +571,7 @@ function drawCompass() {
           opacity:1;
         "
       />`;
+     }
 
       /* --- 1. ПОДСВЕТКА НАПРАВЛЕНИЯ (мягкое гало) --- */
       if (activeSegments.includes(id)) {

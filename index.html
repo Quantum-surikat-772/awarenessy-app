@@ -557,11 +557,11 @@ function drawCompass() {
 
       if (centerActive && homeDirection) {
 
-      const ring = rings[2];
-      const dIndex = directions.indexOf(homeDirection);
+      const glowRing = rings[2];
+      const glowIndex = directions.indexOf(homeDirection);
 
-      let a0 = -Math.PI/2 + offset + dIndex * step;
-      let a1 = a0 + step;
+      let glowA0 = -Math.PI/2 + offset + dIndex * step;
+      let glowA1 = a0 + step;
 
       svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
         fill="url(#glowGradient)"

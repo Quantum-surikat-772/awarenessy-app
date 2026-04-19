@@ -560,18 +560,18 @@ function drawCompass() {
       const glowRing = rings[2];
       const glowIndex = directions.indexOf(homeDirection);
 
-      let glowA0 = -Math.PI/2 + offset + dIndex * step;
-      let glowA1 = a0 + step;
+      let glowA0 = -Math.PI/2 + offset + glowIndex * step;
+      let glowA1 = glowA0 + step;
 
-      svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
+      svg += `<path d="${segmentPath(glowRing.inner, glowRing.outer, glowA0, glowA1)}"
         fill="url(#glowGradient)"
+        opacity="0.95"
         style="
           mix-blend-mode:screen;
-          filter:blur(8px);
-          opacity:1;
+          filter: blur(12px);
         "
       />`;
-     }
+    }
 
       /* --- 1. ПОДСВЕТКА НАПРАВЛЕНИЯ (мягкое гало) --- */
       if (activeSegments.includes(id)) {

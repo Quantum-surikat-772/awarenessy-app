@@ -39,7 +39,7 @@ text-align:center;
 
 #bottom{
 height:50vh;
-display:flex;
+display:none;
 justify-content:center;
 align-items:center;
 position:relative;
@@ -157,6 +157,11 @@ to{opacity:1;transform:none;}
 STATE
 ========================= */
 
+const top = document.getElementById("top");
+const bottom = document.getElementById("bottom");
+const compass = document.getElementById("compass");
+const modeButtons = document.getElementById("modeButtons");
+
 const state = {
 mode:null,
 time:null,
@@ -182,8 +187,8 @@ BOOT
 ========================= */
 
 function boot(){
+bottom.style.display = "none";
 showStartScreen();
-drawCompass();
 }
 
 /* =========================

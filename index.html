@@ -180,7 +180,9 @@ w:"←", center:"Я", e:"→",
 sw:"↙", s:"↓", se:"↘"
 };
 
-boot();
+window.onload = function(){
+  boot();
+};
 
 /* =========================
 BOOT
@@ -383,7 +385,13 @@ state.emotion = {color,name};
 
 state.entries.push({
 date:new Date().toISOString(),
-...state
+mode: state.mode,
+time: state.time,
+home: state.home,
+location: state.location,
+distance: state.distance,
+activity: state.activity,
+emotion: state.emotion
 });
 
 localStorage.setItem("awarenessy_db",JSON.stringify(state.entries));

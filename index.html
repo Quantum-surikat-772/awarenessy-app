@@ -2,682 +2,469 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Awarenessy</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Awarenessy Stable v1.0</title>
 
 <style>
-body {
-  margin: 0;
-  background: #050505;
-  color: white;
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+:root{
+--bg:#050505;
+--panel:#0d0d0d;
+--line:#222;
+--text:#f1f1f1;
+--muted:#8c8c8c;
+--gold:#d7b46a;
 }
 
-#top {
-  border: none;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+background:radial-gradient(circle at center,#0a0a0a,#030303 70%);
+color:var(--text);
+font-family:Arial,Helvetica,sans-serif;
+height:100vh;
+display:flex;
+flex-direction:column;
+overflow:hidden;
 }
 
-#button {
-  width: 100%;
-  padding: 8px;
-
-  background: #1a1a1a;   /* чуть светлее фона */
-  color: #bbb;           /* светло-серый текст */
-
-  border: 1px solid #333;
-  border-radius: 6px;
-
-  margin: 2px;
-  font-size: 13px;
-
-  transition: opacity 0.8s ease;
+#top{
+height:50vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:24px;
+text-align:center;
 }
 
-#compass {
-  width: 300px;
-  height: 300px;
+#bottom{
+height:50vh;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
 }
 
-#compassContainer {
-  position: relative;
-  width: 300px;
-  height: 300px;
-
-  margin: 0 auto; /* центрирует */
+.panel{
+width:100%;
+max-width:360px;
+animation:fade .6s ease;
 }
 
-#compassBg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+button{
+width:100%;
+margin:4px 0;
+padding:11px;
+background:#111;
+color:#ddd;
+border:1px solid #2a2a2a;
+border-radius:10px;
+font-size:14px;
+cursor:pointer;
 }
 
-#compass {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+button:active{
+transform:scale(.99);
+background:#1a1a1a;
 }
 
-#compass svg path {
-  transition: all 0.3s ease;
-  opacity: 1;
+#modeButtons{
+position:fixed;
+bottom:18px;
+left:0;
+width:100%;
+display:flex;
+justify-content:center;
+gap:14px;
+padding:0 18px;
 }
 
-@keyframes glowPulse {
-  0% {
-    filter:
-      drop-shadow(0 0 4px currentColor)
-      drop-shadow(0 0 10px currentColor)
-      drop-shadow(0 0 20px currentColor);
-  }
-  50% {
-    filter:
-      drop-shadow(0 0 6px currentColor)
-      drop-shadow(0 0 18px currentColor)
-      drop-shadow(0 0 36px currentColor);
-  }
-  100% {
-    filter:
-      drop-shadow(0 0 4px currentColor)
-      drop-shadow(0 0 10px currentColor)
-      drop-shadow(0 0 20px currentColor);
-  }
+#modeButtons button{
+max-width:160px;
 }
 
-animation: glowPulse 2.5s ease-in-out infinite;
-
-#modeButtons {
-  position: fixed;
-  bottom: 20px;
-  width: 100%;
-  display: flex;          /* 👈 ВРЕМЕННО СТАВИМ FLEX */
-  flex-direction: row;    /* 👈 обязательно */
-  justify-content: center;
-  gap: 20px;
+.grid{
+display:grid;
+grid-template-columns:repeat(3,70px);
+gap:10px;
+justify-content:center;
+margin-top:18px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 60px);
-  gap: 10px;
-  margin-top: 20px;
+.cell{
+width:70px;
+height:70px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#111;
+border:1px solid #222;
+border-radius:14px;
+font-size:22px;
+cursor:pointer;
 }
 
-.cell {
-  width: 60px;
-  height: 60px;
-  background: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+#compassWrap{
+width:320px;
+height:320px;
+position:relative;
 }
 
-button {
-  width: 100%;
-  padding: 6px;
-
-  background: #1a1a1a !important;
-  color: #bbb !important;
-
-  border: 1px solid #333;
-  border-radius: 6px;
-
-  margin: 2px;
-  font-size: 12px;
-
-  transition: 0.2s;
+#compassBg,#compass{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
 }
 
-button:active {
-  background: #222 !important;
-  color: #fff !important;
+.small{
+font-size:13px;
+color:var(--muted);
+margin-top:8px;
 }
 
-#bottom {
-  height: 50%;
-  display: none; /* СКРЫВАЕМ НА СТАРТЕ */
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.title{
+font-size:26px;
+letter-spacing:1px;
+color:var(--gold);
+margin-bottom:10px;
 }
 
-.fade {
-  opacity: 0;
-  animation: fadeIn 0.8s ease forwards;
+@keyframes fade{
+from{opacity:0;transform:translateY(8px);}
+to{opacity:1;transform:none;}
 }
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
 </style>
 </head>
-
 <body>
 
 <div id="top"></div>
 
 <div id="bottom">
-
-  <div id="compassContainer">
-
-    <!-- фон -->
-    <img src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png" id="compassBg">
-
-    <!-- SVG компаса -->
-    <div id="compass"></div>
-
-  </div>
-
+<div id="compassWrap">
+<img id="compassBg" src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+<div id="compass"></div>
+</div>
 </div>
 
 <div id="modeButtons">
-  <button onclick="enterMode()">ЯВЬ</button>
-  <button onclick="enterMode()">СОН</button>
+<button onclick="startMode('wake')">ЯВЬ</button>
+<button onclick="startMode('dream')">СОН</button>
 </div>
 
 <script>
+/* =========================
+STATE
+========================= */
 
-/* ---------- STATE ---------- */
-
-let activeSegments = [];
-let finalSegment = null;
-let centerActive = false;
-let coloredSegments = {};
-let homeDirection = null; // ← ВАЖНО
-
-/* ---------- START ---------- */
-
-const scenarios = [
-  "Я наблюдаю...",
-  "ЭТО НЕ СОН?",
-  "В каком настроении ты был 5 минут назад?",
-  "В каком направлении твой Дом?",
-  {
-    type: "image",
-    src: "https://i.postimg.cc/L56hkxFV/Archicompass-1.png"
-  }
-];
-
-window.onload = () => {
-  startScreen();
+const state = {
+mode:null,
+time:null,
+home:null,
+location:null,
+distance:null,
+activity:null,
+emotion:null,
+entries: JSON.parse(localStorage.getItem("awarenessy_db") || "[]")
 };
 
-function startScreen() {
+const directions = ["n","ne","e","se","s","sw","w","nw"];
+const arrows = {
+nw:"↖", n:"↑", ne:"↗",
+w:"←", center:"Я", e:"→",
+sw:"↙", s:"↓", se:"↘"
+};
 
-  const top = document.getElementById("top");
+boot();
 
-  document.body.style.background = "#050505";
+/* =========================
+BOOT
+========================= */
 
-  const scenarios = ["text1", "text2", "text3", "alert", "image"];
-
-  const random = scenarios[Math.floor(Math.random() * scenarios.length)];
-
-  if (random === "text1") {
-    top.innerHTML = "Я наблюдаю...";
-  } 
-  else if (random === "text2") {
-    top.innerHTML = "В каком настроении ты был 5 минут назад?";
-  } 
-  else if (random === "text3") {
-    top.innerHTML = "В каком направлении твой Дом?";
-  } 
-  else if (random === "alert") {
-    document.body.style.background = "#ff0000";
-    top.innerHTML = `
-      <div style="font-size:28px;font-weight:bold;">
-        ЭТО НЕ СОН?
-      </div>
-    `;
-  } 
-  else if (random === "image") {
-    top.innerHTML = `
-      <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png"
-      style="width:100%; transform: scale(1.2); opacity:0.95;">
-    `;
-  }
-  document.getElementById("modeButtons").style.display = "flex";
-
-  showModeButtons();
+function boot(){
+showStartScreen();
+drawCompass();
 }
 
-/* ---------- MODE ---------- */
+/* =========================
+SCREENS
+========================= */
 
-function enterMode() {
+function showStartScreen(){
+const variants = [
+"Я наблюдаю...",
+"Это не сон?",
+"Что ты здесь сейчас делаешь?",
+"Где твой Дом?",
+"Осознай момент."
+];
+const t = variants[Math.floor(Math.random()*variants.length)];
 
-  const top = document.getElementById("top");
-  const bottom = document.getElementById("bottom");
-
-  document.body.style.background = "#050505";
-
-  hideModeButtons();
-
-  top.innerHTML = "";
-  top.style.display = "flex";
-
-  bottom.style.display = "flex";
-
-  drawCompass();
-
-  stepTurnSouth();
-}
-/* ---------- STEPS ---------- */
-
-function stepTurnSouth() {
-
-  console.log("STEP SOUTH");
-
-  const top = document.getElementById("top");
-
-  top.innerHTML = `
-    <div style="
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      height:100%;
-      gap:20px;
-    ">
-
-      <div style="
-        font-size:20px;
-        text-align:center;
-        line-height:1.4;
-        opacity:0;
-        animation: fadeIn 1s forwards;
-      ">
-        Повернись к Югу<br>
-        <span style="font-size:14px; opacity:0.7;">
-          (там, где Солнце в полдень)
-        </span>
-      </div>
-
-      <button onclick="stepTime()"
-        style="
-          width:140px;
-          opacity:0;
-          animation: fadeIn 1s forwards;
-          animation-delay:0.6s;
-        ">
-        Готово
-      </button>
-
-    </div>
-  `;
+top.innerHTML = `
+<div class="panel">
+<div class="title">AWARENESSY</div>
+<div>${t}</div>
+<div class="small">Архикомпас осознанности</div>
+</div>`;
 }
 
-function stepTime() {
-
-  const times = ["Рассвет","Утро","День","Вечер","Закат","Ночь"];
-
-  document.getElementById("top").innerHTML = `
-    <div>Какое время суток?</div>
-
-    <div style="
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:8px;
-      margin-top:15px;
-      width:100%;
-      max-width:300px;
-    ">
-      ${times.map(t => `<button onclick="stepHome()">${t}</button>`).join("")}
-    </div>
-  `;
+function startMode(mode){
+state.mode = mode;
+stepSouth();
 }
 
-function stepHome() {
-  document.getElementById("top").innerHTML = `
-    <div>Где твой Дом?</div>
-    <div class="grid">
-      <div class="cell" onclick="selectDir('nw')">↖</div>
-      <div class="cell" onclick="selectDir('n')">↑</div>
-      <div class="cell" onclick="selectDir('ne')">↗</div>
-      <div class="cell" onclick="selectDir('w')">←</div>
-      <div class="cell" onclick="selectCenter()">Я</div>
-      <div class="cell" onclick="selectDir('e')">→</div>
-      <div class="cell" onclick="selectDir('sw')">↙</div>
-      <div class="cell" onclick="selectDir('s')">↓</div>
-      <div class="cell" onclick="selectDir('se')">↘</div>
-    </div>
-  `;
+function stepSouth(){
+top.innerHTML = `
+<div class="panel">
+<div style="font-size:24px;">Повернись к Югу</div>
+<div class="small">(там, где Солнце в полдень)</div>
+<br>
+<button onclick="stepTime()">Готово</button>
+</div>`;
 }
 
-/* ---------- LOGIC ---------- */
-
-let userDirection = null;     // куда пользователь указал Дом
-let compassDirection = null; // что рисует компас (инверсия)
-  
-/* --- выбор направления --- */
-function selectDir(dir) {
-
-  finalSegment = null;
-  centerActive = false;
-
-  userDirection = dir;
-
-  homeDirection = dir; // 🔥 ВОТ ЭТО ГЛАВНОЕ
-
-  const index = directions.indexOf(dir);
-  const oppositeIndex = (index + 4) % 8;
-
-  compassDirection = directions[oppositeIndex];
-
-  activeSegments = [
-    `0_${compassDirection}`,
-    `1_${compassDirection}`,
-    `2_${compassDirection}`
-  ];
-
-  finalSegment = null;
-
-  drawCompass();
-  stepDistance();
+function stepTime(){
+const list = ["Рассвет","Утро","Полдень","Вечер","Закат","Ночь"];
+top.innerHTML = `
+<div class="panel">
+<div>Какое время суток?</div><br>
+${list.map(v=>`<button onclick="pickTime('${v}')">${v}</button>`).join("")}
+</div>`;
 }
 
-/* --- выбор центра --- */
-function selectCenter() {
-
-  finalSegment = null;
-  activeSegments = [];
-
-  centerActive = true;
-
-  drawCompass();
-  stepEmotion();
+function pickTime(v){
+state.time=v;
+stepHome();
 }
 
-/* ---------- DISTANCE ---------- */
-
-function stepDistance() {
-  document.getElementById("top").innerHTML = `
-    <div>Как далеко?</div>
-    <button onclick="setDistance(1)">Близко</button>
-    <button onclick="setDistance(2)">Средне</button>
-    <button onclick="setDistance(3)">Далеко</button>
-  `;
+function stepHome(){
+top.innerHTML = `
+<div class="panel">
+<div>Где твой Дом?</div>
+<div class="grid">
+${dirCell()}
+</div>
+</div>`;
 }
 
-function setDistance(d) {
-
-  activeSegments = [];
-
-  // ❗️используем уже инвертированное направление
-  finalSegment = `${d-1}_${compassDirection}`;
-
-  drawCompass();
-  stepEmotion();
+function dirCell(){
+return `
+<div class="cell" onclick="pickHome('nw')">↖</div>
+<div class="cell" onclick="pickHome('n')">↑</div>
+<div class="cell" onclick="pickHome('ne')">↗</div>
+<div class="cell" onclick="pickHome('w')">←</div>
+<div class="cell" onclick="pickLocation('center')">Я</div>
+<div class="cell" onclick="pickHome('e')">→</div>
+<div class="cell" onclick="pickHome('sw')">↙</div>
+<div class="cell" onclick="pickHome('s')">↓</div>
+<div class="cell" onclick="pickHome('se')">↘</div>
+`;
 }
 
-/* ---------- EMOTION ---------- */
-
-function stepEmotion() {
-
-  document.getElementById("top").innerHTML = `
-    <div>Состояние:</div>
-
-    <div style="
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      margin-top:15px;
-      width:100%;
-      max-width:300px;
-    ">
-
-      <button onclick="selectEmotion('#FFD700')">Радость, позитивная деятельность</button>
-      <button onclick="selectEmotion('#FFFFFF')">Осознанное творчество</button>
-      <button onclick="selectEmotion('#3F51B5')">Вдохновение, спокойствие, творчество</button>
-
-      <button onclick="selectEmotion('#26C6DA')">Фантазёрство, пассивность</button>
-      <button onclick="selectEmotion('#808080')">Нейтральное, пассивное вовлечение</button>
-      <button onclick="selectEmotion('#4CAF50')">Тоска, испуг, зависимость</button>
-
-      <button onclick="selectEmotion('#F44336')">Гнев, агрессия, превосходство</button>
-      <button onclick="selectEmotion('#FF9800')">Самоуверенность, соревновательность</button>
-      <button onclick="selectEmotion('#000000')">Хаос, ужас, отсутствие контроля</button>
-
-    </div>
-  `;
+function pickHome(dir){
+state.home = dir;
+drawCompass();
+stepLocation();
 }
 
-function selectEmotion(color) {
-
-  if (centerActive) {
-    coloredSegments["center"] = color;
-  } else if (finalSegment) {
-    coloredSegments[finalSegment] = color;
-  }
-
-  centerActive = false;
-
-  drawCompass();
-  showModeButtons();
+function stepLocation(){
+top.innerHTML = `
+<div class="panel">
+<div>Где ты сейчас?</div>
+<div class="grid">
+${locationGrid()}
+</div>
+</div>`;
 }
 
-/* ---------- COMPASS ---------- */
+function locationGrid(){
+return `
+<div class="cell" onclick="pickLocation('nw')">↖</div>
+<div class="cell" onclick="pickLocation('n')">↑</div>
+<div class="cell" onclick="pickLocation('ne')">↗</div>
+<div class="cell" onclick="pickLocation('w')">←</div>
+<div class="cell" onclick="pickLocation('center')">Я</div>
+<div class="cell" onclick="pickLocation('e')">→</div>
+<div class="cell" onclick="pickLocation('sw')">↙</div>
+<div class="cell" onclick="pickLocation('s')">↓</div>
+<div class="cell" onclick="pickLocation('se')">↘</div>
+`;
+}
 
-const centerX = 150;
-const centerY = 150;
+function pickLocation(dir){
+state.location = dir;
 
+if(dir==="center"){
+stepActivity();
+}else{
+stepDistance();
+}
+
+drawCompass();
+}
+
+function stepDistance(){
+top.innerHTML = `
+<div class="panel">
+<div>Как далеко?</div><br>
+<button onclick="pickDistance(1)">Близко</button>
+<button onclick="pickDistance(2)">Средне</button>
+<button onclick="pickDistance(3)">Далеко</button>
+</div>`;
+}
+
+function pickDistance(v){
+state.distance=v;
+stepActivity();
+drawCompass();
+}
+
+function stepActivity(){
+top.innerHTML = `
+<div class="panel">
+<div>Что ты здесь сейчас делаешь?</div><br>
+
+<button onclick="pickActivity('Творю')">Творю</button>
+<button onclick="pickActivity('Работаю')">Работаю</button>
+<button onclick="pickActivity('Учусь')">Учусь</button>
+<button onclick="pickActivity('Иду / Еду')">Иду / Еду</button>
+<button onclick="pickActivity('Отдыхаю')">Отдыхаю</button>
+<button onclick="pickActivity('Ем')">Ем</button>
+<button onclick="pickActivity('Выпиваю / прочее')">Выпиваю / прочее</button>
+<button onclick="pickActivity('Развлекаюсь')">Развлекаюсь</button>
+<button onclick="pickActivity('Торможу')">Торможу</button>
+
+</div>`;
+}
+
+function pickActivity(v){
+state.activity=v;
+stepEmotion();
+}
+
+function stepEmotion(){
+top.innerHTML = `
+<div class="panel">
+<div>Что чувствуешь?</div><br>
+
+<button onclick="saveEmotion('#FFD700','Радость')">Радость, позитивная деятельность</button>
+<button onclick="saveEmotion('#FFFFFF','Творчество')">Осознанное творчество</button>
+<button onclick="saveEmotion('#3F51B5','Вдохновение')">Вдохновение, спокойствие, творчество</button>
+
+<button onclick="saveEmotion('#26C6DA','Фантазия')">Фантазёрство, пассивность</button>
+<button onclick="saveEmotion('#808080','Нейтрально')">Нейтральное вовлечение</button>
+<button onclick="saveEmotion('#4CAF50','Тревожность')">Тоска, зависимость, тревожность</button>
+
+<button onclick="saveEmotion('#F44336','Гнев')">Гнев, агрессия, превосходство</button>
+<button onclick="saveEmotion('#FF9800','Активность')">Самоуверенность, соревновательность</button>
+<button onclick="saveEmotion('#000000','Хаос')">Хаос, ужас, отсутствие контроля</button>
+
+</div>`;
+}
+
+function saveEmotion(color,name){
+state.emotion = {color,name};
+
+state.entries.push({
+date:new Date().toISOString(),
+...state
+});
+
+localStorage.setItem("awarenessy_db",JSON.stringify(state.entries));
+
+showSaved();
+drawCompass();
+}
+
+function showSaved(){
+top.innerHTML = `
+<div class="panel">
+<div class="title">Сохранено</div>
+<div>Нажми на сектор компаса</div>
+<div class="small">увидеть повторяющиеся сценарии жизни</div>
+</div>`;
+}
+
+/* =========================
+COMPASS
+========================= */
+
+function drawCompass(){
+
+let html = `<svg viewBox="0 0 320 320">`;
+
+const cx=160, cy=160;
 const rings = [
-  {inner:30, outer:60},
-  {inner:60, outer:95},
-  {inner:95, outer:130}
+[38,70],
+[70,108],
+[108,145]
 ];
 
-const directions = ["n","ne","e","se","s","sw","w","nw"];
+for(let r=0;r<3;r++){
 
-function polar(cx, cy, r, angle) {
-  return {
-    x: cx + r * Math.cos(angle),
-    y: cy + r * Math.sin(angle)
-  };
+for(let i=0;i<8;i++){
+
+const dir = directions[i];
+const a0 = (-90 + i*45 - 22.5) * Math.PI/180;
+const a1 = (-90 + i*45 + 22.5) * Math.PI/180;
+
+let fill="rgba(255,255,255,.03)";
+
+if(state.home===dir){
+fill="rgba(255,255,255,.16)";
 }
 
-function segmentPath(innerR, outerR, a0, a1) {
-
-  const p1 = polar(centerX, centerY, outerR, a0);
-  const p2 = polar(centerX, centerY, outerR, a1);
-  const p3 = polar(centerX, centerY, innerR, a1);
-  const p4 = polar(centerX, centerY, innerR, a0);
-
-  return `
-    M ${p1.x} ${p1.y}
-    A ${outerR} ${outerR} 0 0 1 ${p2.x} ${p2.y}
-    L ${p3.x} ${p3.y}
-    A ${innerR} ${innerR} 0 0 0 ${p4.x} ${p4.y}
-    Z
-  `;
+if(state.location===dir){
+fill="rgba(255,255,255,.30)";
 }
 
-function drawCompass() {
-
-  let svg = `<svg viewBox="0 0 300 300">`;
-
-  svg += `<defs>
-
-    <!-- свечение сегментов -->
-    <radialGradient id="glowGradient" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="white" stop-opacity="1"/>
-      <stop offset="20%" stop-color="white" stop-opacity="0.9"/>
-      <stop offset="50%" stop-color="white" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="white" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- мощный центр -->
-    <radialGradient id="centerGlow" cx="50%" cy="50%" r="80%">
-      <stop offset="0%" stop-color="white" stop-opacity="1"/>
-      <stop offset="30%" stop-color="white" stop-opacity="0.9"/>
-      <stop offset="70%" stop-color="white" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="white" stop-opacity="0"/>
-    </radialGradient>
-
-  </defs>`;
-
-
-
-  svg += `<path d="${outerGlow2}"
-    fill="url(#glowGradient)"
-    opacity="0.6"
-    style="mix-blend-mode: screen; filter: blur(10px);"
-  />`;
-  
-  const step = (Math.PI*2)/8;
-  const offset = -step/2;
-
-  rings.forEach((ring, rIndex) => {
-
-    directions.forEach((dir, dIndex) => {
-
-      let glow = false;
-      let strokeColor = "none";
-      let strokeWidth = 0;
-
-      let a0 = -Math.PI/2 + offset + dIndex*step;
-      let a1 = a0 + step;
-
-      const id = `${rIndex}_${dir}`;
-
-      let fill = "transparent";
-
-      if (centerActive && homeDirection) {
-
-      const glowRing = rings[2];
-      const glowIndex = directions.indexOf(homeDirection);
-
-      let glowA0 = -Math.PI/2 + offset + glowIndex * step;
-      let glowA1 = glowA0 + step;
-
-      svg += `<path d="${segmentPath(glowRing.inner, glowRing.outer, glowA0, glowA1)}"
-        fill="url(#glowGradient)"
-        opacity="0.95"
-        style="
-          mix-blend-mode:screen;
-          filter: blur(12px);
-        "
-      />`;
-    }
-
-      /* --- 1. ПОДСВЕТКА НАПРАВЛЕНИЯ (мягкое гало) --- */
-      if (activeSegments.includes(id)) {
-        fill = "rgba(255,255,255,0.06)";
-        glow = true;
-      }
-
-      /* --- 2. ВЫБРАННЫЙ СЕГМЕНТ (дистанция) --- */
-      if (finalSegment === id && !coloredSegments[id]) {
-        strokeColor = "white";
-        strokeWidth = 2.5;
-        glow = true;
-      }
-
-      /* --- 3. ЭМОЦИЯ --- */
-      if (coloredSegments[id]) {
-
-        let color = coloredSegments[id];
-
-        // основной цвет
-        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-          fill="${color}"
-          opacity="0.9"
-        />`;
-
-        // центральное свечение
-        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-          fill="url(#glowGradient)"
-          style="mix-blend-mode: screen;"
-        />`;
-      }
-
-      // мягкое сияние дома (когда нет эмоции)
-
-      if (finalSegment === id) {
-        strokeColor = "white";
-        strokeWidth = 3;
-      }
-
-      if (coloredSegments[id]) {
-
-        fill = coloredSegments[id] + "DD";
-        glow = true;
-
-        // свечение из центра сегмента
-        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-          fill="url(#glowGradient)"
-          style="mix-blend-mode: screen;"
-        />`;
-      }
-
-      svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-        fill="${fill}"
-        stroke="${strokeColor}"
-        stroke-width="${strokeWidth}"
-      />`;
-
-      if (glow) {
-        svg += `<path d="${segmentPath(ring.inner, ring.outer, a0, a1)}"
-          fill="url(#glowGradient)" />`;
-      }
-
-    });
-
-  });
-
-  // ---------- CENTER ----------
-
-  let centerRadius = 32;
-
-  // лёгкая "линза" всегда (очень слабая)
-  svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="rgba(255,255,255,0.03)" />`;
-
-  // если выбран центр (без эмоции)
-  if (centerActive && !coloredSegments["center"]) {
-    svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="rgba(255,255,255,0.08)" />`;
-  }
-
-  // если есть эмоция
-  if (coloredSegments["center"]) {
-
-  let color = coloredSegments["center"];
-
-    svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="${color}" opacity="0.95" />`;
-
-    svg += `<circle cx="150" cy="150" r="${centerRadius}" fill="url(#centerGlow)" style="mix-blend-mode: screen;" />`;
-  }
-
-  // закрываем SVG
-  svg += `</svg>`;
-
-  // вставляем в DOM
-  document.getElementById("compass").innerHTML = svg;
+if(state.location===dir && state.emotion){
+fill=state.emotion.color;
 }
 
-/* ---------- UI ---------- */
-
-function hideModeButtons() {
-  document.getElementById("modeButtons").style.display = "none";
+html += sector(cx,cy,rings[r][0],rings[r][1],a0,a1,fill);
+}
 }
 
-function showModeButtons() {
-  document.getElementById("modeButtons").style.display = "flex";
+html += `<circle cx="160" cy="160" r="34"
+fill="rgba(255,255,255,.08)" />`;
+
+if(state.location==="center" && state.emotion){
+html += `<circle cx="160" cy="160" r="34"
+fill="${state.emotion.color}" opacity=".9"/>`;
 }
 
+html += `</svg>`;
+
+compass.innerHTML = html;
+}
+
+function sector(cx,cy,r1,r2,a0,a1,fill){
+
+const p1 = point(cx,cy,r2,a0);
+const p2 = point(cx,cy,r2,a1);
+const p3 = point(cx,cy,r1,a1);
+const p4 = point(cx,cy,r1,a0);
+
+return `
+<path d="
+M ${p1.x} ${p1.y}
+A ${r2} ${r2} 0 0 1 ${p2.x} ${p2.y}
+L ${p3.x} ${p3.y}
+A ${r1} ${r1} 0 0 0 ${p4.x} ${p4.y}
+Z"
+fill="${fill}"
+stroke="rgba(255,255,255,.12)"
+stroke-width="1"
+/>`;
+}
+
+function point(cx,cy,r,a){
+return {
+x: cx + r*Math.cos(a),
+y: cy + r*Math.sin(a)
+};
+}
 </script>
-
 </body>
 </html>

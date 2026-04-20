@@ -214,8 +214,19 @@ top.innerHTML = `
 }
 
 function startMode(mode){
-state.mode = mode;
-stepSouth();
+
+  state.mode = mode;
+
+  // 👇 показываем компас
+  bottom.style.display = "flex";
+
+  // 👇 сразу рисуем
+  drawCompass();
+
+  // 👇 запускаем сценарий
+  setTimeout(()=>{
+    stepSouth();
+  }, 300);
 }
 
 function stepSouth(){
@@ -395,7 +406,18 @@ COMPASS
 ========================= */
 
 function drawCompass(){
-compass.innerHTML = "";
+  compass.innerHTML = `
+    <svg viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="120"
+        stroke="rgba(255,255,255,0.2)"
+        fill="none"
+      />
+      <circle cx="150" cy="150" r="60"
+        stroke="rgba(255,255,255,0.1)"
+        fill="none"
+      />
+    </svg>
+  `;
 }
 
 function sector(cx,cy,r1,r2,a0,a1,fill){

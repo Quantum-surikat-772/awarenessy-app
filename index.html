@@ -260,9 +260,10 @@ button.main:active{
 </div>
 
 <script>
-/* ====================================
-   AWARENESSY FOUNDATION BUILD 1.15
-==================================== */
+/* ==========================================
+   AWARENESSY BUILD 2.1
+   CORE FLOW START
+========================================== */
 
 try{
   if(window.Telegram && Telegram.WebApp){
@@ -275,7 +276,15 @@ try{
 
 const state = {
   lang: localStorage.getItem("awarenessy_lang") || detectLang(),
-  mode:null
+  mode:null,
+
+  entry:{
+    mode:null,
+    time:null,
+    home:null,
+    distance:null,
+    created:null
+  }
 };
 
 /* ---------- TEXT ---------- */
@@ -284,41 +293,97 @@ const TXT = {
 ru:{
 brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
+
 wake:"ЯВЬ",
 dream:"СОН",
+
 observe:"Я наблюдаю...",
 five:"Что ты делал 5 минут назад?",
 home:"В каком направлении твой Дом?",
 alert:"ЭТО НЕ СОН?",
+
 turnSouth:"Повернись к Югу",
 southHint:"(там где солнце в полдень)",
-ready:"Готово"
+ready:"Готово",
+
+timeAsk:"Какое время суток?",
+homeAsk:"В каком направлении от тебя твой Дом?",
+distanceAsk:"Как далеко?",
+
+saved:"Запись сохранена",
+
+times:[
+"Рассвет","Утро","День",
+"Вечер","Закат","Ночь"
+],
+
+distances:[
+"Дом","Близко","Средне","Далеко"
+]
 },
+
 en:{
 brand:"AWARENESSY!",
 sub:"Mediator of awareness training",
+
 wake:"WAKE",
 dream:"DREAM",
+
 observe:"I observe...",
 five:"What were you doing 5 minutes ago?",
 home:"Where is your Home direction?",
 alert:"THIS IS NOT A DREAM?",
+
 turnSouth:"Turn to the South",
 southHint:"(where the sun is at noon)",
-ready:"Ready"
+ready:"Ready",
+
+timeAsk:"What time of day?",
+homeAsk:"Where is your Home from you?",
+distanceAsk:"How far?",
+
+saved:"Saved",
+
+times:[
+"Dawn","Morning","Day",
+"Evening","Sunset","Night"
+],
+
+distances:[
+"Home","Near","Medium","Far"
+]
 },
+
 es:{
 brand:"CONCIENCITO!",
 sub:"Mediador del entrenamiento consciente",
+
 wake:"VIGILIA",
 dream:"SUEÑO",
+
 observe:"Estoy observando...",
 five:"¿Qué hacías hace 5 minutos?",
 home:"¿En qué dirección está tu Hogar?",
 alert:"¿ESTO NO ES UN SUEÑO?",
+
 turnSouth:"Gira hacia el Sur",
 southHint:"(donde el sol está al mediodía)",
-ready:"Listo"
+ready:"Listo",
+
+timeAsk:"¿Qué momento del día?",
+homeAsk:"¿Dónde está tu Hogar desde ti?",
+distanceAsk:"¿Qué tan lejos?",
+
+saved:"Guardado",
+
+times:[
+"Amanecer","Mañana","Día",
+"Tarde","Atardecer","Noche"
+],
+
+distances:[
+"Hogar","Cerca","Medio","Lejos"
+]
 }
 };
 
@@ -326,7 +391,7 @@ function t(k){
   return TXT[state.lang][k] || k;
 }
 
-/* ---------- LANG ---------- */
+/* ---------- HELPERS ---------- */
 
 function detectLang(){
   let code=(navigator.language||"en").toLowerCase();
@@ -342,17 +407,13 @@ function detectLang(){
   return "en";
 }
 
-/* ---------- DOM ---------- */
+function rnd(arr){
+  return arr[Math.floor(Math.random()*arr.length)];
+}
 
 const app = document.getElementById("app");
 const topPanel = document.getElementById("topPanel");
 const bottomDock = document.getElementById("bottomDock");
-
-/* ---------- HELPERS ---------- */
-
-function rnd(arr){
-  return arr[Math.floor(Math.random()*arr.length)];
-}
 
 /* ---------- HEADER ---------- */
 
@@ -376,136 +437,344 @@ return `
 /* ---------- INTRO ---------- */
 
 const variants = [
-  "text1",
-  "text2",
-  "text3",
-  "alert",
-  "image",
-  "video"
+"text1","text2","text3","alert","image","video"
 ];
 
 function renderIntro(){
 
-  topPanel.classList.remove("modeScreen");
-  bottomDock.classList.remove("modeScreen");
+topPanel.classList.remove("modeScreen");
+bottomDock.classList.remove("modeScreen");
 
-  app.style.background = `
-  radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
-  radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
-  var(--bg)
-  `;
+app.style.background = `
+radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+var(--bg)
+`;
 
-  const v = rnd(variants);
+const v = rnd(variants);
 
-  let center = "";
+let center = "";
 
-  if(v==="text1") center = `<div class="title fade">${t("observe")}</div>`;
-  if(v==="text2") center = `<div class="title fade">${t("five")}</div>`;
-  if(v==="text3") center = `<div class="title fade">${t("home")}</div>`;
+if(v==="text1") center=`<div class="title fade">${t("observe")}</div>`;
+if(v==="text2") center=`<div class="title fade">${t("five")}</div>`;
+if(v==="text3") center=`<div class="title fade">${t("home")}</div>`;
 
-  if(v==="alert"){
-    app.style.background = "var(--red)";
-    center = `<div class="title fade">${t("alert")}</div>`;
-  }
-
-  if(v==="image"){
-    center = `
-    <div class="media fade">
-      <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png">
-    </div>`;
-  }
-
-  if(v==="video"){
-    center = `
-    <div class="media fade">
-      <video autoplay muted loop playsinline>
-        <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
-      </video>
-    </div>`;
-  }
-
-  topPanel.innerHTML = `
-    ${header()}
-    <div id="centerBox">${center}</div>
-  `;
-
-  bottomDock.innerHTML = `
-    <div class="row">
-      <button class="main" id="wakeBtn">${t("wake")}</button>
-      <button class="main" id="dreamBtn">${t("dream")}</button>
-    </div>
-    <div id="foot">Awarenessy Foundation Build</div>
-  `;
-
-  bindIntro();
+if(v==="alert"){
+app.style.background="var(--red)";
+center=`<div class="title fade">${t("alert")}</div>`;
 }
 
-/* ---------- MODE ---------- */
+if(v==="image"){
+center=`
+<div class="media fade">
+<img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png">
+</div>`;
+}
+
+if(v==="video"){
+center=`
+<div class="media fade">
+<video autoplay muted loop playsinline>
+<source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
+</video>
+</div>`;
+}
+
+topPanel.innerHTML = `
+${header()}
+<div id="centerBox">${center}</div>
+`;
+
+bottomDock.innerHTML = `
+<div class="row">
+<button class="main" id="wakeBtn">${t("wake")}</button>
+<button class="main" id="dreamBtn">${t("dream")}</button>
+</div>
+<div id="foot">Awarenessy Build 2.1</div>
+`;
+
+bindIntro();
+}
+
+/* ---------- START MODE ---------- */
 
 function enterMode(mode){
 
-  state.mode = mode;
+state.mode = mode;
 
-  topPanel.classList.add("modeScreen");
-  bottomDock.classList.add("modeScreen");
+state.entry = {
+mode:mode,
+time:null,
+home:null,
+distance:null,
+created:new Date().toISOString()
+};
 
-  app.style.background = `
-  radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
-  radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
-  var(--bg)
-  `;
+topPanel.classList.add("modeScreen");
+bottomDock.classList.add("modeScreen");
 
-  topPanel.innerHTML = `
-    ${header()}
+showCompassBase();
+stepSouth();
+}
 
-    <div id="centerBox">
-      <div class="modeCard fade">
+/* ---------- COMPASS ---------- */
 
-        <div class="title">${t("turnSouth")}</div>
+function showCompassBase(){
 
-        <div class="subtle">${t("southHint")}</div>
+bottomDock.innerHTML = `
+<div id="compassArea">
+<img id="compassImg"
+src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+</div>
+<div id="foot" style="padding-bottom:10px;">
+Awarenessy Build 2.1
+</div>
+`;
+}
 
-        <button class="main" id="readyBtn">${t("ready")}</button>
+/* ---------- STEP 1 ---------- */
 
-      </div>
-    </div>
-  `;
+function stepSouth(){
 
-  bottomDock.innerHTML = `
-    <div id="compassArea">
-      <img id="compassImg"
-      src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
-    </div>
+topPanel.innerHTML = `
+${header()}
 
-    <div id="foot" style="padding-bottom:10px;">
-      Awarenessy Foundation Build
-    </div>
-  `;
+<div id="centerBox">
+<div class="modeCard fade">
 
-  bindHeader();
+<div class="title">${t("turnSouth")}</div>
 
-  document.getElementById("readyBtn").onclick = ()=>{
-    alert("Следующий шаг будет добавлен в Build 1.2");
-  };
+<div class="subtle">${t("southHint")}</div>
+
+<button class="main" id="readyBtn">${t("ready")}</button>
+
+</div>
+</div>
+`;
+
+bindHeader();
+
+document.getElementById("readyBtn").onclick=stepTime;
+}
+
+/* ---------- STEP 2 ---------- */
+
+function stepTime(){
+
+const arr = t("times");
+
+topPanel.innerHTML = `
+${header()}
+
+<div id="centerBox">
+<div class="modeCard fade">
+
+<div class="title" style="font-size:24px;">
+${t("timeAsk")}
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:8px;
+margin-top:14px;
+">
+
+${arr.map((label,i)=>`
+<button class="main timeBtn"
+data-v="${i}"
+style="height:46px;font-size:14px;">
+${label}
+</button>
+`).join("")}
+
+</div>
+
+</div>
+</div>
+`;
+
+bindHeader();
+
+document.querySelectorAll(".timeBtn").forEach(btn=>{
+btn.onclick=()=>{
+state.entry.time = btn.dataset.v;
+stepHome();
+};
+});
+}
+
+/* ---------- STEP 3 ---------- */
+
+function stepHome(){
+
+const dirs = [
+["nw","↖"],["n","↑"],["ne","↗"],
+["w","←"],["c","Я"],["e","→"],
+["sw","↙"],["s","↓"],["se","↘"]
+];
+
+topPanel.innerHTML = `
+${header()}
+
+<div id="centerBox">
+<div class="modeCard fade">
+
+<div class="title" style="font-size:22px;">
+${t("homeAsk")}
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin-top:14px;
+">
+
+${dirs.map(d=>`
+<button class="main dirBtn"
+data-v="${d[0]}"
+style="height:52px;font-size:20px;">
+${d[1]}
+</button>
+`).join("")}
+
+</div>
+
+</div>
+</div>
+`;
+
+bindHeader();
+
+document.querySelectorAll(".dirBtn").forEach(btn=>{
+btn.onclick=()=>{
+state.entry.home = btn.dataset.v;
+
+if(btn.dataset.v==="c"){
+state.entry.distance="0";
+finishSave();
+}else{
+stepDistance();
+}
+};
+});
+}
+
+/* ---------- STEP 4 ---------- */
+
+function stepDistance(){
+
+const arr = t("distances");
+
+topPanel.innerHTML = `
+${header()}
+
+<div id="centerBox">
+<div class="modeCard fade">
+
+<div class="title" style="font-size:24px;">
+${t("distanceAsk")}
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:8px;
+margin-top:14px;
+">
+
+${arr.map((label,i)=>`
+<button class="main distBtn"
+data-v="${i}"
+style="height:48px;font-size:14px;">
+${label}
+</button>
+`).join("")}
+
+</div>
+
+</div>
+</div>
+`;
+
+bindHeader();
+
+document.querySelectorAll(".distBtn").forEach(btn=>{
+btn.onclick=()=>{
+state.entry.distance = btn.dataset.v;
+finishSave();
+};
+});
+}
+
+/* ---------- SAVE ---------- */
+
+function finishSave(){
+
+let arr = [];
+
+try{
+arr = JSON.parse(localStorage.getItem("awarenessy_entries") || "[]");
+}catch(e){
+arr = [];
+}
+
+arr.push(state.entry);
+
+localStorage.setItem(
+"awarenessy_entries",
+JSON.stringify(arr)
+);
+
+topPanel.innerHTML = `
+${header()}
+
+<div id="centerBox">
+<div class="modeCard fade">
+
+<div class="title">${t("saved")}</div>
+
+<div class="subtle">
+${new Date().toLocaleString()}
+</div>
+
+<button class="main"
+style="margin-top:16px;"
+id="restartBtn">
+OK
+</button>
+
+</div>
+</div>
+`;
+
+bindHeader();
+
+document.getElementById("restartBtn").onclick=renderIntro;
 }
 
 /* ---------- BINDS ---------- */
 
 function bindHeader(){
-  document.querySelectorAll(".lang").forEach(btn=>{
-    btn.onclick = ()=>{
-      state.lang = btn.dataset.l;
-      localStorage.setItem("awarenessy_lang", state.lang);
-      renderIntro();
-    };
-  });
+document.querySelectorAll(".lang").forEach(btn=>{
+btn.onclick=()=>{
+state.lang = btn.dataset.l;
+localStorage.setItem(
+"awarenessy_lang",
+state.lang
+);
+renderIntro();
+};
+});
 }
 
 function bindIntro(){
-  bindHeader();
 
-  document.getElementById("wakeBtn").onclick = ()=>enterMode("wake");
-  document.getElementById("dreamBtn").onclick = ()=>enterMode("dream");
+bindHeader();
+
+document.getElementById("wakeBtn").onclick=()=>enterMode("wake");
+document.getElementById("dreamBtn").onclick=()=>enterMode("dream");
 }
 
 /* ---------- START ---------- */

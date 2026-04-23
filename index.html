@@ -278,6 +278,10 @@ const state = {
   lang: localStorage.getItem("awarenessy_lang") || detectLang(),
   mode:null,
 
+  beamDir:null,      // инвертированное направление
+  ring:null,         // выбранное кольцо
+  overlayReady:false
+
   entry:{
     mode:null,
     time:null,
@@ -523,13 +527,174 @@ function showCompassBase(){
 
 bottomDock.innerHTML = `
 <div id="compassArea">
-<img id="compassImg"
-src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+  <div style="
+    position:relative;
+    width:min(92vw,410px);
+    height:min(92vw,410px);
+  ">
+
+    <img id="compassImg"
+    src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png"
+    style="
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      z-index:1;
+    ">
+
+    <svg id="compassSvg"
+    viewBox="0 0 400 400"
+    style="
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:2;
+      overflow:visible;
+    ">
+    </svg>
+
+  </div>
 </div>
+
 <div id="foot" style="padding-bottom:10px;">
-Awarenessy Build 2.1
+Awarenessy Build 2.2
 </div>
 `;
+
+state.overlayReady = true;
+drawCompassLight();
+
+}
+
+/* ---------- НОВЫЕ ФУНКЦИИ ---------- */
+
+const DIRS = ["n","ne","e","se","s","sw","w","nw"];
+
+function oppositeDir(dir){
+let i = DIRS.indexOf(dir);
+if(i<0) return "n";
+return DIRS[(i+4)%8];
+}
+
+function ringIndexFromDistance(v){
+
+/*
+0 = Дом
+1 = Близко
+2 = Средне
+3 = Далеко
+*/
+
+if(v==="1") return 0;
+if(v==="2") return 1;
+if(v==="3") return 2;
+return null;
+}
+
+function polar(cx,cy,r,a){
+return {
+x:cx + Math.cos(a)*r,
+y:cy + Math.sin(a)*r
+};
+}
+
+function sectorPath(innerR,outerR,start,end){
+
+const p1 = polar(200,200,outerR,start);
+const p2 = polar(200,200,outerR,end);
+const p3 = polar(200,200,innerR,end);
+const p4 = polar(200,200,innerR,start);
+
+return `
+M ${p1.x} ${p1.y}
+A ${outerR} ${outerR} 0 0 1 ${p2.x} ${p2.y}
+L ${p3.x} ${p3.y}
+A ${innerR} ${innerR} 0 0 0 ${p4.x} ${p4.y}
+Z
+`;
+}
+
+function drawCompassLight(){
+
+if(!state.overlayReady) return;
+
+const svg = document.getElementById("compassSvg");
+if(!svg) return;
+
+svg.innerHTML = "";
+
+if(!state.beamDir) return;
+
+const idx = DIRS.indexOf(state.beamDir);
+if(idx<0) return;
+
+/* 8 направлений */
+const step = Math.PI*2/8;
+
+/* север вверх */
+const offset = -Math.PI/2 - step/2;
+
+const start = offset + idx*step;
+const end   = start + step;
+
+/* кольца */
+const rings = [
+[48,92],   // inner
+[92,138],  // middle
+[138,184]  // outer
+];
+
+/* defs */
+svg.innerHTML += `
+<defs>
+<filter id="glow">
+<feGaussianBlur stdDeviation="5" result="b"/>
+<feMerge>
+<feMergeNode in="b"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
+`;
+
+/* ---------- если кольцо ещё не выбрано = весь луч ---------- */
+
+if(state.ring===null){
+
+rings.forEach(r=>{
+
+svg.innerHTML += `
+<path
+d="${sectorPath(r[0],r[1],start,end)}"
+fill="rgba(255,255,255,0.14)"
+stroke="rgba(255,220,170,0.75)"
+stroke-width="1.2"
+filter="url(#glow)"
+/>
+`;
+
+});
+
+return;
+}
+
+/* ---------- если кольцо выбрано ---------- */
+
+const r = rings[state.ring];
+
+svg.innerHTML += `
+<path
+d="${sectorPath(r[0],r[1],start,end)}"
+fill="rgba(255,255,255,0.20)"
+stroke="rgba(255,230,180,0.95)"
+stroke-width="1.6"
+filter="url(#glow)"
+/>
+`;
+
 }
 
 /* ---------- STEP 1 ---------- */
@@ -649,17 +814,29 @@ bindHeader();
 
 document.querySelectorAll(".dirBtn").forEach(btn=>{
 btn.onclick=()=>{
+
 state.entry.home = btn.dataset.v;
 
 if(btn.dataset.v==="c"){
-state.entry.distance="0";
+
+state.beamDir = null;
+state.ring = null;
+drawCompassLight();
+
+state.entry.distance = "0";
 finishSave();
+
 }else{
+
+state.beamDir = oppositeDir(btn.dataset.v);
+state.ring = null;
+drawCompassLight();
+
 stepDistance();
 }
+
 };
 });
-}
 
 /* ---------- STEP 4 ---------- */
 
@@ -702,11 +879,18 @@ bindHeader();
 
 document.querySelectorAll(".distBtn").forEach(btn=>{
 btn.onclick=()=>{
+
 state.entry.distance = btn.dataset.v;
+state.ring = ringIndexFromDistance(btn.dataset.v);
+
+drawCompassLight();
+
+setTimeout(()=>{
 finishSave();
+},350);
+
 };
 });
-}
 
 /* ---------- SAVE ---------- */
 

@@ -1,460 +1,467 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Awarenessy</title>
 
 <style>
 :root{
-  --bg:#050505;
-  --panel:#0d0d0d;
-  --card:#141414;
-  --line:#262626;
-  --text:#f2f2f2;
-  --muted:#8d8d8d;
-  --gold:#c8a96b;
-  --danger:#c51616;
+--bg:#050505;
+--red:#d90000;
+--panel:#101010;
+--line:#2a2a2a;
+--text:#f4f4f4;
+--muted:#8a8a8a;
+--gold:#c8a96b;
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
 html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  overflow:hidden;
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:var(--bg);
+font-family:Arial,Helvetica,sans-serif;
+color:var(--text);
 }
 
 body{
-  display:flex;
-  justify-content:center;
+display:flex;
+justify-content:center;
 }
 
 #app{
-  width:100%;
-  max-width:520px;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(255,255,255,.03), transparent 25%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,.02), transparent 25%),
-    var(--bg);
+width:100%;
+max-width:520px;
+height:100vh;
+position:relative;
+display:flex;
+flex-direction:column;
+background:
+radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+var(--bg);
+transition:.3s ease;
 }
 
-/* ---------- TOP / BOTTOM ---------- */
+/* ---------- TOP ---------- */
 
 #topPanel{
-  flex:1;
-  padding:18px 16px 10px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  position:relative;
+flex:1;
+padding:10px 16px 120px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+text-align:center;
+position:relative;
 }
 
-#bottomPanel{
-  height:0;
-  overflow:hidden;
-  transition:.45s ease;
-  border-top:1px solid rgba(255,255,255,.04);
+#header{
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:4px;
 }
 
-#bottomPanel.show{
-  height:50vh;
+#brand{
+font-size:16px;
+font-weight:700;
+letter-spacing:.8px;
+color:var(--gold);
 }
 
-#compassWrap{
-  width:100%;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-#compassStage{
-  width:min(78vw,340px);
-  height:min(78vw,340px);
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.06);
-  background:
-    radial-gradient(circle at center, rgba(255,255,255,.03), transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(200,169,107,.05), transparent 62%);
-  box-shadow:
-    0 0 24px rgba(255,255,255,.03),
-    inset 0 0 24px rgba(255,255,255,.02);
-  position:relative;
-}
-
-#compassStage::before{
-  content:"";
-  position:absolute;
-  inset:18%;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.03);
-}
-
-#compassStage::after{
-  content:"";
-  position:absolute;
-  inset:40%;
-  border-radius:50%;
-  background:
-    radial-gradient(circle, rgba(255,255,255,.55), rgba(200,169,107,.18), transparent 70%);
-  filter:blur(4px);
-}
-
-/* ---------- TEXT ---------- */
-
-.brand{
-  font-size:12px;
-  letter-spacing:2px;
-  color:var(--gold);
-  opacity:.85;
-  margin-bottom:14px;
-}
-
-.title{
-  font-size:28px;
-  line-height:1.25;
-  font-weight:700;
-  max-width:340px;
-}
-
-.sub{
-  margin-top:10px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.45;
-}
-
-.fade{
-  animation:fade .7s ease;
-}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(8px);}
-  to{opacity:1;transform:none;}
-}
-
-/* ---------- BUTTONS ---------- */
-
-.row{
-  display:flex;
-  gap:10px;
-  width:100%;
-  max-width:320px;
-  margin-top:24px;
-}
-
-button{
-  appearance:none;
-  border:none;
-  outline:none;
-  cursor:pointer;
-  width:100%;
-  min-height:48px;
-  border-radius:12px;
-  background:linear-gradient(180deg,#171717,#101010);
-  color:var(--text);
-  border:1px solid var(--line);
-  font-size:15px;
-  font-weight:600;
-}
-
-button:active{
-  transform:translateY(1px) scale(.995);
-}
-
-.secondary{
-  color:#d0d0d0;
-}
-
-.redMode{
-  background:var(--danger)!important;
+#subBrand{
+font-size:11px;
+color:var(--muted);
+margin-top:2px;
+text-align:left;
 }
 
 #langBar{
-  position:absolute;
-  top:10px;
-  right:10px;
-  display:flex;
-  gap:6px;
+display:flex;
+gap:6px;
 }
 
 .mini{
-  width:42px;
-  min-height:34px;
-  font-size:12px;
-  border-radius:10px;
+width:38px;
+height:34px;
+border:none;
+border-radius:10px;
+background:#171717;
+color:#ddd;
+border:1px solid var(--line);
+font-size:12px;
 }
 
-/* ---------- VIDEO / IMG ---------- */
+#centerBox{
+flex:1;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+padding:10px 0;
+}
+
+.title{
+font-size:30px;
+font-weight:700;
+line-height:1.25;
+max-width:360px;
+}
 
 .media{
-  width:100%;
-  max-width:340px;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.06);
-  margin-top:8px;
+width:100%;
+max-width:360px;
+border-radius:18px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.06);
+box-shadow:0 0 24px rgba(0,0,0,.35);
 }
 
 .media img,
 .media video{
-  width:100%;
-  display:block;
+width:100%;
+display:block;
 }
 
-/* ---------- FOOT ---------- */
+.subtle{
+font-size:14px;
+color:#cfcfcf;
+margin-top:10px;
+}
 
-#footerHint{
-  position:absolute;
-  bottom:8px;
-  width:100%;
-  text-align:center;
-  font-size:11px;
-  color:#666;
+/* ---------- BOTTOM ---------- */
+
+#bottomDock{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+padding:12px 16px 16px;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
+button.main{
+height:52px;
+width:100%;
+border:none;
+border-radius:14px;
+background:linear-gradient(180deg,#181818,#111);
+color:#fff;
+font-size:16px;
+font-weight:700;
+border:1px solid var(--line);
+}
+
+button.main:active{
+transform:translateY(1px);
+}
+
+#foot{
+margin-top:8px;
+font-size:11px;
+color:#666;
+text-align:center;
+}
+
+/* ---------- SCREEN 2 ---------- */
+
+#compassArea{
+height:50vh;
+display:flex;
+justify-content:center;
+align-items:center;
+border-top:1px solid rgba(255,255,255,.05);
+}
+
+#compassImg{
+width:min(78vw,340px);
+height:min(78vw,340px);
+object-fit:contain;
+filter:drop-shadow(0 0 12px rgba(255,255,255,.08));
+}
+
+.card{
+width:100%;
+max-width:360px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.02);
+border:1px solid rgba(255,255,255,.05);
+}
+
+.fade{
+animation:fade .6s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(8px);}
+to{opacity:1;transform:none;}
 }
 </style>
 </head>
 <body>
 
 <div id="app">
-
-  <div id="topPanel"></div>
-
-  <div id="bottomPanel">
-    <div id="compassWrap">
-      <div id="compassStage"></div>
-    </div>
-  </div>
-
-  <div id="footerHint">Awarenessy Foundation Build</div>
+<div id="topPanel"></div>
+<div id="bottomDock"></div>
 </div>
 
 <script>
-/* =====================================================
-   FOUNDATION BUILD v2.0
-===================================================== */
+/* ===============================
+   AWARENESSY FOUNDATION BUILD 1.1
+=============================== */
 
-/* ---------- TELEGRAM INIT ---------- */
 try{
-  if(window.Telegram && Telegram.WebApp){
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-  }
+if(window.Telegram && Telegram.WebApp){
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+}
 }catch(e){}
 
 /* ---------- STATE ---------- */
+
 const state = {
-  lang: localStorage.getItem("awarenessy_lang") || detectLang(),
-  mode:null,
-  screen:"intro"
+lang: localStorage.getItem("awarenessy_lang") || detectLang(),
+mode:null
 };
 
-/* ---------- I18N ---------- */
+/* ---------- TEXT ---------- */
+
 const TXT = {
-  ru:{
-    brand:"ОСоЗНАЙКА!",
-    wake:"ЯВЬ",
-    dream:"СОН",
-    observe:"Я наблюдаю...",
-    five:"Что ты делал 5 минут назад?",
-    home:"В каком направлении твой Дом?",
-    alert:"ЭТО НЕ СОН?",
-    proceed:"Начать"
-  },
-  en:{
-    brand:"AWARENESSY!",
-    wake:"WAKE",
-    dream:"DREAM",
-    observe:"I observe...",
-    five:"What were you doing 5 minutes ago?",
-    home:"Where is your Home direction?",
-    alert:"THIS IS NOT A DREAM?",
-    proceed:"Begin"
-  },
-  es:{
-    brand:"CONCIENCITO!",
-    wake:"VIGILIA",
-    dream:"SUEÑO",
-    observe:"Estoy observando...",
-    five:"¿Qué hacías hace 5 minutos?",
-    home:"¿En qué dirección está tu Hogar?",
-    alert:"¿ESTO NO ES UN SUEÑO?",
-    proceed:"Empezar"
-  }
+ru:{
+brand:"ОСоЗНАЙКА!",
+sub:"Посредник обучения осознанности",
+wake:"ЯВЬ",
+dream:"СОН",
+observe:"Я наблюдаю...",
+five:"Что ты делал 5 минут назад?",
+home:"В каком направлении твой Дом?",
+alert:"ЭТО НЕ СОН?",
+turnSouth:"Повернись к Югу",
+southHint:"(там где солнце в полдень)",
+ready:"Готово"
+},
+en:{
+brand:"AWARENESSY!",
+sub:"Mediator of awareness training",
+wake:"WAKE",
+dream:"DREAM",
+observe:"I observe...",
+five:"What were you doing 5 minutes ago?",
+home:"Where is your Home direction?",
+alert:"THIS IS NOT A DREAM?",
+turnSouth:"Turn to the South",
+southHint:"(where the sun is at noon)",
+ready:"Ready"
+},
+es:{
+brand:"CONCIENCITO!",
+sub:"Mediador del entrenamiento consciente",
+wake:"VIGILIA",
+dream:"SUEÑO",
+observe:"Estoy observando...",
+five:"¿Qué hacías hace 5 minutos?",
+home:"¿En qué dirección está tu Hogar?",
+alert:"¿ESTO NO ES UN SUEÑO?",
+turnSouth:"Gira hacia el Sur",
+southHint:"(donde el sol está al mediodía)",
+ready:"Listo"
+}
 };
 
-function t(key){
-  return TXT[state.lang][key] || key;
-}
+function t(k){ return TXT[state.lang][k] || k; }
 
 function detectLang(){
-  let code="en";
-  try{
-    if(window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code){
-      code = Telegram.WebApp.initDataUnsafe.user.language_code;
-    }else{
-      code = navigator.language || "en";
-    }
-  }catch(e){}
-  code = code.toLowerCase();
-  if(code.startsWith("ru")) return "ru";
-  if(code.startsWith("es")) return "es";
-  return "en";
+let code=(navigator.language||"en").toLowerCase();
+try{
+if(window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code){
+code=Telegram.WebApp.initDataUnsafe.user.language_code.toLowerCase();
+}
+}catch(e){}
+if(code.startsWith("ru")) return "ru";
+if(code.startsWith("es")) return "es";
+return "en";
 }
 
 /* ---------- DOM ---------- */
-const topPanel = document.getElementById("topPanel");
-const bottomPanel = document.getElementById("bottomPanel");
 
-/* ---------- INTRO VARIANTS ---------- */
-const introVariants = [
-  "observe",
-  "five",
-  "home",
-  "alert",
-  "image",
-  "video"
+const app = document.getElementById("app");
+const topPanel = document.getElementById("topPanel");
+const bottomDock = document.getElementById("bottomDock");
+
+/* ---------- INTRO ---------- */
+
+const variants = [
+"text1",
+"text2",
+"text3",
+"alert",
+"image",
+"video"
 ];
 
-function randomIntro(){
-  return introVariants[Math.floor(Math.random()*introVariants.length)];
+function rnd(arr){
+return arr[Math.floor(Math.random()*arr.length)];
 }
 
-/* ---------- RENDER ---------- */
+function header(){
+return `
+<div id="header">
+<div>
+<div id="brand">${t("brand")}</div>
+<div id="subBrand">${t("sub")}</div>
+</div>
+
+<div id="langBar">
+<button class="mini lang" data-l="ru">RU</button>
+<button class="mini lang" data-l="en">EN</button>
+<button class="mini lang" data-l="es">ES</button>
+</div>
+</div>
+`;
+}
+
 function renderIntro(){
-  state.screen="intro";
-  state.mode=null;
 
-  bottomPanel.classList.remove("show");
+app.style.background = `
+radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+var(--bg)
+`;
 
-  const v = randomIntro();
+const v = rnd(variants);
 
-  if(v==="alert"){
-    topPanel.innerHTML = `
-      <div class="brand fade">${t("brand")}</div>
-      <div class="title fade" style="background:var(--danger);padding:18px;border-radius:18px;">
-        ${t("alert")}
-      </div>
-      ${modeButtons()}
-      ${langBar()}
-    `;
-    bindLang();
-    bindModes();
-    return;
-  }
+let center = "";
 
-  if(v==="image"){
-    topPanel.innerHTML = `
-      <div class="brand fade">${t("brand")}</div>
-      <div class="media fade">
-        <img src="https://picsum.photos/600/600?grayscale" alt="">
-      </div>
-      ${modeButtons()}
-      ${langBar()}
-    `;
-    bindLang();
-    bindModes();
-    return;
-  }
-
-  if(v==="video"){
-    topPanel.innerHTML = `
-      <div class="brand fade">${t("brand")}</div>
-      <div class="media fade">
-        <video autoplay muted loop playsinline>
-          <source src="" type="video/mp4">
-        </video>
-      </div>
-      <div class="sub fade">video placeholder</div>
-      ${modeButtons()}
-      ${langBar()}
-    `;
-    bindLang();
-    bindModes();
-    return;
-  }
-
-  topPanel.innerHTML = `
-    <div class="brand fade">${t("brand")}</div>
-    <div class="title fade">${t(v)}</div>
-    <div class="sub fade">Awareness training interface</div>
-    ${modeButtons()}
-    ${langBar()}
-  `;
-
-  bindLang();
-  bindModes();
+if(v==="text1"){
+center=`<div class="title fade">${t("observe")}</div>`;
 }
 
-function modeButtons(){
-  return `
-    <div class="row fade">
-      <button id="wakeBtn">${t("wake")}</button>
-      <button id="dreamBtn" class="secondary">${t("dream")}</button>
-    </div>
-  `;
+if(v==="text2"){
+center=`<div class="title fade">${t("five")}</div>`;
 }
 
-function langBar(){
-  return `
-    <div id="langBar">
-      <button class="mini langBtn" data-lang="ru">RU</button>
-      <button class="mini langBtn" data-lang="en">EN</button>
-      <button class="mini langBtn" data-lang="es">ES</button>
-    </div>
-  `;
+if(v==="text3"){
+center=`<div class="title fade">${t("home")}</div>`;
 }
 
-/* ---------- MODE ENTER ---------- */
+if(v==="alert"){
+app.style.background="var(--red)";
+center=`<div class="title fade">${t("alert")}</div>`;
+}
+
+if(v==="image"){
+center=`
+<div class="media fade">
+<img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png">
+</div>
+`;
+}
+
+if(v==="video"){
+center=`
+<div class="media fade">
+<video autoplay muted loop playsinline>
+<source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
+</video>
+</div>
+`;
+}
+
+topPanel.innerHTML = `
+${header()}
+<div id="centerBox">
+${center}
+</div>
+`;
+
+bottomDock.innerHTML = `
+<div class="row">
+<button class="main" id="wakeBtn">${t("wake")}</button>
+<button class="main" id="dreamBtn">${t("dream")}</button>
+</div>
+<div id="foot">Awarenessy Foundation Build</div>
+`;
+
+bindIntro();
+}
+
+/* ---------- SCREEN 2 ---------- */
+
 function enterMode(mode){
-  state.mode=mode;
-  bottomPanel.classList.add("show");
 
-  topPanel.innerHTML = `
-    <div class="brand fade">${t("brand")}</div>
-    <div class="title fade">${mode==="wake" ? t("wake") : t("dream")}</div>
-    <div class="sub fade">
-      Foundation build active.<br>
-      Next phase adds full flow logic.
-    </div>
-    <div class="row fade">
-      <button id="backBtn">←</button>
-      <button>${t("proceed")}</button>
-    </div>
-  `;
+state.mode = mode;
 
-  document.getElementById("backBtn").onclick = renderIntro;
+app.style.background = `
+radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+var(--bg)
+`;
+
+topPanel.innerHTML = `
+${header()}
+
+<div id="centerBox">
+<div class="card fade">
+<div class="title" style="font-size:28px;">${t("turnSouth")}</div>
+<div class="subtle">${t("southHint")}</div>
+
+<div style="margin-top:18px;">
+<button class="main" id="readyBtn">${t("ready")}</button>
+</div>
+</div>
+</div>
+`;
+
+bottomDock.innerHTML = `
+<div id="compassArea">
+<img id="compassImg" src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+</div>
+<div id="foot">Awarenessy Foundation Build</div>
+`;
+
+bindHeader();
+document.getElementById("readyBtn").onclick = ()=>{
+alert("Следующий шаг будет добавлен в Build 1.2");
+};
+
 }
 
-/* ---------- BINDERS ---------- */
-function bindModes(){
-  document.getElementById("wakeBtn").onclick = ()=>enterMode("wake");
-  document.getElementById("dreamBtn").onclick = ()=>enterMode("dream");
+/* ---------- BINDS ---------- */
+
+function bindHeader(){
+document.querySelectorAll(".lang").forEach(b=>{
+b.onclick=()=>{
+state.lang=b.dataset.l;
+localStorage.setItem("awarenessy_lang",state.lang);
+renderIntro();
+};
+});
 }
 
-function bindLang(){
-  document.querySelectorAll(".langBtn").forEach(btn=>{
-    btn.onclick=()=>{
-      state.lang = btn.dataset.lang;
-      localStorage.setItem("awarenessy_lang",state.lang);
-      renderIntro();
-    };
-  });
+function bindIntro(){
+
+bindHeader();
+
+document.getElementById("wakeBtn").onclick=()=>enterMode("wake");
+document.getElementById("dreamBtn").onclick=()=>enterMode("dream");
+
 }
 
 /* ---------- START ---------- */
+
 renderIntro();
 
 </script>

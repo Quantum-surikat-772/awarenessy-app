@@ -7,234 +7,275 @@
 
 <style>
 :root{
---bg:#050505;
---red:#d90000;
---panel:#101010;
---line:#2a2a2a;
---text:#f4f4f4;
---muted:#8a8a8a;
---gold:#c8a96b;
+  --bg:#050505;
+  --red:#d90000;
+  --panel:#101010;
+  --line:#2a2a2a;
+  --text:#f4f4f4;
+  --muted:#8a8a8a;
+  --gold:#c8a96b;
 }
 
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
 html,body{
-margin:0;
-padding:0;
-width:100%;
-height:100%;
-overflow:hidden;
-background:var(--bg);
-font-family:Arial,Helvetica,sans-serif;
-color:var(--text);
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-display:flex;
-justify-content:center;
+  display:flex;
+  justify-content:center;
 }
 
 #app{
-width:100%;
-max-width:520px;
-height:100vh;
-position:relative;
-display:flex;
-flex-direction:column;
-background:
-radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
-radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
-var(--bg);
-transition:.3s ease;
+  width:100%;
+  max-width:520px;
+  height:100vh;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+    radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+    var(--bg);
+  transition:.3s ease;
 }
 
 /* ---------- TOP ---------- */
 
 #topPanel{
-flex:1;
-padding:10px 16px 120px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:flex-start;
-text-align:center;
-position:relative;
+  flex:1;
+  padding:10px 16px 120px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
+  position:relative;
+}
+
+#topPanel.modeScreen{
+  height:50vh;
+  flex:none;
+  padding:10px 16px 8px;
+  justify-content:center;
 }
 
 #header{
-width:100%;
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-margin-bottom:4px;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:4px;
+}
+
+#headerLeft{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  text-align:left;
 }
 
 #brand{
-font-size:16px;
-font-weight:700;
-letter-spacing:.8px;
-color:var(--gold);
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.8px;
+  color:var(--gold);
 }
 
 #subBrand{
-font-size:11px;
-color:var(--muted);
-margin-top:2px;
-text-align:left;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
+  max-width:220px;
 }
 
 #langBar{
-display:flex;
-gap:6px;
+  display:flex;
+  gap:6px;
 }
 
 .mini{
-width:38px;
-height:34px;
-border:none;
-border-radius:10px;
-background:#171717;
-color:#ddd;
-border:1px solid var(--line);
-font-size:12px;
+  width:38px;
+  height:34px;
+  border:none;
+  border-radius:10px;
+  background:#171717;
+  color:#ddd;
+  border:1px solid var(--line);
+  font-size:12px;
 }
 
+/* ---------- CENTER ---------- */
+
 #centerBox{
-flex:1;
-width:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-padding:10px 0;
+  flex:1;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:10px 0;
 }
 
 .title{
-font-size:30px;
-font-weight:700;
-line-height:1.25;
-max-width:360px;
+  font-size:30px;
+  font-weight:700;
+  line-height:1.25;
+  max-width:360px;
 }
 
+.subtle{
+  font-size:14px;
+  color:#cfcfcf;
+  margin-top:10px;
+}
+
+/* ---------- MEDIA ---------- */
+
 .media{
-width:100%;
-max-width:360px;
-border-radius:18px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,.06);
-box-shadow:0 0 24px rgba(0,0,0,.35);
+  width:100%;
+  max-width:360px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 0 24px rgba(0,0,0,.35);
 }
 
 .media img,
 .media video{
-width:100%;
-display:block;
-}
-
-.subtle{
-font-size:14px;
-color:#cfcfcf;
-margin-top:10px;
+  width:100%;
+  display:block;
 }
 
 /* ---------- BOTTOM ---------- */
 
 #bottomDock{
-position:absolute;
-left:0;
-right:0;
-bottom:0;
-padding:12px 16px 16px;
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:12px 16px 16px;
+}
+
+#bottomDock.modeScreen{
+  height:50vh;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
 }
 
 .row{
-display:flex;
-gap:10px;
+  display:flex;
+  gap:10px;
 }
 
 button.main{
-height:52px;
-width:100%;
-border:none;
-border-radius:14px;
-background:linear-gradient(180deg,#181818,#111);
-color:#fff;
-font-size:16px;
-font-weight:700;
-border:1px solid var(--line);
+  height:52px;
+  width:100%;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(180deg,#181818,#111);
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  border:1px solid var(--line);
 }
 
 button.main:active{
-transform:translateY(1px);
+  transform:translateY(1px);
 }
 
 #foot{
-margin-top:8px;
-font-size:11px;
-color:#666;
-text-align:center;
+  margin-top:8px;
+  font-size:11px;
+  color:#666;
+  text-align:center;
 }
 
 /* ---------- SCREEN 2 ---------- */
 
+.modeCard{
+  width:100%;
+  max-width:360px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.modeCard .title{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.modeCard .main{
+  margin-top:14px;
+}
+
 #compassArea{
-height:50vh;
-display:flex;
-justify-content:center;
-align-items:center;
-border-top:1px solid rgba(255,255,255,.05);
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 #compassImg{
-width:min(78vw,340px);
-height:min(78vw,340px);
-object-fit:contain;
-filter:drop-shadow(0 0 12px rgba(255,255,255,.08));
+  width:min(92vw,410px);
+  height:min(92vw,410px);
+  object-fit:contain;
+  filter:
+    drop-shadow(0 0 14px rgba(255,255,255,.08))
+    drop-shadow(0 0 28px rgba(255,255,255,.04));
 }
 
-.card{
-width:100%;
-max-width:360px;
-padding:18px;
-border-radius:18px;
-background:rgba(255,255,255,.02);
-border:1px solid rgba(255,255,255,.05);
-}
+/* ---------- FX ---------- */
 
 .fade{
-animation:fade .6s ease;
+  animation:fade .6s ease;
 }
 
 @keyframes fade{
-from{opacity:0;transform:translateY(8px);}
-to{opacity:1;transform:none;}
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:none;}
 }
 </style>
 </head>
 <body>
 
 <div id="app">
-<div id="topPanel"></div>
-<div id="bottomDock"></div>
+  <div id="topPanel"></div>
+  <div id="bottomDock"></div>
 </div>
 
 <script>
-/* ===============================
-   AWARENESSY FOUNDATION BUILD 1.1
-=============================== */
+/* ====================================
+   AWARENESSY FOUNDATION BUILD 1.15
+==================================== */
 
 try{
-if(window.Telegram && Telegram.WebApp){
-Telegram.WebApp.ready();
-Telegram.WebApp.expand();
-}
+  if(window.Telegram && Telegram.WebApp){
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  }
 }catch(e){}
 
 /* ---------- STATE ---------- */
 
 const state = {
-lang: localStorage.getItem("awarenessy_lang") || detectLang(),
-mode:null
+  lang: localStorage.getItem("awarenessy_lang") || detectLang(),
+  mode:null
 };
 
 /* ---------- TEXT ---------- */
@@ -281,18 +322,24 @@ ready:"Listo"
 }
 };
 
-function t(k){ return TXT[state.lang][k] || k; }
+function t(k){
+  return TXT[state.lang][k] || k;
+}
+
+/* ---------- LANG ---------- */
 
 function detectLang(){
-let code=(navigator.language||"en").toLowerCase();
-try{
-if(window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code){
-code=Telegram.WebApp.initDataUnsafe.user.language_code.toLowerCase();
-}
-}catch(e){}
-if(code.startsWith("ru")) return "ru";
-if(code.startsWith("es")) return "es";
-return "en";
+  let code=(navigator.language||"en").toLowerCase();
+
+  try{
+    if(window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code){
+      code=Telegram.WebApp.initDataUnsafe.user.language_code.toLowerCase();
+    }
+  }catch(e){}
+
+  if(code.startsWith("ru")) return "ru";
+  if(code.startsWith("es")) return "es";
+  return "en";
 }
 
 /* ---------- DOM ---------- */
@@ -301,163 +348,164 @@ const app = document.getElementById("app");
 const topPanel = document.getElementById("topPanel");
 const bottomDock = document.getElementById("bottomDock");
 
-/* ---------- INTRO ---------- */
-
-const variants = [
-"text1",
-"text2",
-"text3",
-"alert",
-"image",
-"video"
-];
+/* ---------- HELPERS ---------- */
 
 function rnd(arr){
-return arr[Math.floor(Math.random()*arr.length)];
+  return arr[Math.floor(Math.random()*arr.length)];
 }
+
+/* ---------- HEADER ---------- */
 
 function header(){
 return `
 <div id="header">
-<div>
-<div id="brand">${t("brand")}</div>
-<div id="subBrand">${t("sub")}</div>
-</div>
+  <div id="headerLeft">
+    <div id="brand">${t("brand")}</div>
+    <div id="subBrand">${t("sub")}</div>
+  </div>
 
-<div id="langBar">
-<button class="mini lang" data-l="ru">RU</button>
-<button class="mini lang" data-l="en">EN</button>
-<button class="mini lang" data-l="es">ES</button>
-</div>
+  <div id="langBar">
+    <button class="mini lang" data-l="ru">RU</button>
+    <button class="mini lang" data-l="en">EN</button>
+    <button class="mini lang" data-l="es">ES</button>
+  </div>
 </div>
 `;
 }
+
+/* ---------- INTRO ---------- */
+
+const variants = [
+  "text1",
+  "text2",
+  "text3",
+  "alert",
+  "image",
+  "video"
+];
 
 function renderIntro(){
 
-app.style.background = `
-radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
-radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
-var(--bg)
-`;
+  topPanel.classList.remove("modeScreen");
+  bottomDock.classList.remove("modeScreen");
 
-const v = rnd(variants);
+  app.style.background = `
+  radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+  radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+  var(--bg)
+  `;
 
-let center = "";
+  const v = rnd(variants);
 
-if(v==="text1"){
-center=`<div class="title fade">${t("observe")}</div>`;
+  let center = "";
+
+  if(v==="text1") center = `<div class="title fade">${t("observe")}</div>`;
+  if(v==="text2") center = `<div class="title fade">${t("five")}</div>`;
+  if(v==="text3") center = `<div class="title fade">${t("home")}</div>`;
+
+  if(v==="alert"){
+    app.style.background = "var(--red)";
+    center = `<div class="title fade">${t("alert")}</div>`;
+  }
+
+  if(v==="image"){
+    center = `
+    <div class="media fade">
+      <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png">
+    </div>`;
+  }
+
+  if(v==="video"){
+    center = `
+    <div class="media fade">
+      <video autoplay muted loop playsinline>
+        <source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
+      </video>
+    </div>`;
+  }
+
+  topPanel.innerHTML = `
+    ${header()}
+    <div id="centerBox">${center}</div>
+  `;
+
+  bottomDock.innerHTML = `
+    <div class="row">
+      <button class="main" id="wakeBtn">${t("wake")}</button>
+      <button class="main" id="dreamBtn">${t("dream")}</button>
+    </div>
+    <div id="foot">Awarenessy Foundation Build</div>
+  `;
+
+  bindIntro();
 }
 
-if(v==="text2"){
-center=`<div class="title fade">${t("five")}</div>`;
-}
-
-if(v==="text3"){
-center=`<div class="title fade">${t("home")}</div>`;
-}
-
-if(v==="alert"){
-app.style.background="var(--red)";
-center=`<div class="title fade">${t("alert")}</div>`;
-}
-
-if(v==="image"){
-center=`
-<div class="media fade">
-<img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png">
-</div>
-`;
-}
-
-if(v==="video"){
-center=`
-<div class="media fade">
-<video autoplay muted loop playsinline>
-<source src="https://i.imgur.com/ocTkSQj.mp4" type="video/mp4">
-</video>
-</div>
-`;
-}
-
-topPanel.innerHTML = `
-${header()}
-<div id="centerBox">
-${center}
-</div>
-`;
-
-bottomDock.innerHTML = `
-<div class="row">
-<button class="main" id="wakeBtn">${t("wake")}</button>
-<button class="main" id="dreamBtn">${t("dream")}</button>
-</div>
-<div id="foot">Awarenessy Foundation Build</div>
-`;
-
-bindIntro();
-}
-
-/* ---------- SCREEN 2 ---------- */
+/* ---------- MODE ---------- */
 
 function enterMode(mode){
 
-state.mode = mode;
+  state.mode = mode;
 
-app.style.background = `
-radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
-radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
-var(--bg)
-`;
+  topPanel.classList.add("modeScreen");
+  bottomDock.classList.add("modeScreen");
 
-topPanel.innerHTML = `
-${header()}
+  app.style.background = `
+  radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
+  radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
+  var(--bg)
+  `;
 
-<div id="centerBox">
-<div class="card fade">
-<div class="title" style="font-size:28px;">${t("turnSouth")}</div>
-<div class="subtle">${t("southHint")}</div>
+  topPanel.innerHTML = `
+    ${header()}
 
-<div style="margin-top:18px;">
-<button class="main" id="readyBtn">${t("ready")}</button>
-</div>
-</div>
-</div>
-`;
+    <div id="centerBox">
+      <div class="modeCard fade">
 
-bottomDock.innerHTML = `
-<div id="compassArea">
-<img id="compassImg" src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
-</div>
-<div id="foot">Awarenessy Foundation Build</div>
-`;
+        <div class="title">${t("turnSouth")}</div>
 
-bindHeader();
-document.getElementById("readyBtn").onclick = ()=>{
-alert("Следующий шаг будет добавлен в Build 1.2");
-};
+        <div class="subtle">${t("southHint")}</div>
 
+        <button class="main" id="readyBtn">${t("ready")}</button>
+
+      </div>
+    </div>
+  `;
+
+  bottomDock.innerHTML = `
+    <div id="compassArea">
+      <img id="compassImg"
+      src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+    </div>
+
+    <div id="foot" style="padding-bottom:10px;">
+      Awarenessy Foundation Build
+    </div>
+  `;
+
+  bindHeader();
+
+  document.getElementById("readyBtn").onclick = ()=>{
+    alert("Следующий шаг будет добавлен в Build 1.2");
+  };
 }
 
 /* ---------- BINDS ---------- */
 
 function bindHeader(){
-document.querySelectorAll(".lang").forEach(b=>{
-b.onclick=()=>{
-state.lang=b.dataset.l;
-localStorage.setItem("awarenessy_lang",state.lang);
-renderIntro();
-};
-});
+  document.querySelectorAll(".lang").forEach(btn=>{
+    btn.onclick = ()=>{
+      state.lang = btn.dataset.l;
+      localStorage.setItem("awarenessy_lang", state.lang);
+      renderIntro();
+    };
+  });
 }
 
 function bindIntro(){
+  bindHeader();
 
-bindHeader();
-
-document.getElementById("wakeBtn").onclick=()=>enterMode("wake");
-document.getElementById("dreamBtn").onclick=()=>enterMode("dream");
-
+  document.getElementById("wakeBtn").onclick = ()=>enterMode("wake");
+  document.getElementById("dreamBtn").onclick = ()=>enterMode("dream");
 }
 
 /* ---------- START ---------- */

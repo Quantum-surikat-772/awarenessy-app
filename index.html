@@ -48,7 +48,6 @@ body{
     radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
     radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
     var(--bg);
-  transition:.3s ease;
 }
 
 /* ---------- TOP ---------- */
@@ -58,32 +57,24 @@ body{
   padding:10px 16px 120px;
   display:flex;
   flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  text-align:center;
-  position:relative;
 }
 
-#topPanel.modeScreen{
+#topPanel.mode{
   height:50vh;
   flex:none;
   padding:10px 16px 8px;
-  justify-content:center;
 }
 
 #header{
-  width:100%;
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  margin-bottom:4px;
 }
 
 #headerLeft{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  text-align:left;
 }
 
 #brand{
@@ -97,7 +88,6 @@ body{
   font-size:11px;
   color:var(--muted);
   margin-top:2px;
-  max-width:220px;
 }
 
 #langBar{
@@ -116,16 +106,13 @@ body{
   font-size:12px;
 }
 
-/* ---------- CENTER ---------- */
-
 #centerBox{
   flex:1;
-  width:100%;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   flex-direction:column;
-  padding:10px 0;
+  text-align:center;
 }
 
 .title{
@@ -136,9 +123,9 @@ body{
 }
 
 .subtle{
-  font-size:14px;
-  color:#cfcfcf;
   margin-top:10px;
+  color:#d0d0d0;
+  font-size:14px;
 }
 
 /* ---------- MEDIA ---------- */
@@ -148,8 +135,6 @@ body{
   max-width:360px;
   border-radius:18px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.06);
-  box-shadow:0 0 24px rgba(0,0,0,.35);
 }
 
 .media img,
@@ -168,7 +153,7 @@ body{
   padding:12px 16px 16px;
 }
 
-#bottomDock.modeScreen{
+#bottomDock.mode{
   height:50vh;
   padding:0;
   display:flex;
@@ -182,8 +167,8 @@ body{
 }
 
 button.main{
-  height:52px;
   width:100%;
+  height:52px;
   border:none;
   border-radius:14px;
   background:linear-gradient(180deg,#181818,#111);
@@ -204,7 +189,7 @@ button.main:active{
   text-align:center;
 }
 
-/* ---------- SCREEN 2 ---------- */
+/* ---------- MODE CARD ---------- */
 
 .modeCard{
   width:100%;
@@ -216,13 +201,10 @@ button.main:active{
 }
 
 .modeCard .title{
-  font-size:28px;
-  margin-bottom:10px;
+  font-size:26px;
 }
 
-.modeCard .main{
-  margin-top:14px;
-}
+/* ---------- COMPASS ---------- */
 
 #compassArea{
   height:100%;
@@ -231,13 +213,25 @@ button.main:active{
   align-items:center;
 }
 
-#compassImg{
+#compassWrap{
+  position:relative;
   width:min(92vw,410px);
   height:min(92vw,410px);
+}
+
+#compassImg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
   object-fit:contain;
-  filter:
-    drop-shadow(0 0 14px rgba(255,255,255,.08))
-    drop-shadow(0 0 28px rgba(255,255,255,.04));
+}
+
+#compassSvg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
 }
 
 /* ---------- FX ---------- */
@@ -260,27 +254,13 @@ button.main:active{
 </div>
 
 <script>
-/* ==========================================
-   AWARENESSY BUILD 2.1
-   CORE FLOW START
-========================================== */
-
-try{
-  if(window.Telegram && Telegram.WebApp){
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-  }
-}catch(e){}
-
-/* ---------- STATE ---------- */
+/* =====================================
+AWARENESSY FULL CLEAN 2.2
+===================================== */
 
 const state = {
-  lang: localStorage.getItem("awarenessy_lang") || detectLang(),
+  lang: localStorage.getItem("awarenessy_lang") || "ru",
   mode:null,
-
-  beamDir:null,      // инвертированное направление
-  ring:null,         // выбранное кольцо
-  overlayReady:false
 
   entry:{
     mode:null,
@@ -288,8 +268,15 @@ const state = {
     home:null,
     distance:null,
     created:null
-  }
+  },
+
+  beamDir:null,
+  ring:null
 };
+
+const topPanel = document.getElementById("topPanel");
+const bottomDock = document.getElementById("bottomDock");
+const app = document.getElementById("app");
 
 /* ---------- TEXT ---------- */
 
@@ -297,185 +284,132 @@ const TXT = {
 ru:{
 brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
-
 wake:"ЯВЬ",
 dream:"СОН",
-
-observe:"Я наблюдаю...",
-five:"Что ты делал 5 минут назад?",
-home:"В каком направлении твой Дом?",
-alert:"ЭТО НЕ СОН?",
-
-turnSouth:"Повернись к Югу",
-southHint:"(там где солнце в полдень)",
 ready:"Готово",
-
-timeAsk:"Какое время суток?",
-homeAsk:"В каком направлении от тебя твой Дом?",
-distanceAsk:"Как далеко?",
-
+turn:"Повернись к Югу",
+hint:"(там где солнце в полдень)",
+time:"Какое время суток?",
+home:"В каком направлении от тебя твой Дом?",
+dist:"Как далеко?",
 saved:"Запись сохранена",
-
-times:[
-"Рассвет","Утро","День",
-"Вечер","Закат","Ночь"
-],
-
-distances:[
-"Дом","Близко","Средне","Далеко"
+times:["Рассвет","Утро","День","Вечер","Закат","Ночь"],
+distances:["Дом","Близко","Средне","Далеко"],
+intro:[
+"Я наблюдаю...",
+"Что ты делал 5 минут назад?",
+"В каком направлении твой Дом?"
 ]
 },
-
 en:{
 brand:"AWARENESSY!",
 sub:"Mediator of awareness training",
-
 wake:"WAKE",
 dream:"DREAM",
-
-observe:"I observe...",
-five:"What were you doing 5 minutes ago?",
-home:"Where is your Home direction?",
-alert:"THIS IS NOT A DREAM?",
-
-turnSouth:"Turn to the South",
-southHint:"(where the sun is at noon)",
 ready:"Ready",
-
-timeAsk:"What time of day?",
-homeAsk:"Where is your Home from you?",
-distanceAsk:"How far?",
-
+turn:"Turn to the South",
+hint:"(where the sun is at noon)",
+time:"What time of day?",
+home:"Where is your Home from you?",
+dist:"How far?",
 saved:"Saved",
-
-times:[
-"Dawn","Morning","Day",
-"Evening","Sunset","Night"
-],
-
-distances:[
-"Home","Near","Medium","Far"
+times:["Dawn","Morning","Day","Evening","Sunset","Night"],
+distances:["Home","Near","Medium","Far"],
+intro:[
+"I observe...",
+"What were you doing 5 minutes ago?",
+"Where is your Home?"
 ]
 },
-
 es:{
 brand:"CONCIENCITO!",
 sub:"Mediador del entrenamiento consciente",
-
 wake:"VIGILIA",
 dream:"SUEÑO",
-
-observe:"Estoy observando...",
-five:"¿Qué hacías hace 5 minutos?",
-home:"¿En qué dirección está tu Hogar?",
-alert:"¿ESTO NO ES UN SUEÑO?",
-
-turnSouth:"Gira hacia el Sur",
-southHint:"(donde el sol está al mediodía)",
 ready:"Listo",
-
-timeAsk:"¿Qué momento del día?",
-homeAsk:"¿Dónde está tu Hogar desde ti?",
-distanceAsk:"¿Qué tan lejos?",
-
+turn:"Gira hacia el Sur",
+hint:"(donde el sol está al mediodía)",
+time:"¿Qué momento del día?",
+home:"¿Dónde está tu Hogar desde ti?",
+dist:"¿Qué tan lejos?",
 saved:"Guardado",
-
-times:[
-"Amanecer","Mañana","Día",
-"Tarde","Atardecer","Noche"
-],
-
-distances:[
-"Hogar","Cerca","Medio","Lejos"
+times:["Amanecer","Mañana","Día","Tarde","Atardecer","Noche"],
+distances:["Hogar","Cerca","Medio","Lejos"],
+intro:[
+"Estoy observando...",
+"¿Qué hacías hace 5 minutos?",
+"¿Dónde está tu Hogar?"
 ]
 }
 };
 
 function t(k){
-  return TXT[state.lang][k] || k;
+  return TXT[state.lang][k];
 }
 
 /* ---------- HELPERS ---------- */
-
-function detectLang(){
-  let code=(navigator.language||"en").toLowerCase();
-
-  try{
-    if(window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code){
-      code=Telegram.WebApp.initDataUnsafe.user.language_code.toLowerCase();
-    }
-  }catch(e){}
-
-  if(code.startsWith("ru")) return "ru";
-  if(code.startsWith("es")) return "es";
-  return "en";
-}
 
 function rnd(arr){
   return arr[Math.floor(Math.random()*arr.length)];
 }
 
-const app = document.getElementById("app");
-const topPanel = document.getElementById("topPanel");
-const bottomDock = document.getElementById("bottomDock");
-
-/* ---------- HEADER ---------- */
-
 function header(){
 return `
 <div id="header">
-  <div id="headerLeft">
-    <div id="brand">${t("brand")}</div>
-    <div id="subBrand">${t("sub")}</div>
-  </div>
+ <div id="headerLeft">
+   <div id="brand">${t("brand")}</div>
+   <div id="subBrand">${t("sub")}</div>
+ </div>
 
-  <div id="langBar">
-    <button class="mini lang" data-l="ru">RU</button>
-    <button class="mini lang" data-l="en">EN</button>
-    <button class="mini lang" data-l="es">ES</button>
-  </div>
+ <div id="langBar">
+   <button class="mini lang" data-l="ru">RU</button>
+   <button class="mini lang" data-l="en">EN</button>
+   <button class="mini lang" data-l="es">ES</button>
+ </div>
 </div>
 `;
 }
 
-/* ---------- INTRO ---------- */
+function bindLang(){
+document.querySelectorAll(".lang").forEach(btn=>{
+btn.onclick=()=>{
+state.lang=btn.dataset.l;
+localStorage.setItem("awarenessy_lang",state.lang);
+renderIntro();
+};
+});
+}
 
-const variants = [
-"text1","text2","text3","alert","image","video"
-];
+/* ---------- INTRO ---------- */
 
 function renderIntro(){
 
-topPanel.classList.remove("modeScreen");
-bottomDock.classList.remove("modeScreen");
+topPanel.className="";
+bottomDock.className="";
 
-app.style.background = `
+const types=["text","image","video","alert"];
+const mode=rnd(types);
+
+app.style.background=`
 radial-gradient(circle at 20% 15%, rgba(255,255,255,.03), transparent 20%),
 radial-gradient(circle at 80% 65%, rgba(255,255,255,.02), transparent 25%),
 var(--bg)
 `;
 
-const v = rnd(variants);
+let center="";
 
-let center = "";
-
-if(v==="text1") center=`<div class="title fade">${t("observe")}</div>`;
-if(v==="text2") center=`<div class="title fade">${t("five")}</div>`;
-if(v==="text3") center=`<div class="title fade">${t("home")}</div>`;
-
-if(v==="alert"){
-app.style.background="var(--red)";
-center=`<div class="title fade">${t("alert")}</div>`;
+if(mode==="text"){
+center=`<div class="title fade">${rnd(t("intro"))}</div>`;
 }
 
-if(v==="image"){
+if(mode==="image"){
 center=`
 <div class="media fade">
 <img src="https://i.postimg.cc/zXp9BVGf/Hands-1.png">
 </div>`;
 }
 
-if(v==="video"){
+if(mode==="video"){
 center=`
 <div class="media fade">
 <video autoplay muted loop playsinline>
@@ -484,29 +418,37 @@ center=`
 </div>`;
 }
 
-topPanel.innerHTML = `
+if(mode==="alert"){
+app.style.background="var(--red)";
+center=`<div class="title fade">ЭТО НЕ СОН?</div>`;
+}
+
+topPanel.innerHTML=`
 ${header()}
 <div id="centerBox">${center}</div>
 `;
 
-bottomDock.innerHTML = `
+bottomDock.innerHTML=`
 <div class="row">
 <button class="main" id="wakeBtn">${t("wake")}</button>
 <button class="main" id="dreamBtn">${t("dream")}</button>
 </div>
-<div id="foot">Awarenessy Build 2.1</div>
+<div id="foot">Awarenessy Full Clean 2.2</div>
 `;
 
-bindIntro();
+bindLang();
+
+document.getElementById("wakeBtn").onclick=()=>enterMode("wake");
+document.getElementById("dreamBtn").onclick=()=>enterMode("dream");
 }
 
-/* ---------- START MODE ---------- */
+/* ---------- MODE ---------- */
 
 function enterMode(mode){
 
-state.mode = mode;
+state.mode=mode;
 
-state.entry = {
+state.entry={
 mode:mode,
 time:null,
 home:null,
@@ -514,80 +456,41 @@ distance:null,
 created:new Date().toISOString()
 };
 
-topPanel.classList.add("modeScreen");
-bottomDock.classList.add("modeScreen");
+state.beamDir=null;
+state.ring=null;
 
-showCompassBase();
+topPanel.className="mode";
+bottomDock.className="mode";
+
+showCompass();
 stepSouth();
 }
 
 /* ---------- COMPASS ---------- */
 
-function showCompassBase(){
+function showCompass(){
 
-bottomDock.innerHTML = `
+bottomDock.innerHTML=`
 <div id="compassArea">
-  <div style="
-    position:relative;
-    width:min(92vw,410px);
-    height:min(92vw,410px);
-  ">
+ <div id="compassWrap">
+   <img id="compassImg"
+   src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
 
-    <img id="compassImg"
-    src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png"
-    style="
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      z-index:1;
-    ">
-
-    <svg id="compassSvg"
-    viewBox="0 0 400 400"
-    style="
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      z-index:2;
-      overflow:visible;
-    ">
-    </svg>
-
-  </div>
+   <svg id="compassSvg" viewBox="0 0 400 400"></svg>
+ </div>
 </div>
-
-<div id="foot" style="padding-bottom:10px;">
-Awarenessy Build 2.2
-</div>
+<div id="foot">Awarenessy Full Clean 2.2</div>
 `;
-
-state.overlayReady = true;
-drawCompassLight();
-
 }
 
-/* ---------- НОВЫЕ ФУНКЦИИ ---------- */
-
-const DIRS = ["n","ne","e","se","s","sw","w","nw"];
+const DIRS=["n","ne","e","se","s","sw","w","nw"];
 
 function oppositeDir(dir){
-let i = DIRS.indexOf(dir);
-if(i<0) return "n";
+const i=DIRS.indexOf(dir);
 return DIRS[(i+4)%8];
 }
 
-function ringIndexFromDistance(v){
-
-/*
-0 = Дом
-1 = Близко
-2 = Средне
-3 = Далеко
-*/
-
+function ringIndex(v){
 if(v==="1") return 0;
 if(v==="2") return 1;
 if(v==="3") return 2;
@@ -596,17 +499,17 @@ return null;
 
 function polar(cx,cy,r,a){
 return {
-x:cx + Math.cos(a)*r,
-y:cy + Math.sin(a)*r
+x:cx+Math.cos(a)*r,
+y:cy+Math.sin(a)*r
 };
 }
 
-function sectorPath(innerR,outerR,start,end){
+function path(innerR,outerR,a0,a1){
 
-const p1 = polar(200,200,outerR,start);
-const p2 = polar(200,200,outerR,end);
-const p3 = polar(200,200,innerR,end);
-const p4 = polar(200,200,innerR,start);
+const p1=polar(200,200,outerR,a0);
+const p2=polar(200,200,outerR,a1);
+const p3=polar(200,200,innerR,a1);
+const p4=polar(200,200,innerR,a0);
 
 return `
 M ${p1.x} ${p1.y}
@@ -617,38 +520,30 @@ Z
 `;
 }
 
-function drawCompassLight(){
+function drawCompass(){
 
-if(!state.overlayReady) return;
-
-const svg = document.getElementById("compassSvg");
+const svg=document.getElementById("compassSvg");
 if(!svg) return;
 
-svg.innerHTML = "";
+svg.innerHTML="";
 
 if(!state.beamDir) return;
 
-const idx = DIRS.indexOf(state.beamDir);
-if(idx<0) return;
+const idx=DIRS.indexOf(state.beamDir);
 
-/* 8 направлений */
-const step = Math.PI*2/8;
+const step=Math.PI*2/8;
+const offset=-Math.PI/2-step/2;
 
-/* север вверх */
-const offset = -Math.PI/2 - step/2;
+const a0=offset+idx*step;
+const a1=a0+step;
 
-const start = offset + idx*step;
-const end   = start + step;
-
-/* кольца */
-const rings = [
-[48,92],   // inner
-[92,138],  // middle
-[138,184]  // outer
+const rings=[
+[48,92],
+[92,138],
+[138,184]
 ];
 
-/* defs */
-svg.innerHTML += `
+svg.innerHTML=`
 <defs>
 <filter id="glow">
 <feGaussianBlur stdDeviation="5" result="b"/>
@@ -660,249 +555,165 @@ svg.innerHTML += `
 </defs>
 `;
 
-/* ---------- если кольцо ещё не выбрано = весь луч ---------- */
-
 if(state.ring===null){
 
 rings.forEach(r=>{
-
-svg.innerHTML += `
+svg.innerHTML+=`
 <path
-d="${sectorPath(r[0],r[1],start,end)}"
-fill="rgba(255,255,255,0.14)"
-stroke="rgba(255,220,170,0.75)"
+d="${path(r[0],r[1],a0,a1)}"
+fill="rgba(255,255,255,.14)"
+stroke="rgba(255,220,170,.8)"
 stroke-width="1.2"
 filter="url(#glow)"
-/>
-`;
-
+/>`;
 });
 
 return;
 }
 
-/* ---------- если кольцо выбрано ---------- */
+const r=rings[state.ring];
 
-const r = rings[state.ring];
-
-svg.innerHTML += `
+svg.innerHTML+=`
 <path
-d="${sectorPath(r[0],r[1],start,end)}"
-fill="rgba(255,255,255,0.20)"
-stroke="rgba(255,230,180,0.95)"
-stroke-width="1.6"
+d="${path(r[0],r[1],a0,a1)}"
+fill="rgba(255,255,255,.18)"
+stroke="rgba(255,230,180,1)"
+stroke-width="1.5"
 filter="url(#glow)"
-/>
-`;
-
+/>`;
 }
 
-/* ---------- STEP 1 ---------- */
+/* ---------- FLOW ---------- */
 
 function stepSouth(){
 
-topPanel.innerHTML = `
+topPanel.innerHTML=`
 ${header()}
-
 <div id="centerBox">
 <div class="modeCard fade">
-
-<div class="title">${t("turnSouth")}</div>
-
-<div class="subtle">${t("southHint")}</div>
-
-<button class="main" id="readyBtn">${t("ready")}</button>
-
+<div class="title">${t("turn")}</div>
+<div class="subtle">${t("hint")}</div>
+<button class="main" id="goBtn">${t("ready")}</button>
 </div>
 </div>
 `;
 
-bindHeader();
-
-document.getElementById("readyBtn").onclick=stepTime;
+bindLang();
+document.getElementById("goBtn").onclick=stepTime;
 }
-
-/* ---------- STEP 2 ---------- */
 
 function stepTime(){
 
-const arr = t("times");
-
-topPanel.innerHTML = `
+topPanel.innerHTML=`
 ${header()}
-
 <div id="centerBox">
 <div class="modeCard fade">
+<div class="title">${t("time")}</div>
 
-<div class="title" style="font-size:24px;">
-${t("timeAsk")}
-</div>
-
-<div style="
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px;
-margin-top:14px;
-">
-
-${arr.map((label,i)=>`
-<button class="main timeBtn"
-data-v="${i}"
-style="height:46px;font-size:14px;">
-${label}
-</button>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px;">
+${t("times").map((x,i)=>`
+<button class="main timeBtn" data-v="${i}" style="height:46px;font-size:14px;">${x}</button>
 `).join("")}
-
 </div>
 
 </div>
 </div>
 `;
 
-bindHeader();
+bindLang();
 
 document.querySelectorAll(".timeBtn").forEach(btn=>{
 btn.onclick=()=>{
-state.entry.time = btn.dataset.v;
+state.entry.time=btn.dataset.v;
 stepHome();
 };
 });
 }
 
-/* ---------- STEP 3 ---------- */
-
 function stepHome(){
 
-const dirs = [
+const dirs=[
 ["nw","↖"],["n","↑"],["ne","↗"],
 ["w","←"],["c","Я"],["e","→"],
 ["sw","↙"],["s","↓"],["se","↘"]
 ];
 
-topPanel.innerHTML = `
+topPanel.innerHTML=`
 ${header()}
-
 <div id="centerBox">
 <div class="modeCard fade">
+<div class="title">${t("home")}</div>
 
-<div class="title" style="font-size:22px;">
-${t("homeAsk")}
-</div>
-
-<div style="
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
-margin-top:14px;
-">
-
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;">
 ${dirs.map(d=>`
-<button class="main dirBtn"
-data-v="${d[0]}"
-style="height:52px;font-size:20px;">
-${d[1]}
-</button>
+<button class="main dirBtn" data-v="${d[0]}" style="height:52px;font-size:20px;">${d[1]}</button>
 `).join("")}
-
 </div>
 
 </div>
 </div>
 `;
 
-bindHeader();
+bindLang();
 
 document.querySelectorAll(".dirBtn").forEach(btn=>{
 btn.onclick=()=>{
 
-state.entry.home = btn.dataset.v;
+state.entry.home=btn.dataset.v;
 
 if(btn.dataset.v==="c"){
-
-state.beamDir = null;
-state.ring = null;
-drawCompassLight();
-
-state.entry.distance = "0";
+state.entry.distance="0";
 finishSave();
-
-}else{
-
-state.beamDir = oppositeDir(btn.dataset.v);
-state.ring = null;
-drawCompassLight();
-
-stepDistance();
+return;
 }
+
+state.beamDir=oppositeDir(btn.dataset.v);
+state.ring=null;
+
+drawCompass();
+stepDistance();
 
 };
 });
-
-/* ---------- STEP 4 ---------- */
+}
 
 function stepDistance(){
 
-const arr = t("distances");
-
-topPanel.innerHTML = `
+topPanel.innerHTML=`
 ${header()}
-
 <div id="centerBox">
 <div class="modeCard fade">
+<div class="title">${t("dist")}</div>
 
-<div class="title" style="font-size:24px;">
-${t("distanceAsk")}
-</div>
-
-<div style="
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px;
-margin-top:14px;
-">
-
-${arr.map((label,i)=>`
-<button class="main distBtn"
-data-v="${i}"
-style="height:48px;font-size:14px;">
-${label}
-</button>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px;">
+${t("distances").map((x,i)=>`
+<button class="main distBtn" data-v="${i}" style="height:48px;font-size:14px;">${x}</button>
 `).join("")}
-
 </div>
 
 </div>
 </div>
 `;
 
-bindHeader();
+bindLang();
 
 document.querySelectorAll(".distBtn").forEach(btn=>{
 btn.onclick=()=>{
+state.entry.distance=btn.dataset.v;
+state.ring=ringIndex(btn.dataset.v);
+drawCompass();
 
-state.entry.distance = btn.dataset.v;
-state.ring = ringIndexFromDistance(btn.dataset.v);
-
-drawCompassLight();
-
-setTimeout(()=>{
-finishSave();
-},350);
-
+setTimeout(finishSave,350);
 };
 });
-
-/* ---------- SAVE ---------- */
+}
 
 function finishSave(){
 
-let arr = [];
-
+let arr=[];
 try{
-arr = JSON.parse(localStorage.getItem("awarenessy_entries") || "[]");
-}catch(e){
-arr = [];
-}
+arr=JSON.parse(localStorage.getItem("awarenessy_entries")||"[]");
+}catch(e){}
 
 arr.push(state.entry);
 
@@ -911,54 +722,19 @@ localStorage.setItem(
 JSON.stringify(arr)
 );
 
-topPanel.innerHTML = `
+topPanel.innerHTML=`
 ${header()}
-
 <div id="centerBox">
 <div class="modeCard fade">
-
 <div class="title">${t("saved")}</div>
-
-<div class="subtle">
-${new Date().toLocaleString()}
-</div>
-
-<button class="main"
-style="margin-top:16px;"
-id="restartBtn">
-OK
-</button>
-
+<button class="main" id="okBtn" style="margin-top:16px;">OK</button>
 </div>
 </div>
 `;
 
-bindHeader();
+bindLang();
 
-document.getElementById("restartBtn").onclick=renderIntro;
-}
-
-/* ---------- BINDS ---------- */
-
-function bindHeader(){
-document.querySelectorAll(".lang").forEach(btn=>{
-btn.onclick=()=>{
-state.lang = btn.dataset.l;
-localStorage.setItem(
-"awarenessy_lang",
-state.lang
-);
-renderIntro();
-};
-});
-}
-
-function bindIntro(){
-
-bindHeader();
-
-document.getElementById("wakeBtn").onclick=()=>enterMode("wake");
-document.getElementById("dreamBtn").onclick=()=>enterMode("dream");
+document.getElementById("okBtn").onclick=renderIntro;
 }
 
 /* ---------- START ---------- */

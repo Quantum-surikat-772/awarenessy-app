@@ -244,6 +244,18 @@ button.main:active{
   from{opacity:0;transform:translateY(8px);}
   to{opacity:1;transform:none;}
 }
+
+@keyframes emotionPulse{
+  0%   { opacity:.45; transform:scale(0.92); }
+  50%  { opacity:1; transform:scale(1.12); }
+  100% { opacity:.45; transform:scale(0.92); }
+}
+
+.pulseCore{
+  animation:emotionPulse 3s ease-in-out infinite;
+  transform-origin:center;
+}
+  
 </style>
 </head>
 <body>
@@ -261,6 +273,7 @@ AWARENESSY FULL CLEAN 2.2
 const state = {
   lang: localStorage.getItem("awarenessy_lang") || "ru",
   mode:null,
+  emotionColor:null,
 
   entry:{
     mode:null,
@@ -520,12 +533,37 @@ Z
 `;
 }
 
-function drawCompass(){
+function drawCompassLight(){
 
 const svg=document.getElementById("compassSvg");
 if(!svg) return;
 
 svg.innerHTML="";
+
+const emotion = state.emotionColor || null;
+
+if(state.entry.home==="c" && emotion){
+
+svg.innerHTML += `
+<defs>
+<radialGradient id="pulseCenter">
+<stop offset="0%" stop-color="${emotion}" stop-opacity="1"/>
+<stop offset="45%" stop-color="${emotion}" stop-opacity=".45"/>
+<stop offset="100%" stop-color="${emotion}" stop-opacity="0"/>
+</radialGradient>
+</defs>
+
+<circle
+cx="200"
+cy="200"
+r="34"
+fill="url(#pulseCenter)"
+class="pulseCore"
+/>
+`;
+
+return;
+}
 
 if(!state.beamDir) return;
 
@@ -572,6 +610,33 @@ return;
 }
 
 const r=rings[state.ring];
+
+if(emotion){
+
+const mid = (start + end)/2;
+const rr = (r[0] + r[1]) / 2;
+
+const cx = 200 + Math.cos(mid)*rr;
+const cy = 200 + Math.sin(mid)*rr;
+
+svg.innerHTML += `
+<defs>
+<radialGradient id="pulseOrb">
+<stop offset="0%" stop-color="${emotion}" stop-opacity="1"/>
+<stop offset="35%" stop-color="${emotion}" stop-opacity=".55"/>
+<stop offset="100%" stop-color="${emotion}" stop-opacity="0"/>
+</radialGradient>
+</defs>
+
+<circle
+cx="${cx}"
+cy="${cy}"
+r="22"
+fill="url(#pulseOrb)"
+class="pulseCore"
+/>
+`;
+}
 
 svg.innerHTML+=`
 <path

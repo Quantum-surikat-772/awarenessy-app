@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Awarenessy MASTER 3.0</title>
+<title>Awarenessy MASTER 3.1 FIXED</title>
 
 <style>
 :root{
@@ -13,7 +13,7 @@
   --text:#f2f2f2;
   --muted:#8c8c8c;
   --gold:#c9a76b;
-  --red:#c40000;
+  --red:#d00000;
 }
 
 *{
@@ -41,7 +41,6 @@ body{
   width:100%;
   max-width:520px;
   height:100vh;
-  position:relative;
   display:flex;
   flex-direction:column;
   background:
@@ -50,14 +49,24 @@ body{
     var(--bg);
 }
 
-/* TOP */
+/* halves */
 
 #top{
-  flex:1;
-  padding:10px 16px 130px;
+  height:50vh;
+  padding:10px 16px 10px;
   display:flex;
   flex-direction:column;
 }
+
+#bottom{
+  height:50vh;
+  padding:0 14px 14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+
+/* header */
 
 #header{
   display:flex;
@@ -73,7 +82,6 @@ body{
   font-size:16px;
   font-weight:700;
   color:var(--gold);
-  letter-spacing:.8px;
 }
 
 #sub{
@@ -98,6 +106,8 @@ body{
   font-size:12px;
 }
 
+/* content */
+
 #center{
   flex:1;
   display:flex;
@@ -107,10 +117,9 @@ body{
 }
 
 .title{
-  font-size:30px;
+  font-size:28px;
   font-weight:700;
   line-height:1.25;
-  max-width:360px;
 }
 
 .card{
@@ -124,7 +133,7 @@ body{
 
 .subtle{
   font-size:13px;
-  color:#c8c8c8;
+  color:#ccc;
   margin-top:8px;
 }
 
@@ -155,21 +164,6 @@ body{
   display:block;
 }
 
-/* BOTTOM */
-
-#bottom{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:12px 16px 16px;
-}
-
-.row{
-  display:flex;
-  gap:10px;
-}
-
 .main{
   width:100%;
   height:52px;
@@ -182,6 +176,11 @@ body{
   font-weight:700;
 }
 
+.row{
+  display:flex;
+  gap:10px;
+}
+
 #foot{
   margin-top:8px;
   font-size:11px;
@@ -189,18 +188,10 @@ body{
   text-align:center;
 }
 
-/* MODE */
-
-#bottom.mode{
-  height:50vh;
-  padding:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-}
+/* compass */
 
 #compassArea{
-  height:100%;
+  flex:1;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -220,22 +211,20 @@ body{
   height:100%;
 }
 
-#compassImg{
-  object-fit:contain;
-}
+#compassImg{object-fit:contain;}
 
 .pulseCore{
   animation:pulse 3s ease-in-out infinite;
 }
 
 @keyframes pulse{
-  0%{opacity:.45;transform:scale(0.88);}
+  0%{opacity:.45;transform:scale(.88);}
   50%{opacity:1;transform:scale(1.08);}
-  100%{opacity:.45;transform:scale(0.88);}
+  100%{opacity:.45;transform:scale(.88);}
 }
 
 .fade{
-  animation:fade .5s ease;
+  animation:fade .45s ease;
 }
 
 @keyframes fade{
@@ -252,9 +241,9 @@ body{
 </div>
 
 <script>
-/* ===============================
-   AWARENESSY MASTER 3.0
-=============================== */
+/* =======================
+MASTER 3.1 FIXED
+======================= */
 
 const topBox = document.getElementById("top");
 const bottomBox = document.getElementById("bottom");
@@ -262,10 +251,10 @@ const app = document.getElementById("app");
 
 const state = {
   lang:"ru",
-  mode:null,
   beamDir:null,
   ring:null,
-  time:null
+  time:null,
+  emotion:null
 };
 
 const TXT = {
@@ -274,20 +263,83 @@ brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
 wake:"ЯВЬ",
 dream:"СОН",
-ready:"Готово",
 turn:"Повернись к Югу",
 hint:"(там где солнце в полдень)",
+ready:"Готово",
 time:"Какое время суток?",
 home:"В каком направлении от тебя твой Дом?",
 dist:"Как далеко?",
+emotion:"Состояние:",
+saved:"Запись сохранена",
 times:["Рассвет","Утро","День","Вечер","Закат","Ночь"],
 dists:["Дом","Близко","Средне","Далеко"],
-intro:["Я наблюдаю...","Что ты делал 5 минут назад?","В каком направлении твой Дом?"]
+intro:[
+"Я наблюдаю...",
+"Что ты делал 5 минут назад?",
+"В каком направлении твой Дом?"
+],
+emo:[
+["#FFD700","Радость"],
+["#3F51B5","Спокойствие"],
+["#26C6DA","Фантазёрство"],
+["#4CAF50","Тревожность"],
+["#FF9800","Соревновательность"],
+["#F44336","Гнев"]
+]
+},
+en:{
+brand:"AWARENESSY!",
+sub:"Mediator of awareness training",
+wake:"WAKE",
+dream:"DREAM",
+turn:"Turn South",
+hint:"(where the sun is at noon)",
+ready:"Ready",
+time:"What time of day?",
+home:"Where is your Home?",
+dist:"How far?",
+emotion:"State:",
+saved:"Saved",
+times:["Dawn","Morning","Day","Evening","Sunset","Night"],
+dists:["Home","Near","Medium","Far"],
+intro:["I observe...","What were you doing 5 min ago?","Where is your Home?"],
+emo:[
+["#FFD700","Joy"],
+["#3F51B5","Calm"],
+["#26C6DA","Fantasy"],
+["#4CAF50","Anxiety"],
+["#FF9800","Competitive"],
+["#F44336","Anger"]
+]
+},
+es:{
+brand:"CONCIENCITO!",
+sub:"Mediador del entrenamiento consciente",
+wake:"VIGILIA",
+dream:"SUEÑO",
+turn:"Gira al Sur",
+hint:"(donde está el sol al mediodía)",
+ready:"Listo",
+time:"¿Qué momento del día?",
+home:"¿Dónde está tu Hogar?",
+dist:"¿Qué tan lejos?",
+emotion:"Estado:",
+saved:"Guardado",
+times:["Amanecer","Mañana","Día","Tarde","Atardecer","Noche"],
+dists:["Hogar","Cerca","Medio","Lejos"],
+intro:["Estoy observando...","¿Qué hacías hace 5 min?","¿Dónde está tu Hogar?"],
+emo:[
+["#FFD700","Alegría"],
+["#3F51B5","Calma"],
+["#26C6DA","Fantasía"],
+["#4CAF50","Ansiedad"],
+["#FF9800","Competencia"],
+["#F44336","Ira"]
+]
 }
 };
 
-function t(k){ return TXT.ru[k]; }
-
+function t(k){ return TXT[state.lang][k]; }
 function rnd(a){ return a[Math.floor(Math.random()*a.length)]; }
 
 function header(){
@@ -299,18 +351,33 @@ return `
  </div>
 
  <div id="langs">
-  <button class="mini">RU</button>
-  <button class="mini">EN</button>
-  <button class="mini">ES</button>
+  <button class="mini lang" data-l="ru">RU</button>
+  <button class="mini lang" data-l="en">EN</button>
+  <button class="mini lang" data-l="es">ES</button>
  </div>
 </div>`;
 }
 
-/* INTRO */
+function bindLang(){
+document.querySelectorAll(".lang").forEach(btn=>{
+btn.onclick=()=>{
+state.lang=btn.dataset.l;
+intro();
+};
+});
+}
+
+/* =====================
+INTRO
+===================== */
 
 function intro(){
 
-bottomBox.className="";
+state.beamDir=null;
+state.ring=null;
+state.time=null;
+state.emotion=null;
+
 app.style.background="var(--bg)";
 
 const pool=["text","image","video","alert"];
@@ -350,30 +417,26 @@ ${header()}
 
 bottomBox.innerHTML=`
 <div class="row">
-<button class="main" onclick="enterMode('wake')">${t("wake")}</button>
-<button class="main" onclick="enterMode('dream')">${t("dream")}</button>
+<button class="main" onclick="startWake()">${t("wake")}</button>
+<button class="main" onclick="startWake()">${t("dream")}</button>
 </div>
-<div id="foot">Awarenessy MASTER 3.0</div>
+<div id="foot">MASTER 3.1 FIXED</div>
 `;
+
+bindLang();
 }
 
-/* MODE */
+/* =====================
+MODE
+===================== */
 
-function enterMode(mode){
-state.mode=mode;
-state.beamDir=null;
-state.ring=null;
-state.time=null;
-
-bottomBox.className="mode";
-
+function startWake(){
 showCompass();
 stepSouth();
 }
 
-/* COMPASS */
-
 function showCompass(){
+
 bottomBox.innerHTML=`
 <div id="compassArea">
  <div id="compassWrap">
@@ -385,21 +448,27 @@ bottomBox.innerHTML=`
 </div>
 <div id="foot">MASTER BUILD</div>
 `;
+
 drawCompass();
 }
 
-const DIRS=["n","ne","e","se","s","sw","w","nw"];
+/* =====================
+COMPASS
+===================== */
+
+const DIRS=["s","sw","w","nw","n","ne","e","se"];
+/* верх = юг */
 
 function opposite(dir){
-const i=DIRS.indexOf(dir);
-return DIRS[(i+4)%8];
+const map={
+n:"s", ne:"sw", e:"w", se:"nw",
+s:"n", sw:"ne", w:"e", nw:"se"
+};
+return map[dir];
 }
 
 function polar(cx,cy,r,a){
-return {
-x:cx+Math.cos(a)*r,
-y:cy+Math.sin(a)*r
-};
+return {x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r};
 }
 
 function sector(innerR,outerR,a0,a1){
@@ -417,57 +486,14 @@ A ${innerR} ${innerR} 0 0 0 ${p4.x} ${p4.y}
 Z`;
 }
 
-function drawSolarRing(svg){
-
-if(state.time===null) return;
-
-const map = {
-0:["e","#cc3d75"],   // рассвет
-1:["se","#9ddcff"],  // утро
-2:["s","#d8b25f"],   // день
-3:["sw","#9ddcff"],  // вечер
-4:["w","#cc3d75"],   // закат
-5:["n","#244bba"]    // ночь
-};
-
-const item = map[state.time];
-if(!item) return;
-
-const dir = item[0];
-const color = item[1];
-
-const idx = DIRS.indexOf(dir);
-const step = Math.PI*2/8;
-const offset = -Math.PI/2-step/2;
-
-const a0 = offset + idx*step;
-const a1 = a0 + step;
-
-svg.innerHTML += `
-<defs>
-<radialGradient id="solarFade">
-<stop offset="0%" stop-color="${color}" stop-opacity="1"/>
-<stop offset="55%" stop-color="${color}" stop-opacity=".30"/>
-<stop offset="100%" stop-color="${color}" stop-opacity="0"/>
-</radialGradient>
-</defs>
-
-<path
-d="${sector(184,196,a0,a1)}"
-fill="url(#solarFade)"
-opacity="1"
-/>
-`;
-}
-
 function drawCompass(){
 
-const svg = document.getElementById("compassSvg");
+const svg=document.getElementById("compassSvg");
 if(!svg) return;
 
 svg.innerHTML="";
 
-drawSolarRing(svg);
+drawSolar(svg);
 
 if(!state.beamDir) return;
 
@@ -478,13 +504,9 @@ const offset=-Math.PI/2-step/2;
 const a0=offset+idx*step;
 const a1=a0+step;
 
-const rings=[
-[48,92],
-[92,138],
-[138,184]
-];
+const rings=[[48,92],[92,138],[138,184]];
 
-svg.innerHTML += `
+svg.innerHTML+=`
 <defs>
 <filter id="glow">
 <feGaussianBlur stdDeviation="6" result="b"/>
@@ -499,61 +521,116 @@ svg.innerHTML += `
 if(state.ring===null){
 
 rings.forEach(r=>{
-svg.innerHTML += `
-<path
-d="${sector(r[0],r[1],a0,a1)}"
-fill="rgba(255,255,255,.06)"
-stroke="rgba(255,230,180,.9)"
-stroke-width="1.3"
-filter="url(#glow)"
-/>`;
+svg.innerHTML+=`
+<path d="${sector(r[0],r[1],a0,a1)}"
+fill="rgba(255,255,255,.03)"
+stroke="rgba(255,230,180,.95)"
+stroke-width="1.5"
+filter="url(#glow)"/>`;
 });
-
 return;
 }
 
-const r = rings[state.ring];
+const r=rings[state.ring];
 
-svg.innerHTML += `
-<path
-d="${sector(r[0],r[1],a0,a1)}"
-fill="rgba(255,255,255,.08)"
+svg.innerHTML+=`
+<path d="${sector(r[0],r[1],a0,a1)}"
+fill="rgba(255,255,255,.04)"
 stroke="rgba(255,230,180,1)"
 stroke-width="1.8"
-filter="url(#glow)"
-/>`;
+filter="url(#glow)"/>`;
+
+if(state.emotion){
+
+const mid=(a0+a1)/2;
+const rr=(r[0]+r[1])/2;
+
+const cx=200+Math.cos(mid)*rr;
+const cy=200+Math.sin(mid)*rr;
+
+svg.innerHTML+=`
+<defs>
+<radialGradient id="pulse">
+<stop offset="0%" stop-color="${state.emotion}" stop-opacity="1"/>
+<stop offset="35%" stop-color="${state.emotion}" stop-opacity=".5"/>
+<stop offset="100%" stop-color="${state.emotion}" stop-opacity="0"/>
+</radialGradient>
+</defs>
+
+<circle cx="${cx}" cy="${cy}" r="24"
+fill="url(#pulse)"
+class="pulseCore"/>`;
+}
 }
 
-/* FLOW */
+function drawSolar(svg){
+
+if(state.time===null) return;
+
+const map={
+0:["e","#cc3d75"],
+1:["se","#9ddcff"],
+2:["s","#d8b25f"],
+3:["sw","#9ddcff"],
+4:["w","#cc3d75"],
+5:["n","#244bba"]
+};
+
+const item=map[state.time];
+const dir=item[0];
+const color=item[1];
+
+const idx=DIRS.indexOf(dir);
+const step=Math.PI*2/8;
+const offset=-Math.PI/2-step/2;
+
+const a0=offset+idx*step;
+const a1=a0+step;
+
+svg.innerHTML+=`
+<defs>
+<radialGradient id="solar">
+<stop offset="0%" stop-color="${color}" stop-opacity="1"/>
+<stop offset="55%" stop-color="${color}" stop-opacity=".25"/>
+<stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+</radialGradient>
+</defs>
+
+<path d="${sector(184,196,a0,a1)}"
+fill="url(#solar)"/>`;
+}
+
+/* =====================
+FLOW
+===================== */
 
 function stepSouth(){
 topBox.innerHTML=`
 ${header()}
 <div id="center">
- <div class="card fade">
-  <div class="title">${t("turn")}</div>
-  <div class="subtle">${t("hint")}</div>
-  <button class="main" style="margin-top:14px;" onclick="stepTime()">${t("ready")}</button>
- </div>
+<div class="card fade">
+<div class="title">${t("turn")}</div>
+<div class="subtle">${t("hint")}</div>
+<button class="main" style="margin-top:14px;" onclick="stepTime()">${t("ready")}</button>
+</div>
 </div>`;
+bindLang();
 }
 
 function stepTime(){
-
 topBox.innerHTML=`
 ${header()}
 <div id="center">
- <div class="card fade">
-  <div class="title" style="font-size:24px;">${t("time")}</div>
-
-  <div class="grid2">
-   ${t("times").map((x,i)=>`
-   <button class="main" onclick="setTime(${i})">${x}</button>
-   `).join("")}
-  </div>
-
- </div>
+<div class="card fade">
+<div class="title" style="font-size:24px;">${t("time")}</div>
+<div class="grid2">
+${t("times").map((x,i)=>`
+<button class="main" onclick="setTime(${i})">${x}</button>
+`).join("")}
+</div>
+</div>
 </div>`;
+bindLang();
 }
 
 function setTime(i){
@@ -573,48 +650,45 @@ const dirs=[
 topBox.innerHTML=`
 ${header()}
 <div id="center">
- <div class="card fade">
-  <div class="title" style="font-size:22px;">${t("home")}</div>
-
-  <div class="grid3">
-   ${dirs.map(d=>`
-   <button class="main" onclick="pickDir('${d[0]}')">${d[1]}</button>
-   `).join("")}
-  </div>
-
- </div>
+<div class="card fade">
+<div class="title" style="font-size:22px;">${t("home")}</div>
+<div class="grid3">
+${dirs.map(d=>`
+<button class="main" onclick="pickDir('${d[0]}')">${d[1]}</button>
+`).join("")}
+</div>
+</div>
 </div>`;
+bindLang();
 }
 
 function pickDir(dir){
 
 if(dir==="c"){
-alert("Дом");
+stepEmotion();
 return;
 }
 
-state.beamDir = opposite(dir);
-state.ring = null;
+state.beamDir=opposite(dir);
+state.ring=null;
 drawCompass();
 stepDistance();
 }
 
 function stepDistance(){
-
 topBox.innerHTML=`
 ${header()}
 <div id="center">
- <div class="card fade">
-  <div class="title" style="font-size:24px;">${t("dist")}</div>
-
-  <div class="grid2">
-   ${t("dists").map((x,i)=>`
-   <button class="main" onclick="pickDist(${i})">${x}</button>
-   `).join("")}
-  </div>
-
- </div>
+<div class="card fade">
+<div class="title">${t("dist")}</div>
+<div class="grid2">
+${t("dists").map((x,i)=>`
+<button class="main" onclick="pickDist(${i})">${x}</button>
+`).join("")}
+</div>
+</div>
 </div>`;
+bindLang();
 }
 
 function pickDist(i){
@@ -626,10 +700,44 @@ state.ring=i-1;
 }
 
 drawCompass();
+stepEmotion();
+}
+
+function stepEmotion(){
+
+topBox.innerHTML=`
+${header()}
+<div id="center">
+<div class="card fade">
+<div class="title">${t("emotion")}</div>
+
+<div class="grid2">
+${t("emo").map(e=>`
+<button class="main"
+onclick="pickEmotion('${e[0]}')">${e[1]}</button>
+`).join("")}
+</div>
+
+</div>
+</div>`;
+bindLang();
+}
+
+function pickEmotion(c){
+state.emotion=c;
+drawCompass();
 
 setTimeout(()=>{
-intro();
-},900);
+topBox.innerHTML=`
+${header()}
+<div id="center">
+<div class="card fade">
+<div class="title">${t("saved")}</div>
+<button class="main" style="margin-top:16px;" onclick="intro()">OK</button>
+</div>
+</div>`;
+bindLang();
+},600);
 }
 
 /* START */

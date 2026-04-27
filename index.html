@@ -3,26 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Awarenessy 3.3 MASTER</title>
+<title>Awarenessy 4.0 Canonical</title>
 
 <style>
 :root{
---bg:#040404;
---panel:#0f0f0f;
---line:#222;
+--bg:#050505;
+--panel:#101010;
+--line:#242424;
 --text:#f5f5f5;
---muted:#7f7f7f;
+--muted:#7e7e7e;
 --gold:#c9a86a;
---red:#d60000;
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
 html,body{
-margin:0;padding:0;width:100%;height:100%;
-background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;
+margin:0;
+padding:0;
+width:100%;
+height:100%;
 overflow:hidden;
+background:#000;
+color:#fff;
+font-family:Arial,Helvetica,sans-serif;
 }
-body{display:flex;justify-content:center;}
+
+body{
+display:flex;
+justify-content:center;
+}
+
 #app{
 width:100%;
 max-width:520px;
@@ -30,24 +40,25 @@ height:100vh;
 display:flex;
 flex-direction:column;
 background:
-radial-gradient(circle at 18% 18%, rgba(255,255,255,.03), transparent 20%),
-radial-gradient(circle at 80% 70%, rgba(255,255,255,.02), transparent 24%),
+radial-gradient(circle at 20% 18%,rgba(255,255,255,.03),transparent 20%),
+radial-gradient(circle at 80% 72%,rgba(255,255,255,.02),transparent 24%),
 var(--bg);
 }
 
+#top,#bottom{
+height:50%;
+padding:10px;
+}
+
 #top{
-height:50vh;
-padding:10px 16px 10px;
 display:flex;
 flex-direction:column;
 }
+
 #bottom{
-height:50vh;
-position:relative;
 display:flex;
 flex-direction:column;
 justify-content:flex-end;
-padding:0 10px 10px;
 }
 
 #header{
@@ -56,24 +67,38 @@ justify-content:space-between;
 align-items:flex-start;
 margin-bottom:8px;
 }
+
 #brand{
 font-size:16px;
 font-weight:700;
 color:var(--gold);
 }
+
 #sub{
 font-size:11px;
 color:#777;
 margin-top:2px;
 }
-#langs{display:flex;gap:8px;}
+
+#langs{
+display:flex;
+gap:8px;
+}
+
 .mini{
-width:50px;height:42px;border:none;
+width:50px;
+height:42px;
+border:none;
 border-radius:14px;
-background:#151515;
-color:#ddd;
+background:#161616;
 border:1px solid #242424;
+color:#ddd;
 font-size:13px;
+}
+
+.mini.active{
+border-color:#c9a86a;
+color:#fff;
 }
 
 #content{
@@ -98,15 +123,26 @@ font-weight:700;
 text-align:center;
 line-height:1.25;
 }
-.small{font-size:14px;color:#aaa;text-align:center;margin-top:8px;}
 
-.row{display:flex;gap:10px;}
+.small{
+font-size:14px;
+color:#aaa;
+text-align:center;
+margin-top:8px;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
 .grid2{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:8px;
 margin-top:14px;
 }
+
 .grid3{
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
@@ -114,25 +150,34 @@ gap:8px;
 margin-top:14px;
 }
 
+.column{
+display:grid;
+grid-template-columns:1fr;
+gap:6px;
+margin-top:12px;
+}
+
 .main{
+width:100%;
 height:48px;
 border:none;
 border-radius:14px;
-background:linear-gradient(180deg,#1a1a1a,#101010);
+background:linear-gradient(180deg,#1b1b1b,#101010);
+border:1px solid #262626;
 color:#fff;
 font-size:15px;
 font-weight:700;
-border:1px solid #252525;
-width:100%;
 }
 
-.media{
-width:100%;
-max-width:360px;
-border-radius:20px;
-overflow:hidden;
+.slim{
+height:40px;
+font-size:12px;
 }
-.media img,.media video{width:100%;display:block;}
+
+input.main{
+text-align:center;
+font-weight:400;
+}
 
 #compassWrap{
 position:relative;
@@ -140,13 +185,18 @@ width:min(92vw,410px);
 height:min(92vw,410px);
 margin:0 auto;
 }
+
 #compassImg,#fx{
-position:absolute;inset:0;width:100%;height:100%;
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
 }
+
 #foot{
 font-size:11px;
-text-align:center;
 color:#666;
+text-align:center;
 margin-top:6px;
 }
 
@@ -155,6 +205,7 @@ margin-top:6px;
 50%{opacity:1}
 100%{opacity:.62}
 }
+
 .pulse{
 animation:pulse 3s ease-in-out infinite;
 }
@@ -162,6 +213,7 @@ animation:pulse 3s ease-in-out infinite;
 .fade{
 animation:f .35s ease;
 }
+
 @keyframes f{
 from{opacity:0;transform:translateY(8px)}
 to{opacity:1;transform:none}
@@ -181,12 +233,12 @@ const bottomBox=document.getElementById("bottom");
 
 const state={
 lang:"ru",
+step:"intro",
 mode:null,
 time:null,
-home:null,
+activity:null,
+dir:null,
 distance:null,
-beam:null,
-ring:null,
 emotion:null
 };
 
@@ -194,25 +246,62 @@ const TXT={
 ru:{
 brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
-wake:"ЯВЬ",dream:"СОН",
+wake:"ЯВЬ",
+dream:"СОН",
 ready:"Готово",
 turn:"Повернись к Югу",
 hint:"(там где солнце в полдень)",
 time:"Какое время суток?",
 doing:"Что сейчас здесь делаешь?",
-hunt:"За минувший период сколько заметил?",
-tr:"Трансформаций",
-tz:"Транзитов",
-home:"В каком направлении твой Дом?",
+home:"Где твой Дом?",
 dist:"Как далеко?",
 emo:"Эмоция",
-ok:"OK",
 saved:"Запись сохранена",
+ok:"OK",
+next:"Далее",
 times:["Рассвет","Утро","День","Вечер","Закат","Ночь"]
+},
+en:{
+brand:"Awarenessy!",
+sub:"Awareness trainer",
+wake:"WAKE",
+dream:"DREAM",
+ready:"Ready",
+turn:"Turn to South",
+hint:"(where sun is at noon)",
+time:"What time is it?",
+doing:"What are you doing here now?",
+home:"Where is Home?",
+dist:"How far?",
+emo:"Emotion",
+saved:"Saved",
+ok:"OK",
+next:"Next",
+times:["Dawn","Morning","Day","Evening","Sunset","Night"]
+},
+es:{
+brand:"¡Awarenessy!",
+sub:"Entrenador de consciencia",
+wake:"VIGILIA",
+dream:"SUEÑO",
+ready:"Listo",
+turn:"Gira al Sur",
+hint:"(donde está el sol al mediodía)",
+time:"¿Qué hora del día?",
+doing:"¿Qué haces aquí ahora?",
+home:"¿Dónde está tu hogar?",
+dist:"¿Qué tan lejos?",
+emo:"Emoción",
+saved:"Guardado",
+ok:"OK",
+next:"OK",
+times:["Amanecer","Mañana","Día","Tarde","Atardecer","Noche"]
 }
 };
 
-function t(k){return TXT.ru[k];}
+function t(k){
+return TXT[state.lang][k];
+}
 
 function header(){
 return `
@@ -222,11 +311,27 @@ return `
 <div id="sub">${t("sub")}</div>
 </div>
 <div id="langs">
-<button class="mini">RU</button>
-<button class="mini">EN</button>
-<button class="mini">ES</button>
+<button class="mini ${state.lang==="ru"?"active":""}" onclick="setLang('ru')">RU</button>
+<button class="mini ${state.lang==="en"?"active":""}" onclick="setLang('en')">EN</button>
+<button class="mini ${state.lang==="es"?"active":""}" onclick="setLang('es')">ES</button>
 </div>
 </div>`;
+}
+
+function setLang(v){
+state.lang=v;
+router();
+}
+
+function router(){
+if(state.step==="intro") intro();
+if(state.step==="south") stepSouth();
+if(state.step==="time") stepTime();
+if(state.step==="doing") stepDoing();
+if(state.step==="home") stepHome();
+if(state.step==="dist") stepDist();
+if(state.step==="emo") stepEmotion();
+if(state.step==="done") done();
 }
 
 function intro(){
@@ -241,13 +346,14 @@ bottomBox.innerHTML=`
 <button class="main" onclick="start('wake')">${t("wake")}</button>
 <button class="main" onclick="start('dream')">${t("dream")}</button>
 </div>
-<div id="foot">Awarenessy 3.3 MASTER</div>`;
+<div id="foot">Awarenessy 4.0 Canonical</div>`;
 }
 
 function start(mode){
 state.mode=mode;
 compass();
-stepSouth();
+state.step="south";
+router();
 }
 
 function compass(){
@@ -256,7 +362,7 @@ bottomBox.innerHTML=`
 <img id="compassImg" src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
 <svg id="fx" viewBox="0 0 400 400"></svg>
 </div>
-<div id="foot">Awarenessy 3.3 MASTER</div>`;
+<div id="foot">Awarenessy 4.0 Canonical</div>`;
 drawFX();
 }
 
@@ -267,9 +373,14 @@ ${header()}
 <div class="card fade">
 <div class="title">${t("turn")}</div>
 <div class="small">${t("hint")}</div>
-<button class="main" style="margin-top:16px" onclick="stepTime()">${t("ready")}</button>
+<button class="main" style="margin-top:16px" onclick="gotoTime()">${t("ready")}</button>
 </div>
 </div>`;
+}
+
+function gotoTime(){
+state.step="time";
+router();
 }
 
 function stepTime(){
@@ -279,7 +390,8 @@ ${header()}
 <div class="card fade">
 <div class="title">${t("time")}</div>
 <div class="grid2">
-${t("times").map((x,i)=>`<button class="main" onclick="pickTime(${i})">${x}</button>`).join("")}
+${t("times").map((x,i)=>`
+<button class="main" onclick="pickTime(${i})">${x}</button>`).join("")}
 </div>
 </div>
 </div>`;
@@ -288,34 +400,34 @@ ${t("times").map((x,i)=>`<button class="main" onclick="pickTime(${i})">${x}</but
 function pickTime(i){
 state.time=i;
 drawFX();
-stepDoing();
+state.step="doing";
+router();
 }
 
 function stepDoing(){
+const list=[
+"Творю","Работаю","Учусь","Иду / Еду","Отдыхаю",
+"Ем","Выпиваю / прочее","Развлекаюсь","Торможу"
+];
+
 topBox.innerHTML=`
 ${header()}
 <div id="content">
 <div class="card fade">
 <div class="title">${t("doing")}</div>
-<input class="main" style="margin-top:14px;text-align:center" placeholder="...">
-<button class="main" style="margin-top:12px" onclick="stepHunt()">Далее</button>
+<div class="column">
+${list.map(v=>`
+<button class="main slim" onclick="pickActivity('${v}')">${v}</button>`).join("")}
+<input class="main slim" placeholder="Другое...">
+</div>
 </div>
 </div>`;
 }
 
-function stepHunt(){
-topBox.innerHTML=`
-${header()}
-<div id="content">
-<div class="card fade">
-<div class="title" style="font-size:18px">${t("hunt")}</div>
-<div class="grid2">
-<input class="main" placeholder="${t("tr")}">
-<input class="main" placeholder="${t("tz")}">
-</div>
-<button class="main" style="margin-top:12px" onclick="stepHome()">Далее</button>
-</div>
-</div>`;
+function pickActivity(v){
+state.activity=v;
+state.step="home";
+router();
 }
 
 function stepHome(){
@@ -331,32 +443,24 @@ ${header()}
 <div class="card fade">
 <div class="title">${t("home")}</div>
 <div class="grid3">
-${dirs.map(d=>`<button class="main" onclick="pickDir('${d[0]}')">${d[1]}</button>`).join("")}
+${dirs.map(d=>`
+<button class="main" onclick="pickDir('${d[0]}')">${d[1]}</button>`).join("")}
 </div>
 </div>
 </div>`;
 }
 
-const DIRS=["n","ne","e","se","s","sw","w","nw"];
-
-function opposite(v){
-let i=DIRS.indexOf(v);
-return DIRS[(i+4)%8];
-}
-
 function pickDir(v){
-state.home=v;
+state.dir=v;
+drawFX();
+
 if(v==="c"){
-state.beam="c";
-state.ring=0;
-drawFX();
-stepEmotion();
-return;
+state.distance=0;
+state.step="emo";
+}else{
+state.step="dist";
 }
-state.beam=opposite(v);
-state.ring=null;
-drawFX();
-stepDist();
+router();
 }
 
 function stepDist(){
@@ -365,42 +469,44 @@ ${header()}
 <div id="content">
 <div class="card fade">
 <div class="title">${t("dist")}</div>
-<div class="grid2">
-<button class="main" onclick="pickRing(0)">Дом</button>
-<button class="main" onclick="pickRing(1)">Близко</button>
-<button class="main" onclick="pickRing(2)">Средне</button>
-<button class="main" onclick="pickRing(3)">Далеко</button>
+<div class="column">
+<button class="main" onclick="pickDistance(1)">Близко</button>
+<button class="main" onclick="pickDistance(2)">Средне</button>
+<button class="main" onclick="pickDistance(3)">Далеко</button>
 </div>
 </div>
 </div>`;
 }
 
-function pickRing(v){
-state.ring=v;
+function pickDistance(v){
+state.distance=v;
 drawFX();
-stepEmotion();
+state.step="emo";
+router();
 }
 
 function stepEmotion(){
 const list=[
-["#FFD700","Радость, позитивная деятельность"],
-["#FFFFFF","Осознанное творчество"],
-["#3F51B5","Вдохновение, спокойствие, творчество"],
-["#26C6DA","Фантазёрство, мечтательность"],
-["#808080","Нейтральное, пассивное вовлечение"],
-["#4CAF50","Тоска, испуг, зависимость"],
-["#F44336","Гнев, агрессия, превосходство"],
-["#FF9800","Самоуверенность, соревновательность"],
-["#000000","Хаос, ужас, отсутствие контроля"]
+["#FFD700","Радость"],
+["#FFFFFF","Творчество"],
+["#3F51B5","Вдохновение"],
+["#26C6DA","Мечтательность"],
+["#808080","Нейтральность"],
+["#4CAF50","Тоска"],
+["#F44336","Гнев"],
+["#FF9800","Самоуверенность"],
+["#000000","Хаос"]
 ];
 
 topBox.innerHTML=`
 ${header()}
 <div id="content">
 <div class="card fade">
-<div class="title" style="font-size:18px">${t("emo")}</div>
-<div class="grid2">
-${list.map(x=>`<button class="main" style="font-size:11px;height:42px" onclick="pickEmotion('${x[0]}')">${x[1]}</button>`).join("")}
+<div class="title">${t("emo")}</div>
+<div class="column">
+${list.map(x=>`
+<button class="main slim"
+onclick="pickEmotion('${x[0]}')">${x[1]}</button>`).join("")}
 </div>
 </div>
 </div>`;
@@ -409,7 +515,10 @@ ${list.map(x=>`<button class="main" style="font-size:11px;height:42px" onclick="
 function pickEmotion(c){
 state.emotion=c;
 drawFX();
-setTimeout(done,500);
+setTimeout(()=>{
+state.step="done";
+router();
+},400);
 }
 
 function done(){
@@ -418,9 +527,13 @@ ${header()}
 <div id="content">
 <div class="card fade">
 <div class="title">${t("saved")}</div>
-<button class="main" style="margin-top:14px" onclick="intro()">${t("ok")}</button>
+<button class="main" style="margin-top:14px" onclick="resetAll()">${t("ok")}</button>
 </div>
 </div>`;
+}
+
+function resetAll(){
+location.reload();
 }
 
 function drawFX(){
@@ -428,46 +541,92 @@ const svg=document.getElementById("fx");
 if(!svg)return;
 svg.innerHTML="";
 
-drawSolar(svg);
-
-if(!state.beam)return;
-
-if(state.beam==="c"){
-if(state.emotion){
-svg.innerHTML+=`
-<circle cx="200" cy="200" r="34"
-fill="${state.emotion}" opacity=".85" class="pulse"/>`;
-}else{
-svg.innerHTML+=`
-<circle cx="200" cy="200" r="44"
-fill="white" opacity=".32" filter="blur(12)"/>`;
+drawTimeGlow(svg);
+drawDirection(svg);
 }
+
+function drawTimeGlow(svg){
+if(state.time===null)return;
+
+/*
+0 dawn left(E)
+1 morning upper-left
+2 day top(S)
+3 evening upper-right
+4 sunset right(W)
+5 night bottom(N)
+*/
+
+const map=[6,7,0,1,2,4];
+const idx=map[state.time];
+
+for(let k=-2;k<=2;k++){
+let i=(idx+k+8)%8;
+let power=[0.18,0.45,1,0.45,0.18][k+2];
+
+const col=[
+"#ff3fcf",
+"#7be7ff",
+"#ffd76a",
+"#7be7ff",
+"#ff3fcf",
+"#3569ff"
+][state.time];
+
+const step=Math.PI*2/8;
+const a0=-Math.PI/2-step/2+i*step;
+const a1=a0+step;
+
+svg.innerHTML+=`
+<path d="${sector(188,198,a0,a1)}"
+fill="${col}"
+opacity="${power}"/>`;
+}
+}
+
+function drawDirection(svg){
+if(!state.dir)return;
+
+if(state.dir==="c"){
+svg.innerHTML+=`
+<circle cx="200" cy="200" r="46"
+fill="none"
+stroke="${state.emotion||'white'}"
+stroke-width="8"
+opacity=".65"
+class="pulse"/>`;
 return;
 }
 
-const idx=DIRS.indexOf(state.beam);
+const map={
+n:0,ne:1,e:2,se:3,s:4,sw:5,w:6,nw:7
+};
+
+const idx=map[state.dir];
 const step=Math.PI*2/8;
-const start=-Math.PI/2-step/2+idx*step;
-const end=start+step;
+const a0=-Math.PI/2-step/2+idx*step;
+const a1=a0+step;
 
-const rings=[
-[48,92],
-[92,138],
-[138,184],
-[184,212]
-];
+const rings={
+1:[48,92],
+2:[48,138],
+3:[48,184]
+};
 
-const r=rings[state.ring||1];
+const rr=rings[state.distance||1];
 
-const d=sector(r[0],r[1],start,end);
-
-if(state.emotion){
 svg.innerHTML+=`
-<path d="${d}" fill="${state.emotion}" opacity=".85" class="pulse"/>`;
-}else{
+<path d="${sector(rr[0],rr[1],a0,a1)}"
+fill="none"
+stroke="${state.emotion||'white'}"
+stroke-width="18"
+opacity=".35"
+filter="blur(8)"/>`;
+
 svg.innerHTML+=`
-<path d="${d}" fill="white" opacity=".30" filter="blur(14)"/>`;
-}
+<path d="${sector(rr[0],rr[1],a0,a1)}"
+fill="${state.emotion||'white'}"
+opacity=".18"/>`;
 }
 
 function sector(ir,or,a0,a1){
@@ -481,28 +640,6 @@ A ${or} ${or} 0 0 1 ${B[0]} ${B[1]}
 L ${C[0]} ${C[1]}
 A ${ir} ${ir} 0 0 0 ${D[0]} ${D[1]}
 Z`;
-}
-
-function drawSolar(svg){
-if(state.time===null)return;
-
-const map=[2,3,4,5,6,0];
-const idx=map[state.time];
-const colors=["#d84cff","#6fd7ff","#ffd56a","#6fd7ff","#d84cff","#2f65ff"];
-const col=colors[state.time];
-
-for(let k=-1;k<=1;k++){
-let i=(idx+k+8)%8;
-let power=(k===0)?1:.35;
-
-const step=Math.PI*2/8;
-const a0=-Math.PI/2-step/2+i*step;
-const a1=a0+step;
-
-svg.innerHTML+=`
-<path d="${sector(188,196,a0,a1)}"
-fill="${col}" opacity="${power}"/>`;
-}
 }
 
 intro();

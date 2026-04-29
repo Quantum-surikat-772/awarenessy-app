@@ -3,18 +3,439 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Awarenessy V5.0 MASTER</title>
+<title>Awarenessy V5.0</title>
+
+<style>
+:root{
+--bg:#050505;
+--gold:#c9a86a;
+--blue:#69b7ff;
+--line:#242424;
+--text:#f5f5f5;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+html,body{
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:#000;
+color:#fff;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+display:flex;
+justify-content:center;
+}
+
+#app{
+width:100%;
+max-width:520px;
+height:100vh;
+display:flex;
+flex-direction:column;
+background:
+radial-gradient(circle at 18% 18%,rgba(255,255,255,.03),transparent 20%),
+radial-gradient(circle at 80% 70%,rgba(255,255,255,.02),transparent 24%),
+#050505;
+}
+
+#top,#bottom{
+height:50%;
+padding:10px;
+}
+
+#top{
+display:flex;
+flex-direction:column;
+}
+
+#bottom{
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+}
+
+#header{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:8px;
+}
+
+#brand{
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+}
+
+#sub{
+font-size:11px;
+color:#777;
+margin-top:2px;
+}
+
+#langs{
+display:flex;
+gap:8px;
+}
+
+.mini{
+width:50px;
+height:42px;
+border:none;
+border-radius:14px;
+background:#151515;
+border:1px solid #242424;
+color:#ddd;
+}
+
+.active{
+border-color:#c9a86a;
+color:#fff;
+}
+
+#content{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+.card{
+width:100%;
+padding:18px;
+border-radius:22px;
+background:rgba(255,255,255,.02);
+border:1px solid rgba(255,255,255,.05);
+}
+
+.title{
+font-size:22px;
+font-weight:700;
+text-align:center;
+line-height:1.2;
+}
+
+.small{
+font-size:13px;
+color:#aaa;
+text-align:center;
+margin-top:8px;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:12px;
+}
+
+.grid3{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:8px;
+margin-top:12px;
+}
+
+.column{
+display:grid;
+grid-template-columns:1fr;
+gap:6px;
+margin-top:12px;
+}
+
+.main{
+width:100%;
+height:46px;
+border:none;
+border-radius:14px;
+background:linear-gradient(180deg,#1b1b1b,#101010);
+border:1px solid #262626;
+color:#fff;
+font-size:14px;
+font-weight:700;
+}
+
+.slim{
+height:36px;
+font-size:12px;
+}
+
+input.main{
+font-weight:400;
+text-align:center;
+}
+
+#compassWrap{
+position:relative;
+width:min(92vw,410px);
+height:min(92vw,410px);
+margin:0 auto;
+}
+
+#compassImg,#fx{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+#foot{
+font-size:11px;
+color:#666;
+text-align:center;
+margin-top:6px;
+}
+
+#modal{
+position:fixed;
+inset:0;
+background:#000;
+display:none;
+justify-content:center;
+align-items:center;
+z-index:99;
+overflow:hidden;
+}
+
+#aura{
+position:absolute;
+inset:-20%;
+background:
+radial-gradient(circle at 30% 40%,rgba(140,0,255,.08),transparent 35%),
+radial-gradient(circle at 70% 60%,rgba(0,160,255,.07),transparent 35%);
+animation:drift 8s linear infinite alternate;
+}
+
+@keyframes drift{
+from{transform:translate(-2%,-2%) scale(1);}
+to{transform:translate(2%,2%) scale(1.06);}
+}
+
+#modalInner{
+position:relative;
+z-index:2;
+width:90%;
+max-width:420px;
+text-align:center;
+}
+
+#emissary{
+width:220px;
+max-width:70%;
+opacity:0;
+transition:2s;
+}
+
+#msg{
+margin-top:18px;
+line-height:1.6;
+font-size:15px;
+opacity:0;
+transition:1.5s;
+white-space:pre-line;
+}
+
+.fadeIn{
+opacity:1 !important;
+}
+
+</style>
 </head>
-<body style="margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;">
-<div style="text-align:center;max-width:420px;padding:24px;">
-<h1 style="color:#c9a86a;margin:0 0 16px;">Awarenessy V5.0 MASTER</h1>
-<p style="opacity:.9;line-height:1.5;">
-Полная production-версия V5.0 требует большой цельный файл с новой графической системой, анимациями, модальным Эмиссаром, исправленным компасом и мультиязыком.  
-Чтобы не прислать вам урезанный или повреждённый код в одном сообщении, я предлагаю следующим сообщением дать вам <b>полный чистый финальный index.html</b> без сокращений.
-</p>
-<p style="opacity:.7;margin-top:18px;">
-Я готов продолжать сразу.
-</p>
+<body>
+
+<div id="app">
+<div id="top"></div>
+<div id="bottom"></div>
 </div>
+
+<div id="modal">
+<div id="aura"></div>
+<div id="modalInner">
+<img id="emissary" src="https://i.postimg.cc/V6gqpw1V/Emissary.png">
+<div id="msg"></div>
+<button class="main" style="margin-top:18px" onclick="closeModal()">Вернуться</button>
+</div>
+</div>
+
+<script>
+
+const topBox=document.getElementById("top");
+const bottomBox=document.getElementById("bottom");
+
+const state={
+lang:"ru",
+mode:null,
+step:"intro"
+};
+
+const TXT={
+ru:{
+brand:"ОСоЗНАЙКА!",
+sub:"Посредник обучения осознанности",
+wake:"ЯВЬ",
+dream:"СОН",
+intro:["Я наблюдаю...","Я замечаю...","Я присутствую..."],
+ready:"Готово",
+turn:"Повернись к Югу",
+hint:"(там где солнце в полдень)"
+},
+en:{
+brand:"AWARENESSY",
+sub:"Awareness trainer",
+wake:"WAKE",
+dream:"DREAM",
+intro:["I observe...","I notice...","I am present..."],
+ready:"Ready",
+turn:"Turn to South",
+hint:"(where sun is at noon)"
+},
+es:{
+brand:"CONCIENCITO",
+sub:"Entrenador de consciencia",
+wake:"VIGILIA",
+dream:"SUEÑO",
+intro:["Observo...","Me doy cuenta...","Estoy presente..."],
+ready:"Listo",
+turn:"Gira al Sur",
+hint:"(donde está el sol al mediodía)"
+}
+};
+
+function t(k){
+return TXT[state.lang][k];
+}
+
+function rand(arr){
+return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function titleColor(){
+return state.mode==="dream" ? "#69b7ff" : "#c9a86a";
+}
+
+function header(){
+return `
+<div id="header">
+<div>
+<div id="brand" onclick="openModal()" style="color:${titleColor()}">${t("brand")}</div>
+<div id="sub">${t("sub")}</div>
+</div>
+
+<div id="langs">
+<button class="mini ${state.lang==="ru"?"active":""}" onclick="setLang('ru')">RU</button>
+<button class="mini ${state.lang==="en"?"active":""}" onclick="setLang('en')">EN</button>
+<button class="mini ${state.lang==="es"?"active":""}" onclick="setLang('es')">ES</button>
+</div>
+</div>
+`;
+}
+
+function setLang(v){
+state.lang=v;
+router();
+}
+
+function router(){
+if(state.step==="intro") intro();
+if(state.step==="south") south();
+}
+
+function intro(){
+topBox.innerHTML=`
+${header()}
+<div id="content">
+<div class="title">${rand(t("intro"))}</div>
+</div>
+`;
+
+bottomBox.innerHTML=`
+<div class="row">
+<button class="main" onclick="start('wake')">${t("wake")}</button>
+<button class="main" onclick="start('dream')">${t("dream")}</button>
+</div>
+<div id="foot">Awarenessy V5.0</div>
+`;
+}
+
+function start(mode){
+state.mode=mode;
+state.step="south";
+
+bottomBox.innerHTML=`
+<div id="compassWrap">
+<img id="compassImg" src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+<svg id="fx" viewBox="0 0 400 400"></svg>
+</div>
+<div id="foot">Awarenessy V5.0</div>
+`;
+
+router();
+}
+
+function south(){
+topBox.innerHTML=`
+${header()}
+<div id="content">
+<div class="card">
+<div class="title" style="color:${titleColor()}">${t("turn")}</div>
+<div class="small">${t("hint")}</div>
+<button class="main" style="margin-top:16px">${t("ready")}</button>
+</div>
+</div>
+`;
+}
+
+function openModal(){
+document.getElementById("modal").style.display="flex";
+
+const img=document.getElementById("emissary");
+const msg=document.getElementById("msg");
+
+img.classList.remove("fadeIn");
+msg.classList.remove("fadeIn");
+msg.innerText="";
+
+setTimeout(()=>img.classList.add("fadeIn"),200);
+
+setTimeout(()=>{
+img.classList.remove("fadeIn");
+},2800);
+
+setTimeout(()=>{
+msg.innerText=
+"Здравствуй.\n"+
+"Я — Эмиссар Сновидений.\n"+
+"На русском языке меня зовут ОСоЗНАЙКА!\n"+
+"ОС — Осознанное Сновидение + Знание.\n"+
+"Я твой Друг и Попутчик на Пути Осознания.\n"+
+"Я смотрю из глубины твоего Внимания.\n"+
+"Напоминаю об осознанности.\n"+
+"Настрой частоту напоминаний — и я буду с тобой.\n"+
+"И я отвечу на вопросы в этом Приложении.\n"+
+"Мы встретимся.";
+msg.classList.add("fadeIn");
+},4200);
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+intro();
+
+</script>
 </body>
 </html>

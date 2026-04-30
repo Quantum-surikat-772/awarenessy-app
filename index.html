@@ -309,6 +309,17 @@ width:90%;
 opacity:0;
 ">
 Вернуться
+<button onclick="openSettings()"
+class="main"
+style="
+position:absolute;
+bottom:70px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+opacity:1;
+">
+Настройка
 </button>
 
 </div>
@@ -501,19 +512,24 @@ let html="";
 
 if(r<0.2){
 
-// FULL RED SCREEN
-html=`
+content=`
 <div style="
-position:fixed;
+position:absolute;
 inset:0;
 background:#c00000;
+z-index:0;
+"></div>
+
+<div style="
+position:relative;
+z-index:1;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:34px;
+height:100%;
+font-size:30px;
 font-weight:800;
-color:#fff;
-z-index:5;">
+color:#fff;">
 ${t("special")}
 </div>`;
 
@@ -565,20 +581,16 @@ const msg=document.getElementById("msg");
 const btn=document.getElementById("backBtn");
 
 // reset
+// старт
 img.style.opacity="0";
 img.style.transform="translateX(-50%) scale(1)";
 img.style.transition="none";
 
-msg.style.opacity="0";
-msg.innerText="";
-
-btn.style.opacity="0";
-
-// плавный мираж (без ступени)
+// плавное движение (масштаб + сдвиг вправо)
 setTimeout(()=>{
 img.style.transition="6s linear";
 img.style.opacity=".65";
-img.style.transform="translateX(-50%) scale(2)";
+img.style.transform="translateX(-30%) scale(2)";
 },50);
 
 // после анимации
@@ -599,6 +611,10 @@ document.getElementById("modal").style.display="none";
 }
 
 intro();
+
+function openSettings(){
+alert("Настройка напоминаний (будет реализовано в следующем этапе)");
+}
 
 </script>
 </body>

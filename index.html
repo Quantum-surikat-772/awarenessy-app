@@ -240,7 +240,6 @@ transition:2s;
 }
 
 #msg{
-style="
 position:absolute;
 top:12%;
 left:50%;
@@ -249,7 +248,6 @@ width:78%;
 line-height:1.5;
 text-align:left;
 opacity:0;
-"
 }
 
 .fadeIn{
@@ -301,6 +299,19 @@ opacity:0;
 
 </div>
 
+<button id="settingsBtn"
+onclick="openSettings()"
+class="main"
+style="
+position:absolute;
+bottom:70px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+opacity:0;">
+Настройка
+</button>
+
 <button id="backBtn"
 onclick="closeModal()"
 class="main"
@@ -310,20 +321,8 @@ bottom:16px;
 left:50%;
 transform:translateX(-50%);
 width:90%;
-opacity:0;
-">
+opacity:0;">
 Вернуться
-<button onclick="openSettings()"
-class="main"
-style="
-position:absolute;
-bottom:70px;
-left:50%;
-transform:translateX(-50%);
-width:90%;
-opacity:1;
-">
-Настройка
 </button>
 
 </div>
@@ -344,18 +343,19 @@ const HAND_VIDEO="https://i.imgur.com/ocTkSQj.mp4";
 const EMISSARY_IMG="https://i.postimg.cc/V6gqpw1V/Emissary.png";
 
 const TXT={
-settings:"Настройка"
-settings:"Settings"
-settings:"Ajustes"
 
 ru:{
 brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
 wake:"ЯВЬ",
 dream:"СОН",
-ready:"Готово",
-turn:"Повернись к Югу",
-hint:"(там где солнце в полдень)",
+special:"ЭТО НЕ СОН?",
+back:"Вернуться",
+settings:"Настройка",
+back:"Back",
+settings:"Settings",
+back:"Volver",
+settings:"Ajustes",
 
 introTexts:[
 "Что ты делал(а) 5 минут назад?",
@@ -544,7 +544,7 @@ let html="";
 
 if(r<0.2){
 
-content=`
+html=`
 <div style="
 position:absolute;
 inset:0;
@@ -610,37 +610,35 @@ modal.style.display="block";
 
 const img=document.getElementById("emissary");
 const msg=document.getElementById("msg");
-const btn=document.getElementById("backBtn");
+const back=document.getElementById("backBtn");
+const setBtn=document.getElementById("settingsBtn");
 
 // reset
-// старт
 img.style.opacity="0";
 img.style.transform="translateX(-50%) scale(1)";
 img.style.transition="none";
 
-// плавное движение (масштаб + сдвиг вправо)
+msg.style.opacity="0";
+msg.innerHTML="";
+back.style.opacity="0";
+setBtn.style.opacity="0";
+
+// анимация эмиссара
 setTimeout(()=>{
 img.style.transition="6s linear";
 img.style.opacity=".65";
 img.style.transform="translateX(-30%) scale(2)";
 },50);
 
-// после анимации
-setTimeout(()=>{
-img.style.opacity="0";
-
-msg.innerText=t("emissary");
-msg.style.opacity="1";
-
-btn.style.opacity="0";
+// после → текст
 setTimeout(()=>{
 img.style.opacity="0";
 
 showTextWave(t("emissary"));
 
 setTimeout(()=>{
-document.getElementById("backBtn").style.opacity="1";
-document.getElementById("settingsBtn").style.opacity="1";
+back.style.opacity="1";
+setBtn.style.opacity="1";
 },1200);
 
 },6000);

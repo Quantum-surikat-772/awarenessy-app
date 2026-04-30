@@ -266,35 +266,48 @@ position:fixed;
 inset:0;
 background:#000;
 display:none;
-flex-direction:column;
-justify-content:flex-start;
-align-items:center;
 z-index:999;
-padding-top:18vh;
+overflow:hidden;
 ">
 
 <img id="emissary"
 src="https://i.postimg.cc/V6gqpw1V/Emissary.png"
-style="width:90%;position:absolute;top:20%;">
+style="
+position:absolute;
+top:20%;
+left:50%;
+transform:translateX(-50%) scale(1);
+width:90%;
+opacity:0;
+pointer-events:none;
+">
 
 <div id="msg"
 style="
-max-width:80%;
-margin-top:10vh;
+position:absolute;
+top:18%;
+left:0;
+width:100%;
+padding:0 20px;
+box-sizing:border-box;
 line-height:1.5;
 text-align:left;
 opacity:0;
-padding-left:12px;
-"></div>
+">
+
+</div>
 
 <button id="backBtn"
 onclick="closeModal()"
 class="main"
 style="
 position:absolute;
-bottom:20px;
+bottom:16px;
+left:50%;
+transform:translateX(-50%);
 width:90%;
-opacity:0;">
+opacity:0;
+">
 Вернуться
 </button>
 
@@ -545,35 +558,39 @@ bottomBox.innerHTML=`
 function openModal(){
 
 const modal=document.getElementById("modal");
-modal.style.display="flex";
+modal.style.display="block";
 
 const img=document.getElementById("emissary");
 const msg=document.getElementById("msg");
+const btn=document.getElementById("backBtn");
 
+// reset
 img.style.opacity="0";
-img.style.transform="scale(1)";
+img.style.transform="translateX(-50%) scale(1)";
+img.style.transition="none";
+
 msg.style.opacity="0";
 msg.innerText="";
 
-// 0–3 сек
+btn.style.opacity="0";
+
+// плавный мираж (без ступени)
 setTimeout(()=>{
-img.style.transition="3s";
+img.style.transition="6s linear";
 img.style.opacity=".65";
-img.style.transform="scale(1.5)";
+img.style.transform="translateX(-50%) scale(2)";
 },50);
 
-// 3–6 сек
+// после анимации
 setTimeout(()=>{
-img.style.transition="3s";
 img.style.opacity="0";
-img.style.transform="scale(2)";
-},3050);
 
-// текст
-setTimeout(()=>{
 msg.innerText=t("emissary");
 msg.style.opacity="1";
-},6200);
+
+btn.style.opacity="1";
+
+},6000);
 
 }
 

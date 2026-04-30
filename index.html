@@ -244,7 +244,8 @@ position:absolute;
 top:12%;
 left:50%;
 transform:translateX(-50%);
-width:78%;
+width:82%;
+max-width:360px;
 line-height:1.5;
 text-align:left;
 opacity:0;
@@ -302,27 +303,13 @@ opacity:0;
 <button id="settingsBtn"
 onclick="openSettings()"
 class="main"
-style="
-position:absolute;
-bottom:70px;
-left:50%;
-transform:translateX(-50%);
-width:90%;
-opacity:0;">
-Настройка
+style="...">
 </button>
 
 <button id="backBtn"
 onclick="closeModal()"
 class="main"
-style="
-position:absolute;
-bottom:16px;
-left:50%;
-transform:translateX(-50%);
-width:90%;
-opacity:0;">
-Вернуться
+style="...">
 </button>
 
 </div>
@@ -485,6 +472,7 @@ back:"Volver"
 function showTextWave(text){
 
 const msg=document.getElementById("msg");
+msg.style.opacity="1";
 msg.innerHTML="";
 
 const lines=text.split("\n");
@@ -622,6 +610,8 @@ msg.style.opacity="0";
 msg.innerHTML="";
 back.style.opacity="0";
 setBtn.style.opacity="0";
+back.innerText = t("back");
+setBtn.innerText = t("settings");
 
 // анимация эмиссара
 setTimeout(()=>{

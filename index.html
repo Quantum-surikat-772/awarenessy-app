@@ -261,7 +261,44 @@ opacity:1 !important;
 <div id="bottom"></div>
 </div>
 
-<div id="modal">
+<div id="modal" style="
+position:fixed;
+inset:0;
+background:#000;
+display:none;
+flex-direction:column;
+justify-content:flex-start;
+align-items:center;
+z-index:999;
+padding-top:18vh;
+">
+
+<img id="emissary"
+src="https://i.postimg.cc/V6gqpw1V/Emissary.png"
+style="width:90%;position:absolute;top:20%;">
+
+<div id="msg"
+style="
+max-width:80%;
+margin-top:10vh;
+line-height:1.5;
+text-align:left;
+opacity:0;
+padding-left:12px;
+"></div>
+
+<button id="backBtn"
+onclick="closeModal()"
+class="main"
+style="
+position:absolute;
+bottom:20px;
+width:90%;
+opacity:0;">
+Вернуться
+</button>
+
+</div>
 <div id="aura"></div>
 <div id="modalInner">
 <img id="emissary" src="https://i.postimg.cc/V6gqpw1V/Emissary.png">
@@ -275,14 +312,10 @@ opacity:1 !important;
 const topBox=document.getElementById("top");
 const bottomBox=document.getElementById("bottom");
 
-const state={
-lang:"ru",
-mode:null
-};
+const state={lang:"ru"};
 
 const HAND_IMG="https://i.postimg.cc/zXp9BVGf/Hands-1.png";
 const HAND_VIDEO="https://i.imgur.com/ocTkSQj.mp4";
-const EMISSARY_IMG="https://i.postimg.cc/V6gqpw1V/Emissary.png";
 
 const TXT={
 
@@ -291,19 +324,16 @@ brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
 wake:"ЯВЬ",
 dream:"СОН",
-ready:"Готово",
-turn:"Повернись к Югу",
-hint:"(там где солнце в полдень)",
+special:"ЭТО НЕ СОН?",
+back:"Вернуться",
 
-introTexts:[
+intro:[
 "Что ты делал(а) 5 минут назад?",
 "Я наблюдаю...",
 "В каком направлении твой Дом?",
 "Посмотри на свои руки",
 "Какое у тебя сейчас настроение?"
 ],
-
-special:"ЭТО НЕ СОН?",
 
 emissary:`ЗДРАВСТВУЙ
 
@@ -324,9 +354,7 @@ emissary:`ЗДРАВСТВУЙ
 
 И я отвечу на вопросы в этом Приложении.
 
-Мы встретимся.`,
-
-back:"Вернуться"
+Мы встретимся.`
 },
 
 en:{
@@ -334,19 +362,16 @@ brand:"AWARENESSY!",
 sub:"Awareness trainer",
 wake:"WAKE",
 dream:"DREAM",
-ready:"Ready",
-turn:"Turn to South",
-hint:"(where sun is at noon)",
+special:"IS THIS A DREAM?",
+back:"Back",
 
-introTexts:[
+intro:[
 "What were you doing 5 minutes ago?",
 "I observe...",
 "Where is your Home?",
 "Look at your hands",
 "How do you feel right now?"
 ],
-
-special:"IS THIS A DREAM?",
 
 emissary:`HELLO
 
@@ -368,9 +393,7 @@ and I will be with you.
 And I will answer your questions
 in this Application.
 
-We will meet.`,
-
-back:"Back"
+We will meet.`
 },
 
 es:{
@@ -378,19 +401,16 @@ brand:"¡CONCIENCITO!",
 sub:"Entrenador de consciencia",
 wake:"VIGILIA",
 dream:"SUEÑO",
-ready:"Listo",
-turn:"Gira al Sur",
-hint:"(donde está el sol al mediodía)",
+special:"¿ESTO ES UN SUEÑO?",
+back:"Volver",
 
-introTexts:[
+intro:[
 "¿Qué hacías hace 5 minutos?",
 "Observo...",
 "¿Dónde está tu hogar?",
 "Mira tus manos",
 "¿Cómo te sientes ahora?"
 ],
-
-special:"¿ESTO ES UN SUEÑO?",
 
 emissary:`HOLA
 
@@ -413,20 +433,14 @@ y estaré contigo.
 Y responderé las preguntas
 de esta aplicación.
 
-Nos veremos.`,
-
-back:"Volver"
+Nos veremos.`
 }
 
 };
 
-function t(k){
-return TXT[state.lang][k];
-}
+function t(k){return TXT[state.lang][k];}
 
-function rand(a){
-return a[Math.floor(Math.random()*a.length)];
-}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
 
 function header(){
 return `
@@ -453,62 +467,46 @@ function intro(){
 
 const r=Math.random();
 
-let html="";
+let content="";
 
 if(r<0.2){
 
-// FULL RED SCREEN
-html=`
+// КРАСНЫЙ ФОН, НО НЕ УБИВАЕТ UI
+content=`
 <div style="
-position:fixed;
+position:absolute;
 inset:0;
 background:#c00000;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:34px;
-font-weight:800;
-color:#fff;
-z-index:5;">
+z-index:-1;"></div>
+
+<div class="title" style="font-size:30px;font-weight:800;">
 ${t("special")}
 </div>`;
 
 }
 else if(r<0.5){
-
-// IMAGE HANDS
-html=`
-<img src="${HAND_IMG}"
-style="width:85%;opacity:.95;">`;
-
+content=`<img src="${HAND_IMG}" style="width:85%;">`;
 }
 else if(r<0.75){
-
-// VIDEO HANDS
-html=`
+content=`
 <video autoplay muted loop playsinline
-style="width:85%;border-radius:20px;opacity:.9;">
+style="width:85%;border-radius:20px;">
 <source src="${HAND_VIDEO}" type="video/mp4">
 </video>`;
-
 }
 else{
-
-// TEXT
-html=`<div class="title">${rand(t("introTexts"))}</div>`;
-
+content=`<div class="title">${rand(t("intro"))}</div>`;
 }
 
 topBox.innerHTML=`
 ${header()}
-<div id="content">${html}</div>`;
+<div id="content" style="position:relative">${content}</div>`;
 
 bottomBox.innerHTML=`
 <div class="row">
 <button class="main">${t("wake")}</button>
 <button class="main">${t("dream")}</button>
-</div>
-<div id="foot">Awarenessy V5.0</div>`;
+</div>`;
 }
 
 function openModal(){
@@ -518,31 +516,25 @@ modal.style.display="flex";
 
 const img=document.getElementById("emissary");
 const msg=document.getElementById("msg");
+const btn=document.getElementById("backBtn");
 
 img.style.opacity="0";
 img.style.transform="scale(1)";
 msg.style.opacity="0";
-msg.innerText="";
+btn.style.opacity="0";
 
-// 0–3 сек
-setTimeout(()=>{
-img.style.transition="3s";
+// ОДНА ПЛАВНАЯ АНИМАЦИЯ
+img.style.transition="6s linear";
 img.style.opacity=".65";
-img.style.transform="scale(1.5)";
-},50);
-
-// 3–6 сек
-setTimeout(()=>{
-img.style.transition="3s";
-img.style.opacity="0";
 img.style.transform="scale(2)";
-},3050);
 
-// текст
+// после 6 сек → текст
 setTimeout(()=>{
+img.style.opacity="0";
 msg.innerText=t("emissary");
 msg.style.opacity="1";
-},6200);
+btn.style.opacity="1";
+},6000);
 
 }
 

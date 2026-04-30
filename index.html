@@ -282,44 +282,145 @@ step:"intro"
 };
 
 const TXT={
+
 ru:{
 brand:"ОСоЗНАЙКА!",
 sub:"Посредник обучения осознанности",
 wake:"ЯВЬ",
 dream:"СОН",
-intro:["Я наблюдаю...","Я замечаю...","Я присутствую..."],
 ready:"Готово",
 turn:"Повернись к Югу",
-hint:"(там где солнце в полдень)"
+hint:"(там где солнце в полдень)",
+time:"Какое время суток?",
+next:"Далее",
+
+intro:[
+"Что ты делал(а) 5 минут назад?",
+"Я наблюдаю...",
+"В каком направлении твой Дом?",
+"Посмотри на свои руки",
+"Какое у тебя сейчас настроение?"
+],
+
+emissary:
+`Здравствуй.
+
+Я — Эмиссар Сновидений.
+
+На русском языке меня зовут ОСоЗНАЙКА!
+
+ОС — Осознанное Сновидение + Знание.
+
+Я твой Друг и Попутчик на Пути Осознания.
+
+Я смотрю из глубины твоего Внимания.
+
+Напоминаю об осознанности.
+
+Настрой частоту напоминаний —
+и я буду с тобой.
+
+И я отвечу на вопросы в этом Приложении.
+
+Мы встретимся.`
 },
+
 en:{
-brand:"AWARENESSY",
+brand:"AWARENESSY!",
 sub:"Awareness trainer",
 wake:"WAKE",
 dream:"DREAM",
-intro:["I observe...","I notice...","I am present..."],
 ready:"Ready",
 turn:"Turn to South",
-hint:"(where sun is at noon)"
+hint:"(where sun is at noon)",
+time:"What time is it?",
+next:"Next",
+
+intro:[
+"What were you doing 5 minutes ago?",
+"I observe...",
+"Where is your Home?",
+"Look at your hands",
+"How do you feel right now?"
+],
+
+emissary:
+`Hello,
+
+I am the Dream Emissary.
+
+In English, my name is AWARENESSY!
+
+I am your Friend and Companion
+on the Path of Awareness.
+
+I watch from the depths
+of your Attention.
+
+I remind you of awareness.
+
+Set the frequency of reminders,
+and I will be with you.
+
+And I will answer your questions
+in this Application.
+
+We will meet.`
 },
+
 es:{
-brand:"CONCIENCITO",
+brand:"¡CONCIENCITO!",
 sub:"Entrenador de consciencia",
 wake:"VIGILIA",
 dream:"SUEÑO",
-intro:["Observo...","Me doy cuenta...","Estoy presente..."],
 ready:"Listo",
 turn:"Gira al Sur",
-hint:"(donde está el sol al mediodía)"
+hint:"(donde está el sol al mediodía)",
+time:"¿Qué hora del día?",
+next:"Siguiente",
+
+intro:[
+"¿Qué hacías hace 5 minutos?",
+"Observo...",
+"¿Dónde está tu hogar?",
+"Mira tus manos",
+"¿Cómo te sientes ahora?"
+],
+
+emissary:
+`Hola,
+
+Soy el Emisario de los Sueños.
+
+En español,
+mi nombre es ¡CONCIENCITO!
+
+Soy tu Amigo y Compañero
+en el camino de la Consciencia.
+
+Observo desde lo más profundo
+de tu atención.
+
+Te recordaré la consciencia.
+
+Establece la frecuencia
+de mis recordatorios
+y estaré contigo.
+
+Y responderé las preguntas
+de esta aplicación.
+
+Nos veremos.`
 }
+
 };
 
 function t(k){
 return TXT[state.lang][k];
 }
 
-function rand(arr){
-return arr[Math.floor(Math.random()*arr.length)];
+function rand(a){
+return a[Math.floor(Math.random()*a.length)];
 }
 
 function titleColor(){
@@ -330,7 +431,9 @@ function header(){
 return `
 <div id="header">
 <div>
-<div id="brand" onclick="openModal()" style="color:${titleColor()}">${t("brand")}</div>
+<div id="brand"
+onclick="openModal()"
+style="color:${titleColor()}">${t("brand")}</div>
 <div id="sub">${t("sub")}</div>
 </div>
 
@@ -339,8 +442,7 @@ return `
 <button class="mini ${state.lang==="en"?"active":""}" onclick="setLang('en')">EN</button>
 <button class="mini ${state.lang==="es"?"active":""}" onclick="setLang('es')">ES</button>
 </div>
-</div>
-`;
+</div>`;
 }
 
 function setLang(v){
@@ -351,6 +453,7 @@ router();
 function router(){
 if(state.step==="intro") intro();
 if(state.step==="south") south();
+if(state.step==="time") stepTime();
 }
 
 function intro(){
@@ -358,16 +461,14 @@ topBox.innerHTML=`
 ${header()}
 <div id="content">
 <div class="title">${rand(t("intro"))}</div>
-</div>
-`;
+</div>`;
 
 bottomBox.innerHTML=`
 <div class="row">
 <button class="main" onclick="start('wake')">${t("wake")}</button>
 <button class="main" onclick="start('dream')">${t("dream")}</button>
 </div>
-<div id="foot">Awarenessy V5.0</div>
-`;
+<div id="foot">Awarenessy V5.0</div>`;
 }
 
 function start(mode){
@@ -376,11 +477,11 @@ state.step="south";
 
 bottomBox.innerHTML=`
 <div id="compassWrap">
-<img id="compassImg" src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
+<img id="compassImg"
+src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
 <svg id="fx" viewBox="0 0 400 400"></svg>
 </div>
-<div id="foot">Awarenessy V5.0</div>
-`;
+<div id="foot">Awarenessy V5.0</div>`;
 
 router();
 }
@@ -390,44 +491,77 @@ topBox.innerHTML=`
 ${header()}
 <div id="content">
 <div class="card">
-<div class="title" style="color:${titleColor()}">${t("turn")}</div>
+<div class="title"
+style="color:${titleColor()}">${t("turn")}</div>
 <div class="small">${t("hint")}</div>
-<button class="main" style="margin-top:16px">${t("ready")}</button>
+
+<button class="main"
+style="margin-top:16px"
+onclick="goTime()">${t("ready")}</button>
+
 </div>
+</div>`;
+}
+
+function goTime(){
+state.step="time";
+router();
+}
+
+function stepTime(){
+
+const arr=state.lang==="ru"
+?["Рассвет","Утро","День","Вечер","Закат","Ночь"]
+:state.lang==="en"
+?["Dawn","Morning","Day","Evening","Sunset","Night"]
+:["Amanecer","Mañana","Día","Tarde","Atardecer","Noche"];
+
+topBox.innerHTML=`
+${header()}
+<div id="content">
+<div class="card">
+<div class="title"
+style="font-size:20px;color:${titleColor()}">${t("time")}</div>
+
+<div class="grid2">
+${arr.map(x=>`
+<button class="main">${x}</button>
+`).join("")}
 </div>
-`;
+
+</div>
+</div>`;
 }
 
 function openModal(){
+
 document.getElementById("modal").style.display="flex";
 
 const img=document.getElementById("emissary");
 const msg=document.getElementById("msg");
 
-img.classList.remove("fadeIn");
-msg.classList.remove("fadeIn");
+img.style.opacity="0";
+msg.style.opacity="0";
 msg.innerText="";
 
-setTimeout(()=>img.classList.add("fadeIn"),200);
+img.style.width="94%";
 
 setTimeout(()=>{
-img.classList.remove("fadeIn");
-},2800);
+img.style.transition="3s";
+img.style.opacity=".68";
+},200);
 
 setTimeout(()=>{
-msg.innerText=
-"Здравствуй.\n"+
-"Я — Эмиссар Сновидений.\n"+
-"На русском языке меня зовут ОСоЗНАЙКА!\n"+
-"ОС — Осознанное Сновидение + Знание.\n"+
-"Я твой Друг и Попутчик на Пути Осознания.\n"+
-"Я смотрю из глубины твоего Внимания.\n"+
-"Напоминаю об осознанности.\n"+
-"Настрой частоту напоминаний — и я буду с тобой.\n"+
-"И я отвечу на вопросы в этом Приложении.\n"+
-"Мы встретимся.";
-msg.classList.add("fadeIn");
-},4200);
+img.style.transition="1s";
+img.style.opacity="0";
+},3400);
+
+setTimeout(()=>{
+msg.innerText=t("emissary");
+msg.style.textAlign="left";
+msg.style.opacity="1";
+},4700);
+
 }
 
 function closeModal(){

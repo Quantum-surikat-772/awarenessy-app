@@ -294,7 +294,7 @@ hint:"(там где солнце в полдень)",
 time:"Какое время суток?",
 next:"Далее",
 
-intro:[
+introTexts:[
 "Что ты делал(а) 5 минут назад?",
 "Я наблюдаю...",
 "В каком направлении твой Дом?",
@@ -302,8 +302,9 @@ intro:[
 "Какое у тебя сейчас настроение?"
 ],
 
-emissary:
-`Здравствуй.
+special:"ЭТО НЕ СОН?",
+
+emissary:`Здравствуй.
 
 Я — Эмиссар Сновидений.
 
@@ -336,7 +337,7 @@ hint:"(where sun is at noon)",
 time:"What time is it?",
 next:"Next",
 
-intro:[
+introTexts:[
 "What were you doing 5 minutes ago?",
 "I observe...",
 "Where is your Home?",
@@ -344,8 +345,9 @@ intro:[
 "How do you feel right now?"
 ],
 
-emissary:
-`Hello,
+special:"IS THIS A DREAM?",
+
+emissary:`Hello,
 
 I am the Dream Emissary.
 
@@ -379,7 +381,7 @@ hint:"(donde está el sol al mediodía)",
 time:"¿Qué hora del día?",
 next:"Siguiente",
 
-intro:[
+introTexts:[
 "¿Qué hacías hace 5 minutos?",
 "Observo...",
 "¿Dónde está tu hogar?",
@@ -387,8 +389,9 @@ intro:[
 "¿Cómo te sientes ahora?"
 ],
 
-emissary:
-`Hola,
+special:"¿ESTO ES UN SUEÑO?",
+
+emissary:`Hola,
 
 Soy el Emisario de los Sueños.
 
@@ -431,9 +434,7 @@ function header(){
 return `
 <div id="header">
 <div>
-<div id="brand"
-onclick="openModal()"
-style="color:${titleColor()}">${t("brand")}</div>
+<div id="brand" onclick="openModal()" style="color:${titleColor()}">${t("brand")}</div>
 <div id="sub">${t("sub")}</div>
 </div>
 
@@ -447,21 +448,30 @@ style="color:${titleColor()}">${t("brand")}</div>
 
 function setLang(v){
 state.lang=v;
-router();
-}
-
-function router(){
-if(state.step==="intro") intro();
-if(state.step==="south") south();
-if(state.step==="time") stepTime();
+intro();
 }
 
 function intro(){
+
+const type=Math.random();
+
+let contentHTML="";
+
+if(type<0.2){
+contentHTML=`<div style="background:#d00000;color:#fff;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;">
+${t("special")}
+</div>`;
+}
+else if(type<0.5){
+contentHTML=`<img src="https://i.postimg.cc/V6gqpw1V/Emissary.png" style="width:70%;opacity:.9;">`;
+}
+else{
+contentHTML=`<div class="title">${rand(t("introTexts"))}</div>`;
+}
+
 topBox.innerHTML=`
 ${header()}
-<div id="content">
-<div class="title">${rand(t("intro"))}</div>
-</div>`;
+<div id="content">${contentHTML}</div>`;
 
 bottomBox.innerHTML=`
 <div class="row">
@@ -483,7 +493,7 @@ src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
 </div>
 <div id="foot">Awarenessy V5.0</div>`;
 
-router();
+south();
 }
 
 function south(){
@@ -491,8 +501,7 @@ topBox.innerHTML=`
 ${header()}
 <div id="content">
 <div class="card">
-<div class="title"
-style="color:${titleColor()}">${t("turn")}</div>
+<div class="title" style="color:${titleColor()}">${t("turn")}</div>
 <div class="small">${t("hint")}</div>
 
 <button class="main"
@@ -504,33 +513,7 @@ onclick="goTime()">${t("ready")}</button>
 }
 
 function goTime(){
-state.step="time";
-router();
-}
-
-function stepTime(){
-
-const arr=state.lang==="ru"
-?["Рассвет","Утро","День","Вечер","Закат","Ночь"]
-:state.lang==="en"
-?["Dawn","Morning","Day","Evening","Sunset","Night"]
-:["Amanecer","Mañana","Día","Tarde","Atardecer","Noche"];
-
-topBox.innerHTML=`
-${header()}
-<div id="content">
-<div class="card">
-<div class="title"
-style="font-size:20px;color:${titleColor()}">${t("time")}</div>
-
-<div class="grid2">
-${arr.map(x=>`
-<button class="main">${x}</button>
-`).join("")}
-</div>
-
-</div>
-</div>`;
+alert("Следующий шаг (время) будет в PART 4");
 }
 
 function openModal(){
@@ -541,26 +524,26 @@ const img=document.getElementById("emissary");
 const msg=document.getElementById("msg");
 
 img.style.opacity="0";
+img.style.transform="scale(1)";
 msg.style.opacity="0";
 msg.innerText="";
 
-img.style.width="94%";
+setTimeout(()=>{
+img.style.transition="3s";
+img.style.opacity=".7";
+img.style.transform="scale(1.4)";
+},100);
 
 setTimeout(()=>{
 img.style.transition="3s";
-img.style.opacity=".68";
-},200);
-
-setTimeout(()=>{
-img.style.transition="1s";
 img.style.opacity="0";
-},3400);
+},3100);
 
 setTimeout(()=>{
 msg.innerText=t("emissary");
 msg.style.textAlign="left";
 msg.style.opacity="1";
-},4700);
+},6200);
 
 }
 

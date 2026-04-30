@@ -277,9 +277,12 @@ const bottomBox=document.getElementById("bottom");
 
 const state={
 lang:"ru",
-mode:null,
-step:"intro"
+mode:null
 };
+
+const HAND_IMG="https://i.postimg.cc/zXp9BVGf/Hands-1.png";
+const HAND_VIDEO="https://i.imgur.com/ocTkSQj.mp4";
+const EMISSARY_IMG="https://i.postimg.cc/V6gqpw1V/Emissary.png";
 
 const TXT={
 
@@ -291,8 +294,6 @@ dream:"СОН",
 ready:"Готово",
 turn:"Повернись к Югу",
 hint:"(там где солнце в полдень)",
-time:"Какое время суток?",
-next:"Далее",
 
 introTexts:[
 "Что ты делал(а) 5 минут назад?",
@@ -304,7 +305,7 @@ introTexts:[
 
 special:"ЭТО НЕ СОН?",
 
-emissary:`Здравствуй.
+emissary:`ЗДРАВСТВУЙ
 
 Я — Эмиссар Сновидений.
 
@@ -323,7 +324,9 @@ emissary:`Здравствуй.
 
 И я отвечу на вопросы в этом Приложении.
 
-Мы встретимся.`
+Мы встретимся.`,
+
+back:"Вернуться"
 },
 
 en:{
@@ -334,8 +337,6 @@ dream:"DREAM",
 ready:"Ready",
 turn:"Turn to South",
 hint:"(where sun is at noon)",
-time:"What time is it?",
-next:"Next",
 
 introTexts:[
 "What were you doing 5 minutes ago?",
@@ -347,11 +348,11 @@ introTexts:[
 
 special:"IS THIS A DREAM?",
 
-emissary:`Hello,
+emissary:`HELLO
 
 I am the Dream Emissary.
 
-In English, my name is AWARENESSY!
+My name is AWARENESSY!
 
 I am your Friend and Companion
 on the Path of Awareness.
@@ -367,7 +368,9 @@ and I will be with you.
 And I will answer your questions
 in this Application.
 
-We will meet.`
+We will meet.`,
+
+back:"Back"
 },
 
 es:{
@@ -378,8 +381,6 @@ dream:"SUEÑO",
 ready:"Listo",
 turn:"Gira al Sur",
 hint:"(donde está el sol al mediodía)",
-time:"¿Qué hora del día?",
-next:"Siguiente",
 
 introTexts:[
 "¿Qué hacías hace 5 minutos?",
@@ -391,12 +392,11 @@ introTexts:[
 
 special:"¿ESTO ES UN SUEÑO?",
 
-emissary:`Hola,
+emissary:`HOLA
 
 Soy el Emisario de los Sueños.
 
-En español,
-mi nombre es ¡CONCIENCITO!
+Mi nombre es ¡CONCIENCITO!
 
 Soy tu Amigo y Compañero
 en el camino de la Consciencia.
@@ -413,7 +413,9 @@ y estaré contigo.
 Y responderé las preguntas
 de esta aplicación.
 
-Nos veremos.`
+Nos veremos.`,
+
+back:"Volver"
 }
 
 };
@@ -426,22 +428,18 @@ function rand(a){
 return a[Math.floor(Math.random()*a.length)];
 }
 
-function titleColor(){
-return state.mode==="dream" ? "#69b7ff" : "#c9a86a";
-}
-
 function header(){
 return `
 <div id="header">
 <div>
-<div id="brand" onclick="openModal()" style="color:${titleColor()}">${t("brand")}</div>
+<div id="brand" onclick="openModal()" style="color:#c9a86a">${t("brand")}</div>
 <div id="sub">${t("sub")}</div>
 </div>
 
 <div id="langs">
-<button class="mini ${state.lang==="ru"?"active":""}" onclick="setLang('ru')">RU</button>
-<button class="mini ${state.lang==="en"?"active":""}" onclick="setLang('en')">EN</button>
-<button class="mini ${state.lang==="es"?"active":""}" onclick="setLang('es')">ES</button>
+<button class="mini" onclick="setLang('ru')">RU</button>
+<button class="mini" onclick="setLang('en')">EN</button>
+<button class="mini" onclick="setLang('es')">ES</button>
 </div>
 </div>`;
 }
@@ -453,72 +451,70 @@ intro();
 
 function intro(){
 
-const type=Math.random();
+const r=Math.random();
 
-let contentHTML="";
+let html="";
 
-if(type<0.2){
-contentHTML=`<div style="background:#d00000;color:#fff;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;">
+if(r<0.2){
+
+// FULL RED SCREEN
+html=`
+<div style="
+position:fixed;
+inset:0;
+background:#c00000;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:34px;
+font-weight:800;
+color:#fff;
+z-index:5;">
 ${t("special")}
 </div>`;
+
 }
-else if(type<0.5){
-contentHTML=`<img src="https://i.postimg.cc/V6gqpw1V/Emissary.png" style="width:70%;opacity:.9;">`;
+else if(r<0.5){
+
+// IMAGE HANDS
+html=`
+<img src="${HAND_IMG}"
+style="width:85%;opacity:.95;">`;
+
+}
+else if(r<0.75){
+
+// VIDEO HANDS
+html=`
+<video autoplay muted loop playsinline
+style="width:85%;border-radius:20px;opacity:.9;">
+<source src="${HAND_VIDEO}" type="video/mp4">
+</video>`;
+
 }
 else{
-contentHTML=`<div class="title">${rand(t("introTexts"))}</div>`;
+
+// TEXT
+html=`<div class="title">${rand(t("introTexts"))}</div>`;
+
 }
 
 topBox.innerHTML=`
 ${header()}
-<div id="content">${contentHTML}</div>`;
+<div id="content">${html}</div>`;
 
 bottomBox.innerHTML=`
 <div class="row">
-<button class="main" onclick="start('wake')">${t("wake")}</button>
-<button class="main" onclick="start('dream')">${t("dream")}</button>
+<button class="main">${t("wake")}</button>
+<button class="main">${t("dream")}</button>
 </div>
 <div id="foot">Awarenessy V5.0</div>`;
-}
-
-function start(mode){
-state.mode=mode;
-state.step="south";
-
-bottomBox.innerHTML=`
-<div id="compassWrap">
-<img id="compassImg"
-src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png">
-<svg id="fx" viewBox="0 0 400 400"></svg>
-</div>
-<div id="foot">Awarenessy V5.0</div>`;
-
-south();
-}
-
-function south(){
-topBox.innerHTML=`
-${header()}
-<div id="content">
-<div class="card">
-<div class="title" style="color:${titleColor()}">${t("turn")}</div>
-<div class="small">${t("hint")}</div>
-
-<button class="main"
-style="margin-top:16px"
-onclick="goTime()">${t("ready")}</button>
-
-</div>
-</div>`;
-}
-
-function goTime(){
-alert("Следующий шаг (время) будет в PART 4");
 }
 
 function openModal(){
 
-document.getElementById("modal").style.display="flex";
+const modal=document.getElementById("modal");
+modal.style.display="flex";
 
 const img=document.getElementById("emissary");
 const msg=document.getElementById("msg");
@@ -528,20 +524,23 @@ img.style.transform="scale(1)";
 msg.style.opacity="0";
 msg.innerText="";
 
+// 0–3 сек
 setTimeout(()=>{
 img.style.transition="3s";
-img.style.opacity=".7";
-img.style.transform="scale(1.4)";
-},100);
+img.style.opacity=".65";
+img.style.transform="scale(1.5)";
+},50);
 
+// 3–6 сек
 setTimeout(()=>{
 img.style.transition="3s";
 img.style.opacity="0";
-},3100);
+img.style.transform="scale(2)";
+},3050);
 
+// текст
 setTimeout(()=>{
 msg.innerText=t("emissary");
-msg.style.textAlign="left";
 msg.style.opacity="1";
 },6200);
 

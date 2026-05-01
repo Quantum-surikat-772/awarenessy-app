@@ -143,12 +143,6 @@ opacity:0;
 <script>
 
 const HAND_IMG="https://i.postimg.cc/zXp9BVGf/Hands-1.png";
-const top=document.getElementById("top");
-const bottom=document.getElementById("bottom");
-const modal=document.getElementById("modal");
-const emissary=document.getElementById("emissary");
-const backBtn=document.getElementById("backBtn");
-const settingsBtn=document.getElementById("settingsBtn");
 const HAND_VIDEO="https://i.imgur.com/ocTkSQj.mp4";
 
 const state={lang:"ru"};
@@ -242,6 +236,8 @@ Nos veremos.`
 function t(k){return TXT[state.lang][k];}
 
 function intro(){
+const top=document.getElementById("top");
+const bottom=document.getElementById("bottom");
 
 const r=Math.random();
 let html="";
@@ -294,6 +290,10 @@ intro();
 }
 
 function openModal(){
+const modal=document.getElementById("modal");
+const emissary=document.getElementById("emissary");
+const backBtn=document.getElementById("backBtn");
+const settingsBtn=document.getElementById("settingsBtn");
 
 modal.style.display="block";
 

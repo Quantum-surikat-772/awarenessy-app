@@ -265,55 +265,80 @@ Nos veremos.`
 function t(k){return TXT[state.lang][k];}
 
 function intro(){
-const top=document.getElementById("top");
-const bottom=document.getElementById("bottom");
 
-const r=Math.random();
-let html="";
+const top = document.getElementById("top");
+const bottom = document.getElementById("bottom");
 
-if(r<0.2){
-html=`
+const r = Math.random();
+
+let html = "";
+
+// 🔴 Красный экран
+if(r < 0.25){
+html = `
 <div style="
 position:absolute;
 inset:0;
 background:#c00000;
-z-index:0;
-"></div>
-
-<div style="
-position:relative;
-z-index:1;
+display:flex;
+align-items:center;
+justify-content:center;
 font-size:32px;
 font-weight:800;
-text-align:center;
 ">
 ${t("special")}
-</div>`;
+</div>
+`;
 }
 
-else if(r<0.5){
-html=`<img src="${HAND_IMG}" style="width:85%;">`;
+// 🖐 PNG
+else if(r < 0.5){
+html = `<img src="${HAND_IMG}" style="width:85%;">`;
 }
 
-else if(r<0.75){
-html=`<video autoplay muted loop playsinline style="width:85%">
+// 🎥 Видео
+else if(r < 0.75){
+html = `
+<video autoplay muted loop playsinline style="width:85%">
 <source src="${HAND_VIDEO}">
 </video>`;
 }
 
+// 💭 Текст
 else{
-html=`<div style="font-size:22px">${t("intro")[Math.floor(Math.random()*5)]}</div>`;
+const arr = t("intro");
+html = `<div style="font-size:22px;text-align:center;">
+${arr[Math.floor(Math.random()*arr.length)]}
+</div>`;
 }
-`;
+
+// 🔝 ВЕРХ
+top.innerHTML = `
+<div id="header">
+
+<div id="brand" onclick="openModal()" style="color:#c9a86a;font-weight:700;">
+${t("brand")}
+</div>
+
+<div id="langs">
+<button onclick="setLang('ru')">RU</button>
+<button onclick="setLang('en')">EN</button>
+<button onclick="setLang('es')">ES</button>
+</div>
+
+</div>
 
 <div id="content">${html}</div>
 `;
 
-bottom.innerHTML=`
+// 🔻 НИЗ
+bottom.innerHTML = `
 <div class="row">
 <button class="main">${t("wake")}</button>
 <button class="main">${t("dream")}</button>
-</div>`;
+</div>
+`;
+
 }
 
 function setLang(l){

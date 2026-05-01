@@ -305,38 +305,7 @@ else{
 html=`<div style="font-size:22px">${t("intro")[Math.floor(Math.random()*5)]}</div>`;
 }
 
-top.innerHTML=`
-<div id="header">
 
-<div onclick="openModal()">
-<div style="
-font-weight:700;
-font-size:16px;
-color:${state.mode==="dream" ? "#69b7ff" : "#c9a86a"};
-">
-${t("brand")}
-</div>
-
-<div style="
-font-size:11px;
-color:#777;
-margin-top:2px;
-">
-${state.lang==="ru"
-? "Посредник обучения осознанности"
-: state.lang==="en"
-? "Awareness training mediator"
-: "Facilitador de consciencia"}
-</div>
-</div>
-
-<div id="langs">
-<button onclick="setLang('ru')">RU</button>
-<button onclick="setLang('en')">EN</button>
-<button onclick="setLang('es')">ES</button>
-</div>
-
-</div>
 `;
 
 <div id="content">${html}</div>
@@ -355,7 +324,42 @@ intro();
 
 setTimeout(()=>{
 document.querySelectorAll("#langs button").forEach(b=>{
-b.classList.remove("active");
+b.classList.remove("active")top.innerHTML=`
+<div id="header">
+
+<div id="brand" onclick="openModal()">
+${t("brand")}
+</div>
+
+<div id="langs">
+<button onclick="setLang('ru')">RU</button>
+<button onclick="setLang('en')">EN</button>
+<button onclick="setLang('es')">ES</button>
+</div>
+
+</div>
+`;
+
+const brand = document.getElementById("brand");
+
+brand.innerHTML = `
+<div style="font-weight:700;font-size:16px;">
+${t("brand")}
+</div>
+
+<div style="font-size:11px;color:#777;margin-top:2px;">
+${state.lang==="ru"
+? "Посредник обучения осознанности"
+: state.lang==="en"
+? "Awareness training mediator"
+: "Facilitador de consciencia"}
+</div>
+`;
+  
+brand.style.color = (state.mode==="dream")
+? "#69b7ff"
+: "#c9a86a";
+
 if(b.innerText.toLowerCase()===l){
 b.classList.add("active");
 }

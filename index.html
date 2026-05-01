@@ -33,6 +33,11 @@ background:#050505;
 }
 
 #top,#bottom{height:50%;padding:10px;}
+#bottom{
+position:relative;
+display:flex;
+justify-content:flex-end;
+}
 
 #header{
 display:flex;
@@ -43,7 +48,15 @@ margin-bottom:8px;
 #brand{color:var(--gold);font-weight:700;cursor:pointer;}
 
 #langs button{
+background:none;
+border:none;
+color:#aaa;
+font-size:13px;
 margin-left:6px;
+}
+
+#langs button.active{
+color:#fff;
 }
 
 #content{
@@ -53,6 +66,7 @@ justify-content:center;
 align-items:center;
 flex-direction:column;
 position:relative;
+text-align:center;
 }
 
 .main{
@@ -65,7 +79,14 @@ color:#fff;
 margin-top:6px;
 }
 
-.row{display:flex;gap:8px;}
+.row{
+position:absolute;
+bottom:10px;
+left:10px;
+right:10px;
+display:flex;
+gap:8px;
+}
 
 #modal{
 position:fixed;
@@ -163,15 +184,23 @@ intro:[
 ],
 emissary:`ЗДРАВСТВУЙ
 
-Я — Эмиссар Сновидений.
+Я — Эмиссар Сновидений
 
-Я твой Друг и Попутчик.
+На русском языке меня зовут ОСоЗНАЙКА!
 
-Я смотрю из глубины твоего внимания.
+ОС — Осознанное Сновидение + Знание
 
-Я напоминаю об осознанности.
+Я твой Друг и Попутчик на Пути Осознания
 
-Настрой частоту — и я буду рядом.
+Я смотрю из глубины твоего Внимания
+
+Напоминаю об осознанности
+
+Настрой частоту напоминаний,
+и я буду с тобой
+
+И я отвечу на вопросы
+в этом Приложении
 
 Мы встретимся.`
 },
@@ -244,8 +273,20 @@ let html="";
 
 if(r<0.2){
 html=`
-<div style="position:absolute;inset:0;background:#c00000;"></div>
-<div style="position:relative;font-size:32px;font-weight:800;">
+<div style="
+position:absolute;
+inset:0;
+background:#c00000;
+z-index:0;
+"></div>
+
+<div style="
+position:relative;
+z-index:1;
+font-size:32px;
+font-weight:800;
+text-align:center;
+">
 ${t("special")}
 </div>`;
 }
@@ -287,6 +328,15 @@ bottom.innerHTML=`
 function setLang(l){
 state.lang=l;
 intro();
+
+setTimeout(()=>{
+document.querySelectorAll("#langs button").forEach(b=>{
+b.classList.remove("active");
+if(b.innerText.toLowerCase()===l){
+b.classList.add("active");
+}
+});
+},10);
 }
 
 function openModal(){

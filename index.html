@@ -279,24 +279,36 @@ let html = "";
 
 // 🔴 Красный экран
 if(r < 0.25){
-html = `
+
+top.innerHTML = `
 <div style="
 position:absolute;
 top:0;
 left:0;
 width:100%;
-height:100%;
+height:50vh;
 background:#c00000;
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:32px;
 font-weight:800;
-z-index:0;
+z-index:2;
 ">
 ${t("special")}
 </div>
+
+${header()}
 `;
+
+bottom.innerHTML = `
+<div class="row">
+<button class="main">${t("wake")}</button>
+<button class="main">${t("dream")}</button>
+</div>
+`;
+
+return;
 }
 
 // 🖐 PNG

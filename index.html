@@ -270,25 +270,15 @@ function t(k){return TXT[state.lang][k];}
 
 function intro(){
 
-const top = document.getElementById("top");
-const bottom = document.getElementById("bottom");
-
 const r = Math.random();
 
 let html = "";
-
 let contentStyle = "";
-let html = "";
 
+// 🔴 КРАСНЫЙ
 if(r < 0.2){
 
-// 🔴 КРАСНЫЙ ЭКРАН (правильный способ)
-contentStyle = `
-background:#c00000;
-display:flex;
-align-items:center;
-justify-content:center;
-`;
+contentStyle = "background:#c00000; display:flex; align-items:center; justify-content:center;";
 
 html = `
 <div style="
@@ -302,55 +292,43 @@ ${t("special")}
 `;
 
 }
+
+// 🖐 PNG
 else if(r < 0.5){
 
-// 🖐 PNG (увеличен и центр)
 html = `
-<img src="${HAND_IMG}"
-style="
-width:110%;
-max-width:420px;
-object-fit:contain;
-">
+<img src="${HAND_IMG}" style="width:110%; max-width:420px;">
 `;
 
 }
+
+// 🎥 VIDEO
 else if(r < 0.75){
 
-// 🎥 VIDEO (поднят и увеличен)
 html = `
-<video autoplay muted loop playsinline
-style="
-width:105%;
-max-width:420px;
-object-fit:contain;
-transform:translateY(-6%);
-">
+<video autoplay muted loop playsinline style="width:105%; transform:translateY(-5%);">
 <source src="${HAND_VIDEO}" type="video/mp4">
 </video>
 `;
 
 }
+
+// 🧠 TEXT
 else{
 
-// 🧠 ТЕКСТ (центр)
 html = `
-<div style="
-font-size:22px;
-font-weight:600;
-text-align:center;
-">
+<div style="font-size:22px; text-align:center;">
 ${rand(t("introTexts"))}
 </div>
 `;
 
 }
 
-// 🔝 ВЕРХ
+// 🔝 TOP
 top.innerHTML = `
 <div id="header">
 
-<div id="brand" onclick="openModal()" style="color:#c9a86a;font-weight:700;">
+<div id="brand" onclick="openModal()" style="color:#c9a86a;">
 ${t("brand")}
 </div>
 
@@ -362,10 +340,12 @@ ${t("brand")}
 
 </div>
 
-<div id="content" style="${contentStyle}">${html}</div>
+<div id="content" style="${contentStyle}">
+${html}
+</div>
 `;
 
-// 🔻 НИЗ
+// 🔻 BOTTOM
 bottom.innerHTML = `
 <div class="row">
 <button class="main">${t("wake")}</button>

@@ -301,13 +301,13 @@ ${t("special")}
 
 // 🖐 PNG
 else if(r < 0.5){
-html = `<img src="${HAND_IMG}" style="width:85%;">`;
+html = `<img src="${HAND_IMG}" style="width:105%; max-width:420px;">`;
 }
 
 // 🎥 Видео
 else if(r < 0.75){
 html = `
-<video autoplay muted loop playsinline style="width:85%">
+<video autoplay muted loop playsinline style="width:105%; max-width:420px;">
 <source src="${HAND_VIDEO}">
 </video>`;
 }

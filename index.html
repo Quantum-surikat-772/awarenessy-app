@@ -323,7 +323,13 @@ transform:translateY(10%);
 // 💭 Текст
 else{
 const arr = t("intro");
-html = `<div style="font-size:22px;text-align:center;">
+html = `<div style="
+font-size:22px;
+text-align:center;
+position:relative;
+top:40%;
+transform:translateY(-50%);
+">
 ${arr[Math.floor(Math.random()*arr.length)]}
 </div>`;
 }

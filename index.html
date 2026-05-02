@@ -268,6 +268,10 @@ Nos veremos.`
 
 function t(k){return TXT[state.lang][k];}
 
+function rand(arr){
+return arr[Math.floor(Math.random()*arr.length)];
+}
+
 function intro(){
 
 const r = Math.random();
@@ -318,7 +322,7 @@ else{
 
 html = `
 <div style="font-size:22px; text-align:center;">
-${rand(t("introTexts"))}
+${rand(t("intro"))}
 </div>
 `;
 

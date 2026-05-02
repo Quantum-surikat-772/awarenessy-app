@@ -93,24 +93,19 @@ border-radius:10px;
 
 <script>
 
+window.onload = function(){
+
 const topBox = document.getElementById("top");
 const bottomBox = document.getElementById("bottom");
 
-function intro(){
+// ПРОВЕРКА
+topBox.style.background = "blue";
+bottomBox.style.background = "green";
 
-topBox.innerHTML = `
-<div style="text-align:center; font-size:22px;">
-Я наблюдаю...
-</div>
-`;
+topBox.innerHTML = "TOP OK";
+bottomBox.innerHTML = "BOTTOM OK";
 
-bottomBox.innerHTML = `
-<button>ЯВЬ</button>
-<button>СОН</button>
-`;
-}
-
-window.onload = intro;
+};
 
 </script>
 

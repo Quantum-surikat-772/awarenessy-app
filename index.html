@@ -168,8 +168,7 @@ opacity:0;
 <script>
 alert("JS работает");
 
-const top = document.getElementById("top");
-const bottom = document.getElementById("bottom");
+let top, bottom;
 
 const HAND_IMG="https://i.postimg.cc/zXp9BVGf/Hands-1.png";
 const HAND_VIDEO="https://i.imgur.com/ocTkSQj.mp4";
@@ -427,7 +426,15 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
-window.onload = intro;
+function openSettings(){
+  alert("Настройка скоро будет");
+}
+
+window.onload = () => {
+  top = document.getElementById("top");
+  bottom = document.getElementById("bottom");
+  intro();
+};
 
 </script>
 </body>

@@ -39,7 +39,35 @@ background:green;
 <div id="bottom">BOTTOM OK</div>
 
 <script>
-alert("JS работает");
+
+window.onload = function(){
+
+const topBox = document.getElementById("top");
+const bottomBox = document.getElementById("bottom");
+
+// центр
+topBox.innerHTML = `
+<div style="font-size:22px;">
+Я наблюдаю...
+</div>
+`;
+
+// кнопки
+bottomBox.innerHTML = `
+<div style="
+width:100%;
+display:flex;
+gap:10px;
+padding:10px;
+box-sizing:border-box;
+">
+<button style="flex:1;height:50px;">ЯВЬ</button>
+<button style="flex:1;height:50px;">СОН</button>
+</div>
+`;
+
+};
+
 </script>
 
 </body>

@@ -371,69 +371,26 @@ function openModal(){
 const modal=document.getElementById("modal");
 const emissary=document.getElementById("emissary");
 const backBtn=document.getElementById("backBtn");
-const settingsBtn=document.getElementById("settingsBtn");
 
-modal.style.display="block";
-
-const img=emissary;
-const msg=document.getElementById("msg");
-
-msg.innerHTML="";
-msg.style.opacity=1;
-
-backBtn.innerText=t("back");
-settingsBtn.innerText=t("settings");
-
-img.style.opacity=0;
-img.style.transform="translateX(-50%) scale(1)";
-img.style.transition="none";
-
-setTimeout(()=>{
-img.style.transition="6s linear";
-img.style.opacity=.65;
-img.style.transform="translateX(-30%) scale(2)";
-},50);
-
-setTimeout(()=>{
-img.style.opacity=0;
-showTextWave(t("emissary"));
-
-setTimeout(()=>{
-backBtn.style.opacity=1;
-settingsBtn.style.opacity=1;
-},1200);
-
-},6000);
-}
-
-function showTextWave(text){
-const msg=document.getElementById("msg");
-msg.innerHTML="";
-const lines=text.split("\n");
-
-lines.forEach((l,i)=>{
-const d=document.createElement("div");
-d.innerText=l;
-d.style.opacity=0;
-d.style.transition=".5s";
-msg.appendChild(d);
-
-setTimeout(()=>d.style.opacity=1,i*120);
-});
-}
-
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
-
-function openSettings(){
-  alert("Настройка скоро будет");
-}
+<script>
 
 window.onload = () => {
-  top = document.getElementById("top");
-  bottom = document.getElementById("bottom");
-  intro();
+
+  const top = document.getElementById("top");
+  const bottom = document.getElementById("bottom");
+
+  top.innerHTML = `
+    <div style="color:white; text-align:center; margin-top:40px;">
+      JS РАБОТАЕТ
+    </div>
+  `;
+
+  bottom.innerHTML = `
+    <div style="color:white; text-align:center;">
+      НИЖНИЙ БЛОК РАБОТАЕТ
+    </div>
+  `;
+
 };
 
 </script>

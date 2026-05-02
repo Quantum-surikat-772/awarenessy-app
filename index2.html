@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST</title>
+
+<style>
+body{
+margin:0;
+background:#000;
+color:#fff;
+font-family:Arial;
+}
+
+#top{
+height:50vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+#bottom{
+height:50vh;
+display:flex;
+align-items:flex-end;
+justify-content:center;
+padding:10px;
+}
+
+button{
+width:45%;
+height:50px;
+margin:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="top"></div>
+<div id="bottom"></div>
+
+<script>
+
+window.onload = () => {
+
+const top = document.getElementById("top");
+const bottom = document.getElementById("bottom");
+
+top.innerHTML = "ВСЁ РАБОТАЕТ";
+
+bottom.innerHTML = `
+<button>ЯВЬ</button>
+<button>СОН</button>
+`;
+
+};
+
+</script>
+
+</body>
+</html>

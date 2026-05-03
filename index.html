@@ -140,7 +140,7 @@ let style = "";
 // 🔴 АНОМАЛИЯ
 if(r < 0.2){
 
-style = "background:#c00000;";
+document.body.classList.add("alert");
 
 html = `
 <div style="
@@ -156,6 +156,34 @@ text-align:center;
 </div>
 `;
 
+}
+
+/* 🔴 режим аномалии */
+
+body.alert{
+background:#c00000;
+}
+
+/* кнопки становятся прозрачными */
+body.alert .btn{
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.25);
+}
+
+/* текст кнопок — белый */
+body.alert .wake,
+body.alert .dream{
+color:#fff;
+}
+
+/* бренд */
+body.alert #brand{
+color:#fff;
+}
+
+/* языки */
+body.alert #langs button{
+color:#eee;
 }
 
 // 🖐 PNG
@@ -215,6 +243,10 @@ padding:0 10px;
 ${rand(introTexts)}
 </div>
 `;
+
+else{
+document.body.classList.remove("alert");
+}
 
 }
 

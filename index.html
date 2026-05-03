@@ -28,9 +28,37 @@ padding:10px;
 </style>
 </head>
 
+#header{
+height:60px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 10px;
+border-bottom:1px solid #222;
+}
+
+#brand{
+color:#c9a86a;
+font-weight:700;
+font-size:16px;
+}
+
+#langs button{
+background:none;
+border:none;
+color:#aaa;
+font-size:13px;
+margin-left:6px;
+}
+
+#langs button.active{
+color:#fff;
+}
+
 <body>
 
-<h1>Я ЖИВОЙ</h1>
+<div id="app">
+<div id="header"></div>
 
 <div id="top">TOP OK</div>
 <div id="bottom">BOTTOM OK</div>
@@ -41,10 +69,29 @@ window.onload = function(){
 
 const topBox = document.getElementById("top");
 const bottomBox = document.getElementById("bottom");
+const header = document.getElementById("header");
+
+header.innerHTML = `
+<div id="brand">ОСоЗНАЙКА!</div>
+
+<div id="langs">
+<button>RU</button>
+<button>EN</button>
+<button>ES</button>
+</div>
+`;
 
 // центр
 topBox.innerHTML = `
-<div style="font-size:22px;">
+<div style="
+width:100%;
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+text-align:center;
+">
 Я наблюдаю...
 </div>
 `;

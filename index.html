@@ -84,6 +84,30 @@ margin-left:6px;
 color:#fff;
 }
 
+/* 🔴 режим аномалии */
+
+body.alert{
+background:#c00000;
+}
+
+body.alert .btn{
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.25);
+}
+
+body.alert .wake,
+body.alert .dream{
+color:#fff;
+}
+
+body.alert #brand{
+color:#fff;
+}
+
+body.alert #langs button{
+color:#eee;
+}
+
 </style>
 </head>
 
@@ -135,7 +159,9 @@ header.innerHTML = `
 const r = Math.random();
 
 let html = "";
-let style = "";
+
+// сброс по умолчанию
+document.body.classList.remove("alert");
 
 // 🔴 АНОМАЛИЯ
 if(r < 0.2){
@@ -156,34 +182,6 @@ text-align:center;
 </div>
 `;
 
-}
-
-/* 🔴 режим аномалии */
-
-body.alert{
-background:#c00000;
-}
-
-/* кнопки становятся прозрачными */
-body.alert .btn{
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.25);
-}
-
-/* текст кнопок — белый */
-body.alert .wake,
-body.alert .dream{
-color:#fff;
-}
-
-/* бренд */
-body.alert #brand{
-color:#fff;
-}
-
-/* языки */
-body.alert #langs button{
-color:#eee;
 }
 
 // 🖐 PNG
@@ -243,10 +241,6 @@ padding:0 10px;
 ${rand(introTexts)}
 </div>
 `;
-
-else{
-document.body.classList.remove("alert");
-}
 
 }
 

@@ -248,6 +248,23 @@ filter:blur(0);
 }
 }
 
+#settingsBtn{
+position:absolute;
+bottom:80px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+height:50px;
+
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.3);
+background:rgba(255,255,255,0.08);
+color:#fff;
+
+opacity:0;
+transition:1s ease;
+}
+
 </style>
 </head>
 
@@ -473,6 +490,17 @@ d.style.opacity = 1;
 }, i * 700);
 });
 
+const settingsBtn = document.getElementById("settingsBtn");
+
+// время появления = последняя строка + пауза
+setTimeout(()=>{
+settingsBtn.style.opacity = 1;
+}, lines.length * 700 + 800);
+
+document.getElementById("settingsBtn").onclick = function(){
+alert("Здесь будет настройка будильника");
+};
+
 msg.style.opacity = 1;
 
 }
@@ -491,6 +519,7 @@ document.getElementById("modal").style.display = "none";
 
   <div id="msg"></div>
 
+  <button id="settingsBtn">Настройка</button>
   <button id="backBtn" onclick="closeModal()">Назад</button>
 
 </div>

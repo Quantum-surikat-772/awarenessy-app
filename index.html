@@ -420,13 +420,6 @@ header.innerHTML = `
 
 function render(){
 
-<div id="langs">
-<button onclick="setLang('ru')">RU</button>
-<button onclick="setLang('en')">EN</button>
-<button onclick="setLang('es')">ES</button>
-</div>
-`;
-
 // РАНДОМ
 const r = Math.random();
 document.body.classList.remove("alert");
@@ -472,17 +465,6 @@ function setLang(l){
 state.lang = l;
 render();
 }
-
-// кнопки
-bottomBox.innerHTML = `
-<div style="
-display:flex;
-gap:10px;
-">
-<button class="btn wake">ЯВЬ</button>
-<button class="btn dream">СОН</button>
-</div>
-`;
 
 };
 

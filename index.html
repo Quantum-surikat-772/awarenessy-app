@@ -285,19 +285,118 @@ transition:1s ease;
 const HAND_IMG = "https://i.postimg.cc/zXp9BVGf/Hands-1.png";
 const HAND_VIDEO = "https://i.imgur.com/ocTkSQj.mp4";
 
-const introTexts = [
+const state = {
+lang: "ru"
+};
+
+const TXT = {
+
+ru:{
+brand:"ОСоЗНАЙКА!",
+sub:"Посредник обучения Осознанности",
+wake:"ЯВЬ",
+dream:"СОН",
+settings:"Настройка",
+back:"Назад",
+
+intro:[
 "Что ты делал(а) 5 минут назад?",
 "Я наблюдаю...",
 "В каком направлении твой Дом?",
 "Посмотри на свои руки",
 "Какое у тебя сейчас настроение?"
-];
+],
+
+emissary:`ЗДРАВСТВУЙ
+
+Я — Эмиссар Сновидений
+
+На русском языке меня зовут ОСоЗНАЙКА!
+
+ОС — Осознанное Сновидение + Знание
+
+Я твой Друг и Попутчик на Пути Осознания
+
+Я смотрю из глубины твоего Внимания
+
+Напоминаю об осознанности
+
+Настрой частоту напоминаний,
+и я буду с тобой
+
+И я отвечу на вопросы
+в этом Приложении
+
+Мы встретимся.`
+},
+
+en:{
+brand:"AWARENESSY!",
+sub:"Awareness training mediator",
+wake:"WAKE",
+dream:"DREAM",
+settings:"Settings",
+back:"Back",
+
+intro:[
+"What were you doing 5 minutes ago?",
+"I observe...",
+"Where is your Home?",
+"Look at your hands",
+"How do you feel?"
+],
+
+emissary:`HELLO
+
+I am the Dream Emissary
+
+I observe from within your attention
+
+I remind you of awareness
+
+We will meet.`
+},
+
+es:{
+brand:"¡CONCIENCITO!",
+sub:"Facilitador de consciencia",
+wake:"VIGILIA",
+dream:"SUEÑO",
+settings:"Ajustes",
+back:"Volver",
+
+intro:[
+"¿Qué hacías hace 5 minutos?",
+"Observo...",
+"¿Dónde está tu hogar?",
+"Mira tus manos",
+"¿Cómo te sientes?"
+],
+
+emissary:`HOLA
+
+Soy el Emisario de los Sueños
+
+Observo desde tu atención
+
+Te recuerdo la consciencia
+
+Nos veremos.`
+}
+
+};
+
+function t(key){
+return TXT[state.lang][key];
+}
 
 function rand(arr){
 return arr[Math.floor(Math.random()*arr.length)];
 }
 
 window.onload = function(){
+render();
+};
 
 const topBox = document.getElementById("top");
 const bottomBox = document.getElementById("bottom");
@@ -310,11 +409,77 @@ header.innerHTML = `
 </div>
 
 <div id="langs">
-<button>RU</button>
-<button>EN</button>
-<button>ES</button>
+<button onclick="setLang('ru')">RU</button>
+<button onclick="setLang('en')">EN</button>
+<button onclick="setLang('es')">ES</button>
 </div>
 `;
+
+function render(){
+
+const topBox = document.getElementById("top");
+const bottomBox = document.getElementById("bottom");
+const header = document.getElementById("header");
+
+// HEADER
+header.innerHTML = `
+<div id="brandWrap">
+  <div id="brand" onclick="openModal()">${t("brand")}</div>
+  <div id="sub">${t("sub")}</div>
+</div>
+
+<div id="langs">
+<button onclick="setLang('ru')">RU</button>
+<button onclick="setLang('en')">EN</button>
+<button onclick="setLang('es')">ES</button>
+</div>
+`;
+
+// РАНДОМ
+const r = Math.random();
+document.body.classList.remove("alert");
+
+let html = "";
+
+if(r < 0.2){
+document.body.classList.add("alert");
+
+html = `<div class="anomalyText">ЭТО НЕ СОН?</div>`;
+}
+else if(r < 0.5){
+html = `<img src="${HAND_IMG}" style="width:120%; max-width:420px;">`;
+}
+else if(r < 0.75){
+html = `
+<video autoplay muted loop playsinline style="max-width:95%;">
+<source src="${HAND_VIDEO}" type="video/mp4">
+</video>`;
+}
+else{
+html = `<div>${rand(t("intro"))}</div>`;
+}
+
+// TOP
+topBox.innerHTML = `
+<div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
+${html}
+</div>
+`;
+
+// BOTTOM
+bottomBox.innerHTML = `
+<div style="display:flex;gap:10px;">
+<button class="btn wake">${t("wake")}</button>
+<button class="btn dream">${t("dream")}</button>
+</div>
+`;
+
+}
+
+function setLang(l){
+state.lang = l;
+render();
+}
 
 // рандомный экран
 const r = Math.random();
@@ -422,6 +587,9 @@ const modal = document.getElementById("modal");
 const img = document.getElementById("emissary");
 const msg = document.getElementById("msg");
 
+document.getElementById("backBtn").innerText = t("back");
+document.getElementById("settingsBtn").innerText = t("settings");
+
 modal.style.display = "block";
 
 msg.innerHTML = "";
@@ -454,7 +622,7 @@ function showText(){
 
 const msg = document.getElementById("msg");
 
-const text = `
+const text = t("emissary");
 ЗДРАВСТВУЙ
 
 Я — Эмиссар Сновидений

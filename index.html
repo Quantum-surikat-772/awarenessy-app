@@ -84,6 +84,62 @@ margin-left:6px;
 color:#fff;
 }
 
+#modal{
+position:fixed;
+inset:0;
+background:#000;
+display:none;
+z-index:999;
+overflow:hidden;
+}
+
+/* Эмиссар */
+
+.emissaryWrap{
+position:absolute;
+top:20%;
+left:50%;
+transform:translateX(-50%);
+width:100%;
+display:flex;
+justify-content:center;
+}
+
+#emissary{
+width:70%;
+max-width:300px;
+opacity:0;
+}
+
+/* текст */
+
+#msg{
+position:absolute;
+top:15%;
+left:50%;
+transform:translateX(-50%);
+width:80%;
+max-width:360px;
+text-align:left;
+line-height:1.5;
+opacity:0;
+}
+
+/* кнопка */
+
+#backBtn{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+width:90%;
+height:50px;
+border-radius:12px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+}
+
 /* 🔴 режим аномалии */
 
 body.alert{
@@ -129,7 +185,7 @@ text-align:center;
 
 opacity:0;
 transform:scale(0.95);
-animation:fadeIn 3s ease forwards;
+animation:fadeIn 4s ease forwards;
 }
 
 @keyframes fadeIn{
@@ -207,7 +263,7 @@ const header = document.getElementById("header");
 
 header.innerHTML = `
 <div id="brandWrap">
-  <div id="brand">ОСоЗНАЙКА!</div>
+  <div id="brand" onclick="openModal()">ОСоЗНАЙКА!</div>
   <div id="sub">Посредник обучения Осознанности</div>
 </div>
 
@@ -318,7 +374,90 @@ gap:10px;
 
 };
 
+function openModal(){
+
+const modal = document.getElementById("modal");
+const img = document.getElementById("emissary");
+const msg = document.getElementById("msg");
+
+modal.style.display = "block";
+
+msg.innerHTML = "";
+msg.style.opacity = 0;
+
+// старт состояния
+img.style.opacity = 0;
+img.style.transform = "translateX(-50%) scale(1)";
+img.style.transition = "none";
+
+// движение
+setTimeout(()=>{
+img.style.transition = "6s linear";
+img.style.opacity = 0.6;
+img.style.transform = "translateX(-30%) scale(2)";
+},50);
+
+// после движения — текст
+setTimeout(()=>{
+img.style.opacity = 0;
+showText();
+},6000);
+
+}
+
+function showText(){
+
+const msg = document.getElementById("msg");
+
+const text = `
+ЗДРАВСТВУЙ
+
+Я — Эмиссар Сновидений
+
+Я наблюдаю из глубины твоего внимания
+
+Я напоминаю об осознанности
+
+Мы встретимся
+`;
+
+msg.innerHTML = "";
+
+const lines = text.split("\n");
+
+lines.forEach((line,i)=>{
+const d = document.createElement("div");
+d.innerText = line;
+d.style.opacity = 0;
+d.style.transition = ".6s";
+msg.appendChild(d);
+
+setTimeout(()=>{
+d.style.opacity = 1;
+}, i * 200);
+});
+
+msg.style.opacity = 1;
+
+}
+
+function closeModal(){
+document.getElementById("modal").style.display = "none";
+}
+
 </script>
+
+<div id="modal">
+
+  <div class="emissaryWrap">
+    <img id="emissary" src="https://i.postimg.cc/V6gqpw1V/Emissary.png">
+  </div>
+
+  <div id="msg"></div>
+
+  <button id="backBtn" onclick="closeModal()">Назад</button>
+
+</div>
 
 </body>
 </html>

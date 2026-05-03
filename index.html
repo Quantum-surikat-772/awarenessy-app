@@ -417,17 +417,6 @@ header.innerHTML = `
 
 function render(){
 
-const topBox = document.getElementById("top");
-const bottomBox = document.getElementById("bottom");
-const header = document.getElementById("header");
-
-// HEADER
-header.innerHTML = `
-<div id="brandWrap">
-  <div id="brand" onclick="openModal()">${t("brand")}</div>
-  <div id="sub">${t("sub")}</div>
-</div>
-
 <div id="langs">
 <button onclick="setLang('ru')">RU</button>
 <button onclick="setLang('en')">EN</button>
@@ -480,93 +469,6 @@ function setLang(l){
 state.lang = l;
 render();
 }
-
-// рандомный экран
-const r = Math.random();
-
-let html = "";
-
-// сброс по умолчанию
-document.body.classList.remove("alert");
-
-// 🔴 АНОМАЛИЯ
-if(r < 0.2){
-
-document.body.classList.add("alert");
-
-html = `
-<div class="anomalyText">
-ЭТО НЕ СОН?
-</div>
-`;
-
-}
-
-// 🖐 PNG
-else if(r < 0.5){
-
-html = `
-<div style="
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-">
-<img src="${HAND_IMG}" style="width:120%; max-width:420px;">
-</div>
-`;
-
-}
-
-// 🎥 VIDEO
-else if(r < 0.75){
-
-html = `
-<div style="
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-">
-<video autoplay muted loop playsinline
-style="
-max-width:95%;
-max-height:100%;
-object-fit:contain;
-transform:scale(1.05);
-">
-<source src="${HAND_VIDEO}" type="video/mp4">
-</video>
-</div>
-`;
-
-}
-
-// 🧠 ТЕКСТ
-else{
-
-html = `
-<div style="
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-text-align:center;
-padding:0 10px;
-">
-${rand(introTexts)}
-</div>
-`;
-
-}
-
-topBox.innerHTML = `
-<div style="flex:1; display:flex;">
-${html}
-</div>
-`;
 
 // кнопки
 bottomBox.innerHTML = `
@@ -623,28 +525,6 @@ function showText(){
 const msg = document.getElementById("msg");
 
 const text = t("emissary");
-ЗДРАВСТВУЙ
-
-Я — Эмиссар Сновидений
-
-На русском языке меня зовут ОСоЗНАЙКА!:
-
-ОС — Осознанное Сновидение + Знание.
-
-Я твой Друг и Попутчик на Пути Осознания.
-
-Я смотрю из глубины твоего Внимания.
-
-Напоминаю об осознанности.
-
-Настрой частоту напоминаний,
-и я буду с тобой.
-
-И я отвечу на вопросы
-в этом Приложении.
-
-Мы встретимся
-`;
 
 msg.innerHTML = "";
 

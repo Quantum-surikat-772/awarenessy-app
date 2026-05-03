@@ -186,8 +186,12 @@ justify-content:center;
 overflow:hidden;
 ">
 <video autoplay muted loop playsinline
-style="width:110%; transform:translateY(-5%);">
-<source src="${HAND_VIDEO}" type="video/mp4">
+style="
+max-width:95%;
+max-height:100%;
+object-fit:contain;
+transform:scale(1.05);
+"
 </video>
 </div>
 `;

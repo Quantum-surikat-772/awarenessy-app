@@ -97,6 +97,21 @@ color:#fff;
 
 <script>
 
+const HAND_IMG = "https://i.postimg.cc/zXp9BVGf/Hands-1.png";
+const HAND_VIDEO = "https://i.imgur.com/ocTkSQj.mp4";
+
+const introTexts = [
+"Что ты делал(а) 5 минут назад?",
+"Я наблюдаю...",
+"В каком направлении твой Дом?",
+"Посмотри на свои руки",
+"Какое у тебя сейчас настроение?"
+];
+
+function rand(arr){
+return arr[Math.floor(Math.random()*arr.length)];
+}
+
 window.onload = function(){
 
 const topBox = document.getElementById("top");
@@ -116,8 +131,73 @@ header.innerHTML = `
 </div>
 `;
 
-// центр
-topBox.innerHTML = `
+// рандомный экран
+const r = Math.random();
+
+let html = "";
+let style = "";
+
+// 🔴 АНОМАЛИЯ
+if(r < 0.2){
+
+style = "background:#c00000;";
+
+html = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:800;
+text-align:center;
+">
+ЭТО НЕ СОН?
+</div>
+`;
+
+}
+
+// 🖐 PNG
+else if(r < 0.5){
+
+html = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+<img src="${HAND_IMG}" style="width:120%; max-width:420px;">
+</div>
+`;
+
+}
+
+// 🎥 VIDEO
+else if(r < 0.75){
+
+html = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+">
+<video autoplay muted loop playsinline
+style="width:110%; transform:translateY(-5%);">
+<source src="${HAND_VIDEO}" type="video/mp4">
+</video>
+</div>
+`;
+
+}
+
+// 🧠 ТЕКСТ
+else{
+
+html = `
 <div style="
 flex:1;
 display:flex;
@@ -125,8 +205,17 @@ align-items:center;
 justify-content:center;
 font-size:22px;
 text-align:center;
+padding:0 10px;
 ">
-Я наблюдаю...
+${rand(introTexts)}
+</div>
+`;
+
+}
+
+topBox.innerHTML = `
+<div style="${style}; flex:1; display:flex;">
+${html}
 </div>
 `;
 

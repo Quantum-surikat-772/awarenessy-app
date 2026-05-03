@@ -466,12 +466,11 @@ const d = document.createElement("div");
 d.innerText = line;
 d.style.opacity = 0;
 d.style.transition = "1.2s ease";
-d.style.filter = "blur(6px)";
 msg.appendChild(d);
 
 setTimeout(()=>{
 d.style.opacity = 1;
-}, i * 700);
+}, i * 500);
 });
 
 msg.style.opacity = 1;

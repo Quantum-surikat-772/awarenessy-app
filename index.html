@@ -61,6 +61,17 @@ font-weight:700;
 font-size:16px;
 }
 
+#brandWrap{
+display:flex;
+flex-direction:column;
+}
+
+#sub{
+font-size:11px;
+color:#777;
+margin-top:2px;
+}
+
 #langs button{
 background:none;
 border:none;
@@ -93,7 +104,10 @@ const bottomBox = document.getElementById("bottom");
 const header = document.getElementById("header");
 
 header.innerHTML = `
-<div id="brand">ОСоЗНАЙКА!</div>
+<div id="brandWrap">
+  <div id="brand">ОСоЗНАЙКА!</div>
+  <div id="sub">Посредник обучения Осознанности</div>
+</div>
 
 <div id="langs">
 <button>RU</button>

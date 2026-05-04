@@ -312,7 +312,17 @@ const HAND_IMG = "https://i.postimg.cc/zXp9BVGf/Hands-1.png";
 const HAND_VIDEO = "https://i.imgur.com/ocTkSQj.mp4";
 
 const state = {
-lang: "ru"
+lang: "ru",
+
+mode: null,   // wake / dream
+step: "intro", // где мы сейчас
+
+// будущий компас
+time: null,
+home: null,
+beam: null,
+ring: null,
+emotion: null
 };
 
 const TXT = {
@@ -543,8 +553,8 @@ ${html}
 // BOTTOM
 bottomBox.innerHTML = `
 <div style="display:flex;gap:10px;">
-<button class="btn wake">${t("wake")}</button>
-<button class="btn dream">${t("dream")}</button>
+<button class="btn wake" onclick="start('wake')">${t("wake")}</button>
+<button class="btn dream" onclick="start('dream')">${t("dream")}</button>
 </div>
 `;
 
@@ -633,6 +643,50 @@ msg.style.opacity = 1;
 
 function closeModal(){
 document.getElementById("modal").style.display = "none";
+}
+
+function start(mode){
+
+state.mode = mode;
+state.step = "south"; // первый шаг
+
+renderCompass();
+}
+
+function renderCompass(){
+
+const topBox = document.getElementById("top");
+const bottomBox = document.getElementById("bottom");
+
+// 🔝 ВЕРХ — КОНТЕНТ
+topBox.innerHTML = `
+<div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
+<div>
+<div style="font-size:22px;font-weight:700">${t("turn") || "Повернись к Югу"}</div>
+<div style="font-size:14px;color:#777;margin-top:8px">(там где солнце в полдень)</div>
+
+<button class="btn" style="margin-top:20px" onclick="nextStep()">OK</button>
+</div>
+</div>
+`;
+
+// 🔻 НИЗ — КОМПАС (пока заглушка)
+bottomBox.innerHTML = `
+<div style="flex:1;display:flex;align-items:center;justify-content:center;">
+<div style="width:260px;height:260px;border-radius:50%;border:1px solid #333;">
+</div>
+</div>
+`;
+
+}
+
+function nextStep(){
+
+if(state.step === "south"){
+  state.step = "time";
+}
+
+renderCompass();
 }
 
 </script>

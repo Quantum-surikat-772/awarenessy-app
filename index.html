@@ -561,21 +561,18 @@ img.style.opacity = 0;
 img.style.transform = "translateX(-55%) scale(1)";
 img.style.transition = "none";
 
-// движение
+// движение + исчезновение одним потоком
 setTimeout(()=>{
-img.style.transition = "6s linear";
-img.style.opacity = 0.6;
-img.style.transform = "translateX(-20%) scale(2)";
+  img.style.transition = "7.5s linear";
+
+  img.style.opacity = 0; // 👈 сразу задаём конечное состояние
+  img.style.transform = "translateX(-15%) scale(3.5)"; // 👈 больше масштаб
 },50);
 
-// после движения — текст
+// во время движения — текст
 setTimeout(()=>{
 showText();
 },4000);
-
-setTimeout(()=>{
-img.style.opacity = 0;
-},6500);
 
 }
 

@@ -556,18 +556,24 @@ modal.style.display = "block";
 msg.innerHTML = "";
 msg.style.opacity = 0;
 
-// старт состояния
+// стартовое состояние
 img.style.opacity = 0;
-img.style.transform = "translateX(-55%) scale(1)";
+img.style.transform = "translateX(-55%) scale(0.9)";
 img.style.transition = "none";
 
-// движение + исчезновение одним потоком
+// 1. появление (короткое)
 setTimeout(()=>{
-  img.style.transition = "7.5s linear";
-
-  img.style.opacity = 0; // 👈 сразу задаём конечное состояние
-  img.style.transform = "translateX(-15%) scale(3.5)"; // 👈 больше масштаб
+  img.style.transition = "1.2s ease-out";
+  img.style.opacity = 0.6;
+  img.style.transform = "translateX(-45%) scale(1.2)";
 },50);
+
+// 2. движение + исчезновение
+setTimeout(()=>{
+  img.style.transition = "6.5s linear";
+  img.style.opacity = 0;
+  img.style.transform = "translateX(-15%) scale(3.5)";
+},1200);
 
 // во время движения — текст
 setTimeout(()=>{

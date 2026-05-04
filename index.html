@@ -305,7 +305,8 @@ intro:[
 "Я наблюдаю...",
 "В каком направлении твой Дом?",
 "Посмотри на свои руки",
-"Какое у тебя сейчас настроение?"
+"Какое у тебя сейчас настроение?",
+special:"ЭТО НЕ СОН?",
 ],
 
 emissary:`ЗДРАВСТВУЙ
@@ -344,7 +345,8 @@ intro:[
 "I observe...",
 "Where is your Home?",
 "Look at your hands",
-"How do you feel?"
+"How do you feel?",
+special:"IS THIS A DREAM?",
 ],
 
 emissary:`HELLO
@@ -371,7 +373,8 @@ intro:[
 "Observo...",
 "¿Dónde está tu hogar?",
 "Mira tus manos",
-"¿Cómo te sientes?"
+"¿Cómo te sientes?",
+special:"¿ESTO ES UN SUEÑO?",
 ],
 
 emissary:`HOLA
@@ -427,7 +430,7 @@ let html = "";
 if(r < 0.2){
 document.body.classList.add("alert");
 
-html = `<div class="anomalyText">ЭТО НЕ СОН?</div>`;
+html = `<div class="anomalyText">${t("special")}</div>`;
 }
 else if(r < 0.5){
 html = `<img src="${HAND_IMG}" style="width:120%; max-width:420px;">`;

@@ -556,29 +556,27 @@ modal.style.display = "block";
 msg.innerHTML = "";
 msg.style.opacity = 0;
 
-// стартовое состояние
+// старт
 img.style.opacity = 0;
-img.style.transform = "translateX(-55%) scale(0.9)";
+img.style.transform = "translateX(-55%) scale(1)";
 img.style.transition = "none";
 
-// 1. появление (короткое)
+// один поток движения
 setTimeout(()=>{
-  img.style.transition = "1.8s ease-out";
+  img.style.transition = "7s cubic-bezier(0.2, 0.6, 0.2, 1)";
   img.style.opacity = 0.6;
-  img.style.transform = "translateX(-45%) scale(1.2)";
+  img.style.transform = "translateX(-15%) scale(3.5)";
 },50);
 
-// во время движения — текст
+// плавное угасание (без смены траектории)
 setTimeout(()=>{
-showText();
-},4000);
-
-// 2. движение + исчезновение
-setTimeout(()=>{
-  img.style.transition = "7.5s linear";
   img.style.opacity = 0;
-  img.style.transform = "translateX(-15%) scale(3.5)";
-},1200);
+},5000);
+
+// текст раньше
+setTimeout(()=>{
+  showText();
+},2800);
 
 }
 

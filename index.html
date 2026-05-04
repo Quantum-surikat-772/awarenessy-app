@@ -409,6 +409,12 @@ const topBox = document.getElementById("top");
 const bottomBox = document.getElementById("bottom");
 const header = document.getElementById("header");
 
+function render(){
+
+const topBox = document.getElementById("top");
+const bottomBox = document.getElementById("bottom");
+const header = document.getElementById("header");
+
 header.innerHTML = `
 <div id="brandWrap">
   <div id="brand" onclick="openModal()">${t("brand")}</div>
@@ -421,8 +427,6 @@ header.innerHTML = `
 <button onclick="setLang('es')">ES</button>
 </div>
 `;
-
-function render(){
 
 // РАНДОМ
 const r = Math.random();

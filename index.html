@@ -402,7 +402,20 @@ return arr[Math.floor(Math.random()*arr.length)];
 }
 
 window.onload = function(){
-render();
+
+  const savedLang = localStorage.getItem("lang");
+
+  if(savedLang){
+    state.lang = savedLang;
+  } else {
+    const deviceLang = navigator.language.slice(0,2);
+
+    if(TXT[deviceLang]){
+      state.lang = deviceLang;
+    }
+  }
+
+  render();
 };
 
 const topBox = document.getElementById("top");
@@ -469,9 +482,20 @@ bottomBox.innerHTML = `
 
 }
 
+document.querySelectorAll("#langs button").forEach(btn=>{
+  btn.classList.remove("active");
+
+  if(btn.innerText.toLowerCase() === state.lang){
+    btn.classList.add("active");
+  }
+});
+
 function setLang(l){
-state.lang = l;
-render();
+  state.lang = l;
+
+  localStorage.setItem("lang", l); // 👈 сохраняем
+
+  render();
 }
 
 function openModal(){

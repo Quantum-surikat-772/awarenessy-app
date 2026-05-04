@@ -133,6 +133,30 @@ filter:blur(0);
 }
 }
 
+@keyframes emissaryFlow {
+
+  0%{
+    opacity:0;
+    transform:translateX(-55%) scale(0.9);
+  }
+
+  25%{
+    opacity:0.65;
+    transform:translateX(-50%) scale(1.1);
+  }
+
+  50%{
+    opacity:0.65;
+    transform:translateX(-40%) scale(1.4);
+  }
+
+  100%{
+    opacity:0;
+    transform:translateX(-10%) scale(1.9);
+  }
+
+}
+
 /* текст */
 
 #msg{
@@ -561,22 +585,12 @@ img.style.opacity = 0;
 img.style.transform = "translateX(-55%) scale(1)";
 img.style.transition = "none";
 
-// один поток движения
-setTimeout(()=>{
-  img.style.transition = "8s ease-out";
-  img.style.opacity = 0.6;
-  img.style.transform = "translateX(-15%) scale(3.5)";
-},50);
+img.style.animation = "emissaryFlow 7s linear forwards";
 
-// плавное угасание (без смены траектории)
-setTimeout(()=>{
-  img.style.opacity = 0;
-},5000);
-
-// текст раньше
+// текст
 setTimeout(()=>{
   showText();
-},2800);
+},3500);
 
 }
 

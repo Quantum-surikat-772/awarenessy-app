@@ -853,22 +853,25 @@ function drawFX(){
 const svg = document.getElementById("fx");
 if(!svg) return;
 
-svg.innerHTML = `
-<defs>
-  <filter id="glow">
-    <feGaussianBlur stdDeviation="12" result="blur"/>
-    <feMerge>
-      <feMergeNode in="blur"/>
-      <feMergeNode in="SourceGraphic"/>
-    </feMerge>
-  </filter>
-</defs>
-`;
+// если нет направления — просто очистка
+if(!state.beam){
+  svg.innerHTML = "";
+  return;
+}
+
+// центр
+if(state.beam === "c"){
+  svg.innerHTML = `
+  <circle cx="200" cy="200" r="40" fill="white" opacity="0.6"/>
+  `;
+  return;
 }
 
 // геометрия
 const step = Math.PI * 2 / 8;
 const idx = DIRS.indexOf(state.beam);
+
+if(idx === -1) return;
 
 const start = -Math.PI/2 - step/2 + idx * step;
 const end = start + step;
@@ -881,7 +884,6 @@ const rings = [
 [184,212]
 ];
 
-// 👉 ВАЖНО: широкий сектор (до выбора дистанции)
 let r;
 
 if(state.ring == null){
@@ -890,25 +892,32 @@ if(state.ring == null){
   r = rings[state.ring] || rings[1];
 }
 
-// рисуем
 const d = sector(r[0], r[1], start, end);
 
+// РИСУЕМ
 svg.innerHTML = `
 
-<!-- мягкое свечение (сзади) -->
+<defs>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="12" result="blur"/>
+    <feMerge>
+      <feMergeNode in="blur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
+
 <path d="${d}"
 fill="white"
 opacity="0.12"
 filter="url(#glow)"
 />
 
-<!-- ядро -->
 <path d="${d}"
 fill="white"
 opacity="0.25"
 />
 
-<!-- дополнительное рассеивание -->
 <path d="${d}"
 fill="none"
 stroke="white"
@@ -924,7 +933,6 @@ opacity="0.05"
 />
 
 `;
-
 }
 
 function sector(ir, or, a0, a1){

@@ -688,11 +688,15 @@ topHTML = `
 <div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
 <div>
 
-<div style="font-size:20px;font-weight:700">Где твой Дом?</div>
+<div style="font-size:20px;font-weight:700">В каком направлении твой Дом?</div>
 
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px;">
 ${dirs.map(d=>`
-<button class="btn" onclick="pickDir('${d[0]}')">${d[1]}</button>
+<button class="btn" 
+style="${d[0]==='c' ? 'font-weight:700;border:1px solid #c9a86a;' : ''}"
+onclick="pickDir('${d[0]}')">
+${d[1]}
+</button>
 `).join("")}
 </div>
 
@@ -710,8 +714,8 @@ bottomBox.innerHTML = `
 
 <div id="compassWrap" style="
 position:relative;
-width:90vw;
-max-width:360px;
+width:75vw;
+max-width:300px;
 aspect-ratio:1;
 ">
 
@@ -799,7 +803,12 @@ if(state.ring === null){
 const d = sector(r[0], r[1], start, end);
 
 svg.innerHTML = `
-<path d="${d}" fill="white" opacity="0.35"/>
+<path d="${d}"
+fill="none"
+stroke="white"
+stroke-width="10"
+opacity="0.6"
+/>
 `;
 
 }

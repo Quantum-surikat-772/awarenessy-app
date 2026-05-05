@@ -853,13 +853,13 @@ function drawFX(){
 const svg = document.getElementById("fx");
 if(!svg) return;
 
-// если нет направления — просто очистка
+// нет направления — ничего не рисуем
 if(!state.beam){
   svg.innerHTML = "";
   return;
 }
 
-// центр
+// центр (Дом = Я)
 if(state.beam === "c"){
   svg.innerHTML = `
   <circle cx="200" cy="200" r="40" fill="white" opacity="0.6"/>
@@ -887,7 +887,7 @@ const rings = [
 let r;
 
 if(state.ring == null){
-  r = [48,212];
+  r = [48,212]; // весь сектор
 }else{
   r = rings[state.ring] || rings[1];
 }
@@ -899,7 +899,7 @@ svg.innerHTML = `
 
 <defs>
   <filter id="glow">
-    <feGaussianBlur stdDeviation="12" result="blur"/>
+    <feGaussianBlur stdDeviation="10" result="blur"/>
     <feMerge>
       <feMergeNode in="blur"/>
       <feMergeNode in="SourceGraphic"/>
@@ -907,22 +907,25 @@ svg.innerHTML = `
   </filter>
 </defs>
 
+<!-- мягкое свечение -->
 <path d="${d}"
 fill="white"
 opacity="0.12"
 filter="url(#glow)"
 />
 
+<!-- основа -->
 <path d="${d}"
 fill="white"
-opacity="0.25"
+opacity="0.22"
 />
 
+<!-- рассеивание -->
 <path d="${d}"
 fill="none"
 stroke="white"
 stroke-width="20"
-opacity="0.15"
+opacity="0.12"
 />
 
 <path d="${d}"
@@ -931,6 +934,7 @@ stroke="white"
 stroke-width="40"
 opacity="0.05"
 />
+
 `;
 }
 
@@ -989,7 +993,7 @@ function pickDistance(v){
 
 state.ring = v;
 
-drawFX();
+renderCompass(); // вместо drawFX()
 
 }
   

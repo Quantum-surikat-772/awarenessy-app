@@ -782,6 +782,10 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 
 }
 
+if(!topHTML){
+  topHTML = `<div style="padding:20px">STEP: ${state.step || 'undefined'}</div>`;
+}
+
 topBox.innerHTML = topHTML;
 
 // 🔻 НИЗ — КОМПАС (пока заглушка)

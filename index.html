@@ -551,23 +551,26 @@ else{
 html = `<div>${rand(t("intro"))}</div>`;
 }
 
-// TOP
+// ЕСЛИ режим НЕ выбран → стартовый экран
+if(!state.mode){
+
 topBox.innerHTML = `
 <div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
-${html}
+  <div>
+    <div style="font-size:22px;font-weight:700">${rand(t("intro"))}</div>
+  </div>
 </div>
 `;
 
-// BOTTOM
 bottomBox.innerHTML = `
-<div style="flex:1;display:flex;align-items:center;justify-content:center;">
+<div style="display:flex;gap:10px;">
+  <div class="btn wake" onclick="start('wake')">${t("wake")}</div>
+  <div class="btn dream" onclick="start('dream')">${t("dream")}</div>
+</div>
+`;
 
-<div id="compassWrap" style="
-position:relative;
-width:68vw;
-max-width:260px;
-aspect-ratio:1;
-">
+return;
+}
 
 <img id="compassImg"
 src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png"

@@ -659,7 +659,11 @@ const topBox = document.getElementById("top");
 const bottomBox = document.getElementById("bottom");
 
 // 🔝 ВЕРХ — КОНТЕНТ
-topBox.innerHTML = `
+let topHTML = "";
+
+if(state.step === "south"){
+
+topHTML = `
 <div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
 <div>
 <div style="font-size:22px;font-weight:700">Повернись к Югу</div>
@@ -669,6 +673,36 @@ topBox.innerHTML = `
 </div>
 </div>
 `;
+
+}
+
+if(state.step === "home"){
+
+const dirs = [
+["nw","↖"],["n","↑"],["ne","↗"],
+["w","←"],["c","Я"],["e","→"],
+["sw","↙"],["s","↓"],["se","↘"]
+];
+
+topHTML = `
+<div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
+<div>
+
+<div style="font-size:20px;font-weight:700">Где твой Дом?</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px;">
+${dirs.map(d=>`
+<button class="btn" onclick="pickDir('${d[0]}')">${d[1]}</button>
+`).join("")}
+</div>
+
+</div>
+</div>
+`;
+
+}
+
+topBox.innerHTML = topHTML;
 
 // 🔻 НИЗ — КОМПАС (пока заглушка)
 bottomBox.innerHTML = `
@@ -713,7 +747,7 @@ drawFX();
 function nextStep(){
 
 if(state.step === "south"){
-  state.step = "time";
+  state.step = "home";
 }
 
 renderCompass();
@@ -726,10 +760,95 @@ if(!svg) return;
 
 svg.innerHTML = "";
 
-// пока просто тест — центр
+// если ещё нет направления — ничего не рисуем
+if(!state.beam) return;
+
+// центр (особый случай)
+if(state.beam === "c"){
 svg.innerHTML = `
-<circle cx="200" cy="200" r="20" fill="white" opacity="0.5"/>
+<circle cx="200" cy="200" r="40" fill="white" opacity="0.6"/>
 `;
+return;
+}
+
+// геометрия
+const step = Math.PI * 2 / 8;
+const idx = DIRS.indexOf(state.beam);
+
+const start = -Math.PI/2 - step/2 + idx * step;
+const end = start + step;
+
+// кольца
+const rings = [
+[48,92],
+[92,138],
+[138,184],
+[184,212]
+];
+
+// 👉 ВАЖНО: широкий сектор (до выбора дистанции)
+let r;
+
+if(state.ring === null){
+  r = [48,212]; // ВСЕ кольца
+}else{
+  r = rings[state.ring];
+}
+
+// рисуем
+const d = sector(r[0], r[1], start, end);
+
+svg.innerHTML = `
+<path d="${d}" fill="white" opacity="0.35"/>
+`;
+
+}
+
+function sector(ir, or, a0, a1){
+
+function p(r,a){
+return [200 + Math.cos(a)*r, 200 + Math.sin(a)*r];
+}
+
+const A = p(or,a0);
+const B = p(or,a1);
+const C = p(ir,a1);
+const D = p(ir,a0);
+
+return `
+M ${A[0]} ${A[1]}
+A ${or} ${or} 0 0 1 ${B[0]} ${B[1]}
+L ${C[0]} ${C[1]}
+A ${ir} ${ir} 0 0 0 ${D[0]} ${D[1]}
+Z`;
+}
+
+const DIRS = ["n","ne","e","se","s","sw","w","nw"];
+
+function opposite(v){
+let i = DIRS.indexOf(v);
+return DIRS[(i+4)%8];
+}
+
+function pickDir(v){
+
+state.home = v;
+
+// центр (Я = Дом)
+if(v === "c"){
+  state.beam = "c";
+  state.ring = 0;
+  drawFX();
+  return;
+}
+
+// обычный случай
+state.beam = opposite(v);
+
+// пока дистанции нет → широкий сектор
+state.ring = null;
+
+drawFX();
 
 }
 

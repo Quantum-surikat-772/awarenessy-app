@@ -683,7 +683,9 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 </div>
 <div style="font-size:14px;color:#777;margin-top:8px">(там где солнце в полдень)</div>
 
-<button class="btn" style="margin-top:20px" onclick="nextStep()">OK</button>
+<button class="btn"
+style="margin-top:20px;width:160px;margin-left:auto;margin-right:auto;"
+onclick="nextStep()">OK</button>
 </div>
 </div>
 `;
@@ -785,9 +787,9 @@ object-fit:contain;
 viewBox="0 0 400 400"
 style="
 position:absolute;
-inset:0;
-width:100%;
-height:100%;
+inset:6%;
+width:88%;
+height:88%;
 ">
 
 <defs>
@@ -825,86 +827,79 @@ function drawFX(){
 const svg = document.getElementById("fx");
 if(!svg) return;
 
-// нет направления — ничего не рисуем
-if(!state.beam){
-  svg.innerHTML = "";
-  return;
-}
-
-// центр (Дом = Я)
-if(state.beam === "c"){
-  svg.innerHTML = `
-  <circle cx="200" cy="200" r="40" fill="white" opacity="0.6"/>
-  `;
-  return;
-}
-
-// геометрия
-const step = Math.PI * 2 / 8;
-const idx = DIRS.indexOf(state.beam);
-
-if(idx === -1) return;
-
-const start = -Math.PI/2 - step/2 + idx * step;
-const end = start + step;
-
-// кольца
-const rings = [
-[48,92],
-[92,138],
-[138,184],
-[184,212]
-];
-
-let r;
-
-if(state.ring == null){
-  r = [48,212]; // весь сектор
-}else{
-  r = rings[state.ring] || rings[1];
-}
-
-const d = sector(r[0], r[1], start, end);
-
-// РИСУЕМ
 svg.innerHTML = `
-
 <defs>
   <filter id="glow">
-    <feGaussianBlur stdDeviation="10" result="blur"/>
+    <feGaussianBlur stdDeviation="18" result="blur"/>
     <feMerge>
       <feMergeNode in="blur"/>
       <feMergeNode in="SourceGraphic"/>
     </feMerge>
   </filter>
 </defs>
+`;
 
-<!-- мягкое свечение -->
-<path d="${d}"
-fill="white"
-opacity="0.12"
-filter="url(#glow)"
-/>
+// если нет направления — ничего
+if(!state.beam) return;
 
-<!-- основа -->
-<path d="${d}"
-fill="white"
-opacity="0.22"
-/>
-
-<!-- рассеивание -->
-<path d="${d}"
+// центр (ДОМ)
+if(state.beam === "c"){
+svg.innerHTML += `
+<circle cx="200" cy="200" r="48"
 fill="none"
 stroke="white"
-stroke-width="20"
-opacity="0.12"
+stroke-width="30"
+opacity="0.25"
+filter="url(#glow)"
 />
+`;
+return;
+}
 
+// геометрия
+const step = Math.PI * 2 / 8;
+const idx = DIRS.indexOf(state.beam);
+
+const start = -Math.PI/2 - step/2 + idx * step;
+const end = start + step;
+
+// кольца (исправленные)
+const rings = [
+[40,80]   → Близко (у центра)
+[80,130]  → Не близко
+[130,180] → Далеко (внутри PNG)
+];
+
+let r;
+
+// до выбора дистанции → широкий сектор
+if(state.ring == null){
+  r = [40,180];
+}else{
+  r = rings[state.ring - 1] || rings[1];
+}
+
+// путь
+const d = sector(r[0], r[1], start, end);
+
+// 🔥 ГЛАВНОЕ: рисуем только СВЕЧЕНИЕ, без заливки
+svg.innerHTML += `
+
+<!-- внешнее мягкое свечение -->
 <path d="${d}"
 fill="none"
 stroke="white"
 stroke-width="40"
-opacity="0.05"
+opacity="0.06"
+/>
+
+<!-- основное гало -->
+<path d="${d}"
+fill="none"
+stroke="white"
+stroke-width="20"
+opacity="0.18"
+filter="url(#glow)"
 />
 
 `;

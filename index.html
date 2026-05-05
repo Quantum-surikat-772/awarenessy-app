@@ -31,12 +31,20 @@ padding:10px;
 
 .btn{
 flex:1;
-height:50px;
+height:56px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
 border-radius:12px;
 border:1px solid #333;
 background:#111;
-font-size:14px;
-font-weight:700;
+
+font-size:18px;
+font-weight:600;
+
+color:#fff;
 }
 
 .wake{
@@ -706,6 +714,36 @@ ${d[1]}
 
 }
 
+if(state.step === "distance"){
+
+topHTML = `
+<div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
+<div>
+
+<div style="font-size:20px;font-weight:700">Как далеко твой Дом?</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+
+<button class="btn" onclick="pickDistance(1)">Близко</button>
+<button class="btn" onclick="pickDistance(2)">Не близко</button>
+<button class="btn" onclick="pickDistance(3)">Далеко</button>
+
+</div>
+
+</div>
+</div>
+`;
+
+}
+
+function pickDistance(v){
+
+state.ring = v;
+
+drawFX();
+
+}
+
 topBox.innerHTML = topHTML;
 
 // 🔻 НИЗ — КОМПАС (пока заглушка)
@@ -806,8 +844,22 @@ svg.innerHTML = `
 <path d="${d}"
 fill="none"
 stroke="white"
-stroke-width="10"
-opacity="0.6"
+stroke-width="6"
+opacity="0.9"
+/>
+
+<path d="${d}"
+fill="none"
+stroke="white"
+stroke-width="20"
+opacity="0.15"
+/>
+
+<path d="${d}"
+fill="none"
+stroke="white"
+stroke-width="40"
+opacity="0.05"
 />
 `;
 
@@ -843,7 +895,7 @@ function pickDir(v){
 
 state.home = v;
 
-// центр (Я = Дом)
+// центр
 if(v === "c"){
   state.beam = "c";
   state.ring = 0;
@@ -853,12 +905,12 @@ if(v === "c"){
 
 // обычный случай
 state.beam = opposite(v);
-
-// пока дистанции нет → широкий сектор
 state.ring = null;
 
-drawFX();
+// 👉 ПЕРЕХОД К ДИСТАНЦИИ
+state.step = "distance";
 
+renderCompass();
 }
 
 </script>

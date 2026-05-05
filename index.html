@@ -560,21 +560,49 @@ ${html}
 
 // BOTTOM
 bottomBox.innerHTML = `
-<div style="display:flex;gap:10px;">
-<button class="btn wake" onclick="start('wake')">${t("wake")}</button>
-<button class="btn dream" onclick="start('dream')">${t("dream")}</button>
+<div style="flex:1;display:flex;align-items:center;justify-content:center;">
+
+<div id="compassWrap" style="
+position:relative;
+width:68vw;
+max-width:260px;
+aspect-ratio:1;
+">
+
+<img id="compassImg"
+src="https://i.postimg.cc/L56hkxFV/Archicompass-1.png"
+style="
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:contain;
+">
+
+<svg id="fx"
+viewBox="0 0 400 400"
+style="
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+">
+
+<defs>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="12" result="blur"/>
+    <feMerge>
+      <feMergeNode in="blur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
+
+</svg>
+
+</div>
 </div>
 `;
-
-}
-
-document.querySelectorAll("#langs button").forEach(btn=>{
-  btn.classList.remove("active");
-
-  if(btn.innerText.toLowerCase() === state.lang){
-    btn.classList.add("active");
-  }
-});
 
 function setLang(l){
   state.lang = l;
@@ -751,14 +779,6 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 </div>
 </div>
 `;
-
-}
-
-function pickDistance(v){
-
-state.ring = v;
-
-drawFX();
 
 }
 
@@ -951,6 +971,14 @@ state.step = "distance";
 renderCompass();
 }
 
+function pickDistance(v){
+
+state.ring = v;
+
+drawFX();
+
+}
+  
 </script>
 
 <div id="modal">

@@ -849,17 +849,17 @@ function drawFX(){
 const svg = document.getElementById("fx");
 if(!svg) return;
 
-svg.innerHTML = "";
-
-// если ещё нет направления — ничего не рисуем
-if(!state.beam) return;
-
-// центр (особый случай)
-if(state.beam === "c"){
 svg.innerHTML = `
-<circle cx="200" cy="200" r="40" fill="white" opacity="0.6"/>
+<defs>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="12" result="blur"/>
+    <feMerge>
+      <feMergeNode in="blur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
 `;
-return;
 }
 
 // геометрия
@@ -880,10 +880,10 @@ const rings = [
 // 👉 ВАЖНО: широкий сектор (до выбора дистанции)
 let r;
 
-if(state.ring === null){
-  r = [48,212]; // ВСЕ кольца
+if(state.ring == null){
+  r = [48,212];
 }else{
-  r = rings[state.ring];
+  r = rings[state.ring] || rings[1];
 }
 
 // рисуем
@@ -957,7 +957,10 @@ state.home = v;
 if(v === "c"){
   state.beam = "c";
   state.ring = 0;
-  drawFX();
+
+  state.step = "emotion"; // или следующий шаг
+
+  renderCompass();
   return;
 }
 

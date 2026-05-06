@@ -768,8 +768,8 @@ bottomBox.innerHTML = `
 
 <div id="compassWrap" style="
 position:relative;
-width:68vw;
-max-width:260px;
+width:85vw;
+max-width:320px;
 aspect-ratio:1;
 ">
 
@@ -886,37 +886,31 @@ const d = sector(r[0], r[1], start, end);
 
 svg.innerHTML += `
 
-<!-- дальнее мягкое свечение -->
+<!-- ☀️ ДАЛЬНЯЯ КОРОНА (сильно увеличенная) -->
 <path d="${d}"
 fill="white"
-opacity="0.03"
+opacity="0.04"
 filter="url(#glow)"
-transform="scale(1.12)"
+transform="scale(1.18)"
 transform-origin="200 200"
 />
 
-<!-- среднее свечение -->
+<!-- ☀️ СРЕДНЯЯ КОРОНА -->
 <path d="${d}"
 fill="white"
-opacity="0.08"
+opacity="0.07"
 filter="url(#glow)"
-transform="scale(1.06)"
+transform="scale(1.10)"
 transform-origin="200 200"
 />
 
-<!-- ближнее свечение -->
+<!-- ☀️ БЛИЖНЯЯ КОРОНА -->
 <path d="${d}"
 fill="white"
-opacity="0.15"
+opacity="0.10"
 filter="url(#glow)"
-/>
-
-<!-- внутренний край (очень мягкий) -->
-<path d="${d}"
-fill="none"
-stroke="white"
-stroke-width="6"
-opacity="0.12"
+transform="scale(1.04)"
+transform-origin="200 200"
 />
 
 `;

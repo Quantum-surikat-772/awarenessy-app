@@ -772,6 +772,52 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 
 }
 
+if(state.step === "activity"){
+
+topHTML = `
+<div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
+<div>
+
+<div style="
+font-size:20px;
+font-weight:700;
+color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
+">
+Что ты сейчас здесь делаешь?
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+
+<button class="btn" onclick="pickActivity('create')">Творю</button>
+<button class="btn" onclick="pickActivity('work')">Работаю</button>
+<button class="btn" onclick="pickActivity('learn')">Учусь</button>
+<button class="btn" onclick="pickActivity('move')">Иду / Еду</button>
+<button class="btn" onclick="pickActivity('rest')">Отдыхаю</button>
+<button class="btn" onclick="pickActivity('eat')">Ем</button>
+<button class="btn" onclick="pickActivity('drink')">Выпиваю и/или прочее</button>
+<button class="btn" onclick="pickActivity('fun')">Развлекаюсь</button>
+<button class="btn" onclick="pickActivity('freeze')">"Торможу"</button>
+
+<input id="customAct" placeholder="Другое..."
+style="
+margin-top:10px;
+height:44px;
+border-radius:10px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+padding:0 10px;
+">
+
+<button class="btn" onclick="pickCustomActivity()">Записать</button>
+
+</div>
+</div>
+</div>
+`;
+}
+
+
 if(!topHTML){
   topHTML = `<div style="padding:20px">STEP: ${state.step || 'undefined'}</div>`;
 }
@@ -990,6 +1036,21 @@ state.ring = v;
 
 renderCompass(); // вместо drawFX()
 
+}
+
+function pickActivity(v){
+state.activity = v;
+state.step = "emotion";
+renderCompass();
+}
+
+function pickCustomActivity(){
+const val = document.getElementById("customAct").value;
+if(val){
+state.activity = val;
+state.step = "emotion";
+renderCompass();
+}
 }
   
 </script>

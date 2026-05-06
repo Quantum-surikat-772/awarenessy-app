@@ -882,28 +882,44 @@ if(state.ring == null){
 // путь
 const d = sector(r[0], r[1], start, end);
 
-// 🔥 ГЛАВНОЕ: рисуем только СВЕЧЕНИЕ, без заливки
+// ☀️ СОЛНЕЧНАЯ КОРОНА (несколько слоёв)
+
 svg.innerHTML += `
 
-<!-- внешнее мягкое свечение -->
+<!-- дальнее мягкое свечение -->
 <path d="${d}"
-fill="none"
-stroke="white"
-stroke-width="40"
-opacity="0.06"
+fill="white"
+opacity="0.03"
+filter="url(#glow)"
+transform="scale(1.12)"
+transform-origin="200 200"
 />
 
-<!-- основное гало -->
+<!-- среднее свечение -->
 <path d="${d}"
-fill="none"
-stroke="white"
-stroke-width="20"
-opacity="0.18"
+fill="white"
+opacity="0.06"
+filter="url(#glow)"
+transform="scale(1.06)"
+transform-origin="200 200"
+/>
+
+<!-- ближнее свечение -->
+<path d="${d}"
+fill="white"
+opacity="0.10"
 filter="url(#glow)"
 />
 
+<!-- внутренний край (очень мягкий) -->
+<path d="${d}"
+fill="none"
+stroke="white"
+stroke-width="6"
+opacity="0.12"
+/>
+
 `;
-}
 
 function sector(ir, or, a0, a1){
 

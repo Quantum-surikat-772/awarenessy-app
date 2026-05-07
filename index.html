@@ -1034,9 +1034,12 @@ function pickDistance(v){
 
 state.ring = v;
 
-renderCompass(); // вместо drawFX()
+// переход к деятельности
+state.step = "activity";
 
-}
+renderCompass();
+
+        }
 
 function pickActivity(v){
 state.activity = v;

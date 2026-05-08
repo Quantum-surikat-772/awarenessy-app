@@ -1098,7 +1098,7 @@ renderCompass();
 
 function pickActivity(v){
 state.activity = v;
-state.step = "emotion";
+state.step = "emotions";
 renderCompass();
 }
 
@@ -1106,7 +1106,7 @@ function pickCustomActivity(){
 const val = document.getElementById("customAct").value;
 if(val){
 state.activity = val;
-state.step = "emotion";
+state.step = "emotions";
 renderCompass();
 }
 }

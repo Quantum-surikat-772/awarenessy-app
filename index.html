@@ -818,8 +818,58 @@ padding:0 10px;
 `;
 }
 
+if(state.step === "emotion"){
 
-if(!topHTML){
+const emotions = [
+
+["#FFD700","Радость, позитивная деятельность"],
+["#FFFFFF","Осознанное творчество"],
+["#3F51B5","Вдохновение, спокойствие, творчество"],
+["#26C6DA","Фантазёрство, мечтательность"],
+["#808080","Нейтральное, пассивное вовлечение"],
+["#4CAF50","Тоска, зависимость, тревожность"],
+["#F44336","Гнев, агрессия, превосходство"],
+["#FF9800","Самоуверенность, соревновательность"],
+["#000000","Хаос, ужас, отсутствие контроля"]
+
+];
+
+topHTML = `
+<div style="flex:1;overflow:auto;padding:20px;">
+
+<div style="
+font-size:20px;
+font-weight:700;
+text-align:center;
+margin-bottom:20px;
+color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
+">
+Что ты сейчас чувствуешь?
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;">
+
+${emotions.map(e=>`
+
+<button class="btn"
+style="
+justify-content:flex-start;
+padding:0 14px;
+border-left:12px solid ${e[0]};
+"
+onclick="selectEmotion('${e[0]}', '${e[1]}')">
+
+${e[1]}
+
+</button>
+
+`).join("")}
+
+</div>
+</div>
+`;
+}
+
   topHTML = `<div style="padding:20px">STEP: ${state.step || 'undefined'}</div>`;
 }
 
@@ -874,59 +924,7 @@ height:88%;
 
 drawFX();
 
-}
-
-if(state.step === "emotion"){
-
-const emotions = [
-
-["#FFD700","Радость, позитивная деятельность"],
-["#FFFFFF","Осознанное творчество"],
-["#3F51B5","Вдохновение, спокойствие, творчество"],
-["#26C6DA","Фантазёрство, мечтательность"],
-["#808080","Нейтральное, пассивное вовлечение"],
-["#4CAF50","Тоска, зависимость, тревожность"],
-["#F44336","Гнев, агрессия, превосходство"],
-["#FF9800","Самоуверенность, соревновательность"],
-["#000000","Хаос, ужас, отсутствие контроля"]
-
-];
-
-topHTML = `
-<div style="flex:1;overflow:auto;padding:20px;">
-
-<div style="
-font-size:20px;
-font-weight:700;
-text-align:center;
-margin-bottom:20px;
-color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
-">
-Что ты сейчас чувствуешь?
-</div>
-
-<div style="display:flex;flex-direction:column;gap:10px;">
-
-${emotions.map(e=>`
-
-<button class="btn"
-style="
-justify-content:flex-start;
-padding:0 14px;
-border-left:12px solid ${e[0]};
-"
-onclick="selectEmotion('${e[0]}', '${e[1]}')">
-
-${e[1]}
-
-</button>
-
-`).join("")}
-
-</div>
-</div>
-`;
-}
+  }
 
 function nextStep(){
 

@@ -346,7 +346,8 @@ time: null,
 home: null,
 beam: null,
 ring: null,
-emotion: null
+emotion: null,
+emotionLabel: null
 };
 
 const TXT = {
@@ -875,6 +876,58 @@ drawFX();
 
 }
 
+if(state.step === "emotion"){
+
+const emotions = [
+
+["#FFD700","Радость, позитивная деятельность"],
+["#FFFFFF","Осознанное творчество"],
+["#3F51B5","Вдохновение, спокойствие, творчество"],
+["#26C6DA","Фантазёрство, мечтательность"],
+["#808080","Нейтральное, пассивное вовлечение"],
+["#4CAF50","Тоска, испуг, зависимость"],
+["#F44336","Гнев, агрессия, превосходство"],
+["#FF9800","Самоуверенность, соревновательность"],
+["#000000","Хаос, ужас, отсутствие контроля"]
+
+];
+
+topHTML = `
+<div style="flex:1;overflow:auto;padding:20px;">
+
+<div style="
+font-size:20px;
+font-weight:700;
+text-align:center;
+margin-bottom:20px;
+color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
+">
+Что ты сейчас чувствуешь?
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;">
+
+${emotions.map(e=>`
+
+<button class="btn"
+style="
+justify-content:flex-start;
+padding:0 14px;
+border-left:12px solid ${e[0]};
+"
+onclick="selectEmotion('${e[0]}', '${e[1]}')">
+
+${e[1]}
+
+</button>
+
+`).join("")}
+
+</div>
+</div>
+`;
+}
+
 function nextStep(){
 
 if(state.step === "south"){
@@ -905,11 +958,12 @@ svg.innerHTML = `
 if(!state.beam) return;
 
 // центр (ДОМ)
+const activeColor = state.emotion || "#9b5cff";
 if(state.beam === "c"){
 svg.innerHTML += `
 <circle cx="200" cy="200" r="48"
 fill="none"
-stroke="#9b5cff"
+stroke="${activeColor}"
 stroke-width="4"
 opacity="0.9"
 class="pulse"
@@ -917,7 +971,7 @@ class="pulse"
 
 <circle cx="200" cy="200" r="60"
 fill="none"
-stroke="#9b5cff"
+stroke="${activeColor}"
 stroke-width="10"
 opacity="0.15"
 filter="url(#glow)"
@@ -960,7 +1014,7 @@ svg.innerHTML += `
 <!-- основной контур -->
 <path d="${d}"
 fill="none"
-stroke="#9b5cff"
+stroke="${activeColor}"
 stroke-width="3"
 opacity="0.9"
 class="pulse"
@@ -969,7 +1023,7 @@ class="pulse"
 <!-- мягкое внешнее свечение (очень лёгкое) -->
 <path d="${d}"
 fill="none"
-stroke="#9b5cff"
+stroke="${activeColor}"
 stroke-width="8"
 opacity="0.15"
 filter="url(#glow)"
@@ -1014,7 +1068,8 @@ if(v === "c"){
   state.beam = "c";
   state.ring = 0;
 
-  state.step = "emotion"; // или следующий шаг
+  // 👉 теперь тоже идём в деятельность
+  state.step = "activity";
 
   renderCompass();
   return;

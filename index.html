@@ -709,6 +709,61 @@ onclick="nextStep()">OK</button>
 
 }
 
+if(state.step === "time"){
+
+const times = [
+["dawn","Рассвет"],
+["morning","Утро"],
+["day","День"],
+["evening","Вечер"],
+["sunset","Закат"],
+["night","Ночь"]
+];
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="width:100%;max-width:360px;">
+
+<div style="
+font-size:22px;
+font-weight:700;
+margin-bottom:20px;
+color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
+">
+Какое сейчас время суток?
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+">
+
+${times.map(t=>`
+
+<button class="btn"
+onclick="pickTime('${t[0]}')">
+
+${t[1]}
+
+</button>
+
+`).join("")}
+
+</div>
+
+</div>
+</div>
+`;
+}
+
 if(state.step === "home"){
 
 const dirs = [
@@ -934,10 +989,21 @@ drawFX();
 function nextStep(){
 
 if(state.step === "south"){
-  state.step = "home";
+  state.step = "time";
 }
 
 renderCompass();
+}
+
+function pickTime(v){
+
+state.time = v;
+
+state.step = "home";
+
+drawFX();
+renderCompass();
+
 }
 
 function drawFX(){
@@ -983,6 +1049,8 @@ class="pulse"
 `;
 return;
 }
+
+drawSolarRing(svg);
 
 // геометрия
 const step = Math.PI * 2 / 8;
@@ -1059,6 +1127,60 @@ class="pulse"
 `;
 
 }
+}
+  
+function drawSolarRing(svg){
+
+if(!state.time) return;
+
+const map = {
+dawn: 2,
+morning: 3,
+day: 4,
+evening: 5,
+sunset: 6,
+night: 0
+};
+
+const colors = {
+dawn:"#b86cff",
+morning:"#7fdfff",
+day:"#ffd36a",
+evening:"#ffb36a",
+sunset:"#c86cff",
+night:"#4f6fff"
+};
+
+const idx = map[state.time];
+const col = colors[state.time];
+
+const step = Math.PI * 2 / 8;
+
+for(let k=-1;k<=1;k++){
+
+const i = (idx + k + 8) % 8;
+
+const power =
+k === 0 ? 0.95 : 0.28;
+
+const a0 =
+-Math.PI/2 - step/2 + i * step;
+
+const a1 = a0 + step;
+
+svg.innerHTML += `
+
+<path
+d="${sector(206,216,a0,a1)}"
+fill="${col}"
+opacity="${power}"
+class="pulse"
+/>
+
+`;
+
+}
+
 }
 
 function sector(ir, or, a0, a1){

@@ -1001,8 +1001,8 @@ state.time = v;
 
 state.step = "home";
 
-drawFX();
 renderCompass();
+drawFX();
 
 }
 
@@ -1134,22 +1134,22 @@ function drawSolarRing(svg){
 if(!state.time) return;
 
 const map = {
-dawn: 2,
-morning: 3,
+dawn: 6,
+morning: 5,
 day: 4,
-evening: 5,
-sunset: 6,
+evening: 3,
+sunset: 2,
 night: 0
 };
 
-const colors = {
-dawn:"#b86cff",
-morning:"#7fdfff",
-day:"#ffd36a",
-evening:"#ffb36a",
-sunset:"#c86cff",
-night:"#4f6fff"
-};
+const colors=[
+"#d84cff", // рассвет
+"#6fd7ff", // утро
+"#ffd56a", // день
+"#6fd7ff", // вечер
+"#d84cff", // закат
+"#2f65ff"  // ночь
+];
 
 const idx = map[state.time];
 const col = colors[state.time];
@@ -1170,10 +1170,28 @@ const a1 = a0 + step;
 
 svg.innerHTML += `
 
+<!-- дальний мягкий слой -->
 <path
-d="${sector(206,216,a0,a1)}"
+d="${sector(196,208,a0,a1)}"
 fill="${col}"
-opacity="${power}"
+opacity="${power * 0.10}"
+filter="url(#glow)"
+class="pulse"
+/>
+
+<!-- средний -->
+<path
+d="${sector(198,206,a0,a1)}"
+fill="${col}"
+opacity="${power * 0.22}"
+class="pulse"
+/>
+
+<!-- яркое ядро -->
+<path
+d="${sector(200,204,a0,a1)}"
+fill="${col}"
+opacity="${power * 0.95}"
 class="pulse"
 />
 

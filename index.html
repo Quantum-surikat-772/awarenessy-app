@@ -1142,14 +1142,14 @@ sunset: 2,
 night: 0
 };
 
-const colors=[
-"#d84cff", // рассвет
-"#6fd7ff", // утро
-"#ffd56a", // день
-"#6fd7ff", // вечер
-"#d84cff", // закат
-"#2f65ff"  // ночь
-];
+const colors = {
+dawn:"#d84cff",
+morning:"#6fd7ff",
+day:"#ffd56a",
+evening:"#6fd7ff",
+sunset:"#d84cff",
+night:"#2f65ff"
+};
 
 const idx = map[state.time];
 const col = colors[state.time];

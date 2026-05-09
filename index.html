@@ -855,7 +855,10 @@ ${emotions.map(e=>`
 style="
 justify-content:flex-start;
 padding:0 14px;
-border-left:12px solid ${e[0]};
+font-size:15px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 "
 onclick="selectEmotion('${e[0]}', '${e[1]}')">
 

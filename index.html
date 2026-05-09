@@ -1010,23 +1010,46 @@ if(state.ring == null){
 // путь
 const d = sector(r[0], r[1], start, end);
 
-// ☀️ Фиолетовый контур
+// если эмоция уже выбрана
+if(state.emotion){
+
+svg.innerHTML += `
+
+<!-- цвет состояния -->
+<path d="${d}"
+fill="${state.emotion}"
+opacity="0.42"
+/>
+
+<!-- внутреннее живое свечение -->
+<path d="${d}"
+fill="${state.emotion}"
+opacity="0.18"
+filter="url(#glow)"
+class="pulse"
+/>
+
+`;
+
+}else{
+
+// фиолетовый контур ДО эмоции
 
 svg.innerHTML += `
 
 <!-- основной контур -->
 <path d="${d}"
 fill="none"
-stroke="${activeColor}"
+stroke="#9b5cff"
 stroke-width="3"
 opacity="0.9"
 class="pulse"
 />
 
-<!-- мягкое внешнее свечение (очень лёгкое) -->
+<!-- мягкое свечение -->
 <path d="${d}"
 fill="none"
-stroke="${activeColor}"
+stroke="#9b5cff"
 stroke-width="8"
 opacity="0.15"
 filter="url(#glow)"
@@ -1034,6 +1057,8 @@ class="pulse"
 />
 
 `;
+
+}
 }
 
 function sector(ir, or, a0, a1){

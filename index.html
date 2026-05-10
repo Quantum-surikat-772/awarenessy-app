@@ -960,9 +960,9 @@ object-fit:contain;
 viewBox="0 0 400 400"
 style="
 position:absolute;
-inset:2%;
-width:96%;
-height:96%;
+inset:1%;
+width:98%;
+height:98%;
 ">
 
 <defs>
@@ -1061,8 +1061,8 @@ const end = start + step;
 
 // кольца (исправленные)
 const rings = [
-[57,96],   // Близко
-[96,142],  // Не близко
+[55,95],   // Близко
+[95,142],  // Не близко
 [142,191]  // Далеко
 ];
 
@@ -1070,7 +1070,7 @@ let r;
 
 // до выбора дистанции → широкий сектор
 if(state.ring == null){
-  r = [57,191];
+  r = [55,191];
 }else{
   r = rings[state.ring - 1] || rings[1];
 }
@@ -1134,11 +1134,11 @@ function drawSolarRing(svg){
 if(!state.time) return;
 
 const map = {
-dawn: 6,
-morning: 5,
+dawn: 2,
+morning: 3,
 day: 4,
-evening: 3,
-sunset: 2,
+evening: 5,
+sunset: 6,
 night: 0
 };
 

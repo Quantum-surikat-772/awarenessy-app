@@ -1161,7 +1161,7 @@ for(let k=-1;k<=1;k++){
 const i = (idx + k + 8) % 8;
 
 const power =
-k === 0 ? 0.95 : 0.28;
+k === 0 ? 1 : 0.12;
 
 const a0 =
 -Math.PI/2 - step/2 + i * step;
@@ -1172,7 +1172,7 @@ svg.innerHTML += `
 
 <!-- дальний мягкий слой -->
 <path
-d="${sector(196,208,a0,a1)}"
+d="${sector(192,204,a0,a1)}"
 fill="${col}"
 opacity="${power * 0.10}"
 filter="url(#glow)"
@@ -1181,7 +1181,7 @@ class="pulse"
 
 <!-- средний -->
 <path
-d="${sector(198,206,a0,a1)}"
+d="${sector(194,202,a0,a1)}"
 fill="${col}"
 opacity="${power * 0.22}"
 class="pulse"
@@ -1189,7 +1189,7 @@ class="pulse"
 
 <!-- яркое ядро -->
 <path
-d="${sector(200,204,a0,a1)}"
+d="${sector(196,200,a0,a1)}"
 fill="${col}"
 opacity="${power * 0.95}"
 class="pulse"

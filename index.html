@@ -318,6 +318,17 @@ opacity:0;
 transition:1s ease;
 }
 
+@keyframes pulse2{
+0%{opacity:0.35;}
+50%{opacity:0.12;}
+100%{opacity:0.35;}
+}
+
+.pulse2{
+animation:pulse2 6s ease-in-out infinite;
+animation-delay:2.5s;
+}
+
 </style>
 </head>
 
@@ -1027,7 +1038,9 @@ svg.innerHTML = `
 if(!state.beam) return;
 
 // центр (ДОМ)
-const activeColor = state.emotion || "#9b5cff";
+
+const activeColor = state.emotions || "#9b5cff";
+
 if(state.beam === "c"){
 
 if(state.emotions){
@@ -1039,7 +1052,7 @@ svg.innerHTML += `
 cx="200"
 cy="200"
 r="68"
-fill="${state.emotions}"
+fill="${activeColor}"
 opacity="0.12"
 filter="url(#glow)"
 class="pulseSlow"
@@ -1050,8 +1063,25 @@ class="pulseSlow"
 cx="200"
 cy="200"
 r="48"
-fill="${state.emotions}"
+fill="${activeColor}"
 opacity="0.88"
+class="pulse"
+/>
+
+`;
+
+}else{
+
+svg.innerHTML += `
+
+<circle
+cx="200"
+cy="200"
+r="48"
+fill="none"
+stroke="#9b5cff"
+stroke-width="4"
+opacity="0.9"
 class="pulse"
 />
 

@@ -1034,7 +1034,10 @@ svg.innerHTML = `
 </defs>
 `;
 
-// если нет направления — ничего
+// кольцо времени рисуется ВСЕГДА
+drawSolarRing(svg);
+
+// если направление ещё не выбрано
 if(!state.beam) return;
 
 // центр (ДОМ)
@@ -1198,7 +1201,7 @@ const col = colors[state.time];
 
 const step = Math.PI * 2 / 8;
 
-for(let k=-1;k<=1;k++){
+for(let s=0; s<5; s++){
 
 const i = (idx + k + 8) % 8;
 
@@ -1206,7 +1209,7 @@ const power =
 k === 0 ? 1 : 0.12;
 
 const a0 =
--Math.PI/2 - step/2 + i * step;
+Math.PI/2 - step/2 + i * step;
 
 const a1 = a0 + step;
 
@@ -1323,7 +1326,7 @@ renderCompass();
 
 function selectEmotion(color){
 
-state.emotion = color;
+state.emotions = color;
 
 drawFX();
 

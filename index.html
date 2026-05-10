@@ -1029,24 +1029,36 @@ if(!state.beam) return;
 // центр (ДОМ)
 const activeColor = state.emotion || "#9b5cff";
 if(state.beam === "c"){
+
+if(state.emotions){
+
 svg.innerHTML += `
-<circle cx="200" cy="200" r="48"
-fill="none"
-stroke="${activeColor}"
-stroke-width="4"
-opacity="0.9"
+
+<!-- мягкое внешнее сияние -->
+<circle
+cx="200"
+cy="200"
+r="68"
+fill="${state.emotions}"
+opacity="0.12"
+filter="url(#glow)"
+class="pulseSlow"
+/>
+
+<!-- внутреннее ядро -->
+<circle
+cx="200"
+cy="200"
+r="48"
+fill="${state.emotions}"
+opacity="0.88"
 class="pulse"
 />
 
-<circle cx="200" cy="200" r="60"
-fill="none"
-stroke="${activeColor}"
-stroke-width="10"
-opacity="0.15"
-filter="url(#glow)"
-class="pulse"
-/>
 `;
+
+}
+
 return;
 }
 

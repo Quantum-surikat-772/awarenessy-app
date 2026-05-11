@@ -1095,8 +1095,6 @@ class="pulse"
 return;
 }
 
-drawSolarRing(svg);
-
 // геометрия
 const step = Math.PI * 2 / 8;
 const idx = DIRS.indexOf(state.beam);
@@ -1124,19 +1122,19 @@ if(state.ring == null){
 const d = sector(r[0], r[1], start, end);
 
 // если эмоция уже выбрана
-if(state.emotion){
+if(state.emotions){
 
 svg.innerHTML += `
 
 <!-- цвет состояния -->
 <path d="${d}"
-fill="${state.emotion}"
+fill="${state.emotions}"
 opacity="0.42"
 />
 
 <!-- внутреннее живое свечение -->
 <path d="${d}"
-fill="${state.emotion}"
+fill="${state.emotions}"
 opacity="0.18"
 filter="url(#glow)"
 class="pulse"
@@ -1203,10 +1201,12 @@ const step = Math.PI * 2 / 8;
 
 for(let s=0; s<5; s++){
 
-const i = (idx + k + 8) % 8;
+const offset = s - 2;
+
+const i = (idx + offset + 8) % 8;
 
 const power =
-k === 0 ? 1 : 0.12;
+offset === 0 ? 1 : 0.12;
 
 const a0 =
 Math.PI/2 - step/2 + i * step;

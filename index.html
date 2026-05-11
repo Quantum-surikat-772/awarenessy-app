@@ -1200,9 +1200,9 @@ const col = colors[state.time];
 const step = Math.PI * 2 / 8;
 
 const segments = [
-{ offset:-1, power:0.22 },
-{ offset:0,  power:0.95 },
-{ offset:1,  power:0.22 }
+{ offset:-1, power:0.04 },
+{ offset:0,  power:1.00 },
+{ offset:1,  power:0.04 }
 ];
 
 segments.forEach(seg=>{
@@ -1216,18 +1216,18 @@ const a1 = a0 + step;
 
 svg.innerHTML += `
 
-<!-- мягкое свечение -->
+<!-- очень мягкое внешнее свечение -->
 <path
-d="${sector(194,204,a0,a1)}"
+d="${sector(193,205,a0,a1)}"
 fill="${col}"
-opacity="${seg.power * 0.18}"
+opacity="${seg.power * 0.08}"
 filter="url(#glow)"
 class="pulseSlow"
 />
 
-<!-- ядро -->
+<!-- основное кольцо -->
 <path
-d="${sector(196,202,a0,a1)}"
+d="${sector(196,201,a0,a1)}"
 fill="${col}"
 opacity="${seg.power}"
 class="pulse"

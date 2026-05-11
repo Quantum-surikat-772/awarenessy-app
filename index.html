@@ -1199,37 +1199,53 @@ const col = colors[state.time];
 
 const step = Math.PI * 2 / 8;
 
-const segments = [
-{ offset:-1, power:0.04 },
-{ offset:0,  power:1.00 },
-{ offset:1,  power:0.04 }
+// плавное растворение
+const glowMap = [
+0.00,
+0.04,
+0.10,
+0.22,
+0.45,
+0.75,
+1.00,
+0.75,
+0.45,
+0.22,
+0.10,
+0.04,
+0.00
 ];
 
-segments.forEach(seg=>{
+// маленький сегмент
+const miniStep = step / glowMap.length;
 
-const i = (idx + seg.offset + 8) % 8;
+// центр сектора времени
+const center =
+Math.PI/2 - step/2 + idx * step + step/2;
+
+glowMap.forEach((power,n)=>{
 
 const a0 =
-Math.PI/2 - step/2 + i * step;
+center - step/2 + n * miniStep;
 
-const a1 = a0 + step;
+const a1 =
+a0 + miniStep;
 
+// очень мягкое внешнее свечение
 svg.innerHTML += `
 
-<!-- очень мягкое внешнее свечение -->
 <path
 d="${sector(193,205,a0,a1)}"
 fill="${col}"
-opacity="${seg.power * 0.08}"
+opacity="${power * 0.10}"
 filter="url(#glow)"
 class="pulseSlow"
 />
 
-<!-- основное кольцо -->
 <path
 d="${sector(196,201,a0,a1)}"
 fill="${col}"
-opacity="${seg.power}"
+opacity="${power}"
 class="pulse"
 />
 

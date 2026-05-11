@@ -1199,14 +1199,15 @@ const col = colors[state.time];
 
 const step = Math.PI * 2 / 8;
 
-for(let s=0; s<5; s++){
+const segments = [
+{ offset:-1, power:0.22 },
+{ offset:0,  power:0.95 },
+{ offset:1,  power:0.22 }
+];
 
-const offset = s - 2;
+segments.forEach(seg=>{
 
-const i = (idx + offset + 8) % 8;
-
-const power =
-offset === 0 ? 1 : 0.12;
+const i = (idx + seg.offset + 8) % 8;
 
 const a0 =
 Math.PI/2 - step/2 + i * step;
@@ -1215,36 +1216,26 @@ const a1 = a0 + step;
 
 svg.innerHTML += `
 
-<!-- дальний мягкий слой -->
+<!-- мягкое свечение -->
 <path
-d="${sector(192,204,a0,a1)}"
+d="${sector(194,204,a0,a1)}"
 fill="${col}"
-opacity="${power * 0.10}"
+opacity="${seg.power * 0.18}"
 filter="url(#glow)"
-class="pulse"
+class="pulseSlow"
 />
 
-<!-- средний -->
+<!-- ядро -->
 <path
-d="${sector(194,202,a0,a1)}"
+d="${sector(196,202,a0,a1)}"
 fill="${col}"
-opacity="${power * 0.22}"
-class="pulse"
-/>
-
-<!-- яркое ядро -->
-<path
-d="${sector(196,200,a0,a1)}"
-fill="${col}"
-opacity="${power * 0.95}"
+opacity="${seg.power}"
 class="pulse"
 />
 
 `;
 
-}
-
-}
+});
 
 function sector(ir, or, a0, a1){
 

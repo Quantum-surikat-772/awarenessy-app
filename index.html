@@ -361,6 +361,45 @@ animation:pulse2 6s ease-in-out infinite;
 animation-delay:2.5s;
 }
 
+.attentionCard{
+
+padding:14px;
+border-radius:16px;
+
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+
+}
+
+.attentionTitle{
+font-size:18px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.attentionHint{
+font-size:13px;
+line-height:1.4;
+opacity:0.6;
+margin-bottom:10px;
+}
+
+.attentionInput{
+
+width:100%;
+height:48px;
+
+border:none;
+border-radius:12px;
+
+background:#111;
+color:#fff;
+
+padding:0 14px;
+font-size:18px;
+
+}
+
 </style>
 </head>
 
@@ -1045,6 +1084,99 @@ overflow:visible;
 </div>
 `;
 
+if(state.step === "attention"){
+
+topHTML = `
+
+<div style="
+flex:1;
+overflow:auto;
+padding:20px;
+">
+
+<div style="
+font-size:22px;
+font-weight:700;
+text-align:center;
+margin-bottom:18px;
+color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
+">
+Что успел(а) заметить?
+</div>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:14px;
+">
+
+<div class="attentionCard">
+
+<div class="attentionTitle">
+Трансформации
+</div>
+
+<div class="attentionHint">
+Изменение формы, состояния или структуры объектов
+</div>
+
+<input
+id="trInput"
+type="number"
+class="attentionInput"
+placeholder="Количество"
+/>
+
+</div>
+
+<div class="attentionCard">
+
+<div class="attentionTitle">
+Транзиты
+</div>
+
+<div class="attentionHint">
+Переходы между пространствами и состояниями
+</div>
+
+<input
+id="tzInput"
+type="number"
+class="attentionInput"
+placeholder="Количество"
+/>
+
+</div>
+
+<div class="attentionCard">
+
+<div class="attentionTitle">
+Аномалии
+</div>
+
+<div class="attentionHint">
+Нарушения логики, странности, несоответствия
+</div>
+
+<input
+id="anInput"
+type="number"
+class="attentionInput"
+placeholder="Количество"
+/>
+
+</div>
+
+<button class="btn"
+onclick="saveAttention()">
+OK
+</button>
+
+</div>
+</div>
+`;
+}
+
 drawFX();
 
   }
@@ -1380,9 +1512,25 @@ state.emotions = color;
 
 drawFX();
 
-// дальше потом будет шаг "attention"
-// пока просто проверяем окраску
+state.step = "attention";
 
+renderCompass();
+
+}
+
+function saveAttention(){
+
+state.transformations =
++document.getElementById("trInput").value || 0;
+
+state.transits =
++document.getElementById("tzInput").value || 0;
+
+state.anomalies =
++document.getElementById("anInput").value || 0;
+
+// потом сохранение
+finishEntry();
 }
   
 </script>

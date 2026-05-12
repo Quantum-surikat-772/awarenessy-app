@@ -1216,10 +1216,10 @@ const glowMap = [
 0.00
 ];
 
-// маленький сегмент
+// размер мини-сегмента
 const miniStep = step / glowMap.length;
 
-// центр сектора времени
+// центр временного сектора
 const center =
 Math.PI/2 - step/2 + idx * step + step/2;
 
@@ -1231,13 +1231,13 @@ center - step/2 + n * miniStep;
 const a1 =
 a0 + miniStep;
 
-const miniStep = (a1 - a0) / 3;
+// внутренняя композиция свечения
+const partStep = (a1 - a0) / 3;
 
-// 3 части сектора
 const parts = [
-  { p0:a0,                 p1:a0+miniStep,     op:seg.offset===0 ? 0.50 : 0.10 },
-  { p0:a0+miniStep,        p1:a0+miniStep*2,  op:seg.offset===0 ? 1.00 : 0.40 },
-  { p0:a0+miniStep*2,      p1:a1,             op:seg.offset===0 ? 0.50 : 0.10 }
+{ p0:a0,               p1:a0+partStep,   op:power * 0.50 },
+{ p0:a0+partStep,      p1:a0+partStep*2, op:power * 1.00 },
+{ p0:a0+partStep*2,    p1:a1,            op:power * 0.50 }
 ];
 
 parts.forEach(part=>{
@@ -1248,7 +1248,7 @@ svg.innerHTML += `
 d="${sector(196,201,part.p0,part.p1)}"
 fill="${col}"
 opacity="${part.op}"
-class="${seg.offset===0 ? 'pulse' : 'pulseSlow'}"
+class="pulse"
 />
 
 `;

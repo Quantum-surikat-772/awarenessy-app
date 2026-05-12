@@ -608,17 +608,34 @@ html = `
 </video>`;
 }
 else{
-html = `<div>${rand(t("intro"))}</div>`;
+html = `
+<div style="
+font-size:22px;
+font-weight:700;
+padding:20px;
+line-height:1.4;
+">
+${rand(t("intro"))}
+</div>
+`;
 }
 
 // ЕСЛИ режим НЕ выбран → стартовый экран
 if(!state.mode){
 
 topBox.innerHTML = `
-<div style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;">
-  <div>
-    <div style="font-size:22px;font-weight:700">${rand(t("intro"))}</div>
-  </div>
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+overflow:hidden;
+position:relative;
+">
+
+${html}
+
 </div>
 `;
 
@@ -715,8 +732,10 @@ document.getElementById("modal").style.display = "none";
 
 function start(mode){
 
+document.body.classList.remove("alert");
+
 state.mode = mode;
-state.step = "south"; // первый шаг
+state.step = "south";
 
 renderCompass();
 }

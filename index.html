@@ -1217,16 +1217,16 @@ const glowMap = [
 ];
 
 // размер мини-сегмента
-const miniStep = step / glowMap.length;
+const miniStep = (step * 3) / glowMap.length;
 
 // центр временного сектора
 const center =
-Math.PI/2 - step/2 + idx * step + step/2;
+Math.PI/2 + idx * step;
 
 glowMap.forEach((power,n)=>{
 
 const a0 =
-center - step/2 + n * miniStep;
+center - (step * 1.5) + n * miniStep;
 
 const a1 =
 a0 + miniStep;
@@ -1248,7 +1248,7 @@ svg.innerHTML += `
 d="${sector(196,201,part.p0,part.p1)}"
 fill="${col}"
 opacity="${part.op}"
-class="pulse"
+class="${power > 0.95 ? '' : 'pulseSlow'}"
 />
 
 `;

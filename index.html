@@ -1231,22 +1231,24 @@ center - step/2 + n * miniStep;
 const a1 =
 a0 + miniStep;
 
-// очень мягкое внешнее свечение
+const miniStep = (a1 - a0) / 3;
+
+// 3 части сектора
+const parts = [
+  { p0:a0,                 p1:a0+miniStep,     op:seg.offset===0 ? 0.50 : 0.10 },
+  { p0:a0+miniStep,        p1:a0+miniStep*2,  op:seg.offset===0 ? 1.00 : 0.40 },
+  { p0:a0+miniStep*2,      p1:a1,             op:seg.offset===0 ? 0.50 : 0.10 }
+];
+
+parts.forEach(part=>{
+
 svg.innerHTML += `
 
 <path
-d="${sector(193,205,a0,a1)}"
+d="${sector(196,201,part.p0,part.p1)}"
 fill="${col}"
-opacity="${power * 0.10}"
-filter="url(#glow)"
-class="pulseSlow"
-/>
-
-<path
-d="${sector(196,201,a0,a1)}"
-fill="${col}"
-opacity="${power}"
-class="pulse"
+opacity="${part.op}"
+class="${seg.offset===0 ? 'pulse' : 'pulseSlow'}"
 />
 
 `;

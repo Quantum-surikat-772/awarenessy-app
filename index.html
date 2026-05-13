@@ -400,6 +400,26 @@ font-size:18px;
 
 }
 
+.helpBtn{
+width:24px;
+height:24px;
+
+margin-left:8px;
+
+border-radius:6px;
+border:1px solid rgba(255,255,255,0.25);
+
+background:rgba(255,255,255,0.06);
+color:#aaa;
+
+font-size:14px;
+font-weight:700;
+
+display:inline-flex;
+align-items:center;
+justify-content:center;
+}
+
 </style>
 </head>
 
@@ -885,6 +905,9 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 В каком направлении твой Дом?
 </div>
 
+<button class="helpBtn"
+onclick="openHelp('south')">?</button>
+
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px;">
 ${dirs.map(d=>`
 <button class="btn" 
@@ -942,6 +965,8 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 ">
 Что ты сейчас здесь делаешь?
 </div>
+
+<button class="helpBtn" onclick="openHelp('activity')">?</button>
 
 <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
 
@@ -1002,6 +1027,8 @@ color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 ">
 Что ты сейчас чувствуешь?
 </div>
+
+<button class="helpBtn" onclick="openHelp('emotions')">?</button>
 
 <div style="display:flex;flex-direction:column;gap:10px;">
 
@@ -1672,6 +1699,63 @@ alert("Здесь будут диаграммы ЯВИ");
 function openDreamMode(){
 
 alert("Здесь будет режим СНА");
+
+}
+
+function openHelp(type){
+
+let txt = "";
+
+if(type === "south"){
+
+txt = `
+Ориентация в пространстве помогает
+укреплять непрерывность восприятия.
+
+Используй Солнце,
+стороны света
+и направление на Дом
+как постоянные ориентиры внимания.
+
+Это важно как в ЯВИ,
+так и во СНЕ.
+`;
+}
+
+if(type === "activity"){
+
+txt = `
+Постарайся честно определить,
+что именно ты сейчас делаешь.
+
+Это практика сталкинга —
+выслеживания самого себя.
+
+Со временем это помогает
+замечать автоматические состояния,
+потерю осознанности
+и повторяющиеся сценарии поведения.
+`;
+}
+
+if(type === "emotion"){
+
+txt = `
+Эмоция — это часть карты состояния.
+
+Вместе:
+• со временем,
+• местом,
+• действием,
+• направлением
+
+она помогает исследовать
+собственные состояния сознания
+и повторяющиеся паттерны восприятия.
+`;
+}
+
+alert(txt);
 
 }
   

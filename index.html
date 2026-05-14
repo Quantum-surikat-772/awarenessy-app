@@ -437,6 +437,24 @@ justify-content:center;
 const HAND_IMG = "https://i.postimg.cc/zXp9BVGf/Hands-1.png";
 const HAND_VIDEO = "https://i.imgur.com/ocTkSQj.mp4";
 
+const entries = [];
+const ENERGY = {
+
+"#FFFFFF":  3, // Осознанное творчество
+
+"#FFD700":  1, // Радость
+"#3F51B5":  1, // Вдохновение
+
+"#26C6DA":  0, // Мечтательность
+"#808080":  0, // Нейтральность
+"#FF9800":  0, // Самоуверенность
+
+"#4CAF50": -1, // Тревожность
+"#F44336": -1, // Агрессия
+
+"#000000": -3  // Хаос
+};
+  
 const state = {
 lang: "ru",
 
@@ -472,25 +490,25 @@ intro:[
 "Какое у тебя сейчас настроение?"
 ],
 
-emissary:`ЗДРАВСТВУЙ
+emissary:`ЗДРАВСТВУЙ!
 
-Я — Эмиссар Сновидений
+Я — Эмиссар Сновидений.
 
 На русском языке меня зовут ОСоЗНАЙКА!
 
-ОС — Осознанное Сновидение + Знание
+ОС — Осознанное Сновидение + Знание.
 
-Я твой Друг и Попутчик на Пути Осознания
+Я твой Друг и Попутчик на Пути Осознания.
 
-Я смотрю из глубины твоего Внимания
+Я смотрю из глубины твоего Внимания.
 
-Напоминаю об осознанности
+Напоминаю об осознанности.
 
 Настрой частоту напоминаний,
-и я буду с тобой
+и я буду с тобой.
 
 И я отвечу на вопросы
-в этом Приложении
+в этом Приложении.
 
 
 Мы встретимся.`
@@ -1629,6 +1647,32 @@ state.transits =
 
 state.anomalies =
 +document.getElementById("anInput").value || 0;
+
+entries.push({
+
+time: state.time,
+
+beam: state.beam,
+ring: state.ring,
+
+activity: state.activity,
+
+emotion: state.emotions,
+
+energy:
+ENERGY[state.emotions] || 0,
+
+transformations: state.transformations,
+
+transits: state.transits,
+
+anomalies: state.anomalies,
+
+timestamp: Date.now()
+
+});
+
+console.log(entries);
 
 // потом сохранение
 finishEntry();

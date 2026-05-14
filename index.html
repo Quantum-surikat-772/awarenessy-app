@@ -1519,6 +1519,117 @@ class="pulse"
 `;
 
 }
+
+// интерактив Архикомпаса
+enableCompassTouch(svg);
+}
+
+function enableCompassTouch(svg){
+
+const rings = [
+[53,94],
+[94,142],
+[142,191]
+];
+
+const step = Math.PI * 2 / 8;
+
+DIRS.forEach((dir,idx)=>{
+
+const start =
+-Math.PI/2 - step/2 + idx * step;
+
+const end = start + step;
+
+rings.forEach((rr,ringIndex)=>{
+
+const d = sector(
+rr[0],
+rr[1],
+start,
+end
+);
+
+svg.innerHTML += `
+
+<path
+d="${d}"
+fill="transparent"
+style="cursor:pointer"
+
+onclick="
+selectCompassZone(
+'${dir}',
+${ringIndex+1}
+)
+"
+/>
+
+`;
+
+});
+
+});
+
+}
+
+function selectCompassZone(dir,ring){
+
+state.selectedBeam = dir;
+state.selectedRing = ring;
+
+showZoneAnalytics();
+
+}
+
+function showZoneAnalytics(){
+
+const box =
+document.getElementById("diagInfo");
+
+if(!box) return;
+
+const list = entries.filter(e=>
+
+e.beam === state.selectedBeam &&
+e.ring === state.selectedRing
+
+);
+
+if(list.length === 0){
+
+box.innerHTML = `
+Наблюдений пока нет
+`;
+
+return;
+}
+
+box.innerHTML = `
+
+<div style="
+font-size:22px;
+font-weight:700;
+margin-bottom:12px;
+">
+
+${state.selectedBeam.toUpperCase()}
+•
+${[
+"",
+"Близко",
+"Далеко",
+"Очень далеко"
+][state.selectedRing]}
+
+</div>
+
+<div>
+Записей:
+<b>${list.length}</b>
+</div>
+
+`;
 }
   
 function drawSolarRing(svg){

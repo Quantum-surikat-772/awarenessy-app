@@ -1598,6 +1598,14 @@ e.ring === state.selectedRing
 
 if(list.length === 0){
 
+box.innerHTML = `
+Наблюдений пока нет
+`;
+
+return;
+
+}
+
 const times = {};
 const acts = {};
 const emos = {};

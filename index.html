@@ -1620,8 +1620,8 @@ times[e.time] =
 acts[e.activity] =
 (acts[e.activity] || 0) + 1;
 
-emos[e.emotion] =
-(emos[e.emotion] || 0) + 1;
+emos[e.emotions] =
+(emos[e.emotions] || 0) + 1;
 
 energySum += e.energy || 0;
 
@@ -1629,14 +1629,6 @@ energySum += e.energy || 0;
 
 function percent(v){
 return Math.round(v / list.length * 100);
-}
-
-// дальше остальной код аналитики
-
-}
-
-function percent(v){
-return Math.round(v/list.length*100);
 }
 
 function labelTime(t){
@@ -1653,6 +1645,7 @@ night:"Ночь"
 };
 
 return map[t] || t;
+
 }
 
 function emotionName(c){
@@ -1662,7 +1655,7 @@ const map = {
 "#FFFFFF":"Осознанное творчество",
 
 "#FFD700":"Радость",
-"#3F51B5":"Спокойствие, творчество, вдохновение",
+"#3F51B5":"Спокойствие, вдохновение",
 
 "#26C6DA":"Мечтательность",
 "#808080":"Нейтральность",
@@ -1676,6 +1669,7 @@ const map = {
 };
 
 return map[c] || c;
+
 }
 
 box.innerHTML = `
@@ -1771,10 +1765,13 @@ font-weight:700;
 ">
 
 Энергетический коэффициент:
-${Math.round(energySum/list.length)}
+${Math.round(energySum / list.length)}
 
 </div>
+
 `;
+
+}
 
 return;
 }

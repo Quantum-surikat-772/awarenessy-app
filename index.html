@@ -1628,6 +1628,14 @@ energySum += e.energy || 0;
 });
 
 function percent(v){
+return Math.round(v / list.length * 100);
+}
+
+// дальше остальной код аналитики
+
+}
+
+function percent(v){
 return Math.round(v/list.length*100);
 }
 

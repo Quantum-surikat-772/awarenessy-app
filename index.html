@@ -1598,8 +1598,166 @@ e.ring === state.selectedRing
 
 if(list.length === 0){
 
+const times = {};
+const acts = {};
+const emos = {};
+
+let energySum = 0;
+
+list.forEach(e=>{
+
+times[e.time] =
+(times[e.time] || 0) + 1;
+
+acts[e.activity] =
+(acts[e.activity] || 0) + 1;
+
+emos[e.emotion] =
+(emos[e.emotion] || 0) + 1;
+
+energySum += e.energy || 0;
+
+});
+
+function percent(v){
+return Math.round(v/list.length*100);
+}
+
+function labelTime(t){
+
+const map = {
+
+dawn:"Рассвет",
+morning:"Утро",
+day:"День",
+evening:"Вечер",
+sunset:"Закат",
+night:"Ночь"
+
+};
+
+return map[t] || t;
+}
+
+function emotionName(c){
+
+const map = {
+
+"#FFFFFF":"Осознанное творчество",
+
+"#FFD700":"Радость",
+"#3F51B5":"Спокойствие, творчество, вдохновение",
+
+"#26C6DA":"Мечтательность",
+"#808080":"Нейтральность",
+"#FF9800":"Самоуверенность",
+
+"#4CAF50":"Тревожность",
+"#F44336":"Агрессия",
+
+"#000000":"Хаос"
+
+};
+
+return map[c] || c;
+}
+
 box.innerHTML = `
-Наблюдений пока нет
+
+<div style="
+font-size:22px;
+font-weight:700;
+margin-bottom:18px;
+color:#c9a86a;
+">
+
+${state.selectedBeam.toUpperCase()}
+•
+${[
+"",
+"Близко",
+"Далеко",
+"Очень далеко"
+][state.selectedRing]}
+
+</div>
+
+<div style="margin-bottom:14px;">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+">
+Время
+</div>
+
+${Object.entries(times).map(x=>`
+
+<div>
+${labelTime(x[0])}
+—
+${percent(x[1])}%
+</div>
+
+`).join("")}
+
+</div>
+
+<div style="margin-bottom:14px;">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+">
+Деятельность
+</div>
+
+${Object.entries(acts).map(x=>`
+
+<div>
+${x[0]}
+—
+${percent(x[1])}%
+</div>
+
+`).join("")}
+
+</div>
+
+<div style="margin-bottom:14px;">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+">
+Состояния
+</div>
+
+${Object.entries(emos).map(x=>`
+
+<div>
+${emotionName(x[0])}
+—
+${percent(x[1])}%
+</div>
+
+`).join("")}
+
+</div>
+
+<div style="
+margin-top:16px;
+font-size:18px;
+font-weight:700;
+">
+
+Энергетический коэффициент:
+${Math.round(energySum/list.length)}
+
+</div>
 `;
 
 return;

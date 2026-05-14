@@ -1772,36 +1772,6 @@ ${Math.round(energySum / list.length)}
 `;
 
 }
-
-return;
-}
-
-box.innerHTML = `
-
-<div style="
-font-size:22px;
-font-weight:700;
-margin-bottom:12px;
-">
-
-${state.selectedBeam.toUpperCase()}
-•
-${[
-"",
-"Близко",
-"Далеко",
-"Очень далеко"
-][state.selectedRing]}
-
-</div>
-
-<div>
-Записей:
-<b>${list.length}</b>
-</div>
-
-`;
-}
   
 function drawSolarRing(svg){
 

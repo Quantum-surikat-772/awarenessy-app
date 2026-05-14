@@ -1196,7 +1196,7 @@ opacity:0.75;
 line-height:1.5;
 ">
 
-Нажми на центр компаса
+Нажми на центр Архикомпаса
 
 </div>
 
@@ -1206,6 +1206,42 @@ line-height:1.5;
 
 `;
 
+}
+
+if(state.step === "diagrams"){
+
+topHTML = `
+
+<div style="
+flex:1;
+display:flex;
+flex-direction:column;
+padding:20px;
+overflow:auto;
+">
+
+<div style="
+font-size:22px;
+font-weight:700;
+margin-bottom:18px;
+color:#c9a86a;
+">
+Карта состояний
+</div>
+
+<div id="diagInfo"
+style="
+line-height:1.7;
+font-size:15px;
+color:#ddd;
+">
+
+Нажми на сектор компаса
+
+</div>
+
+</div>
+`;
 }
 
 if(!topHTML){
@@ -1298,6 +1334,14 @@ z-index:20;
 </div>
 
 `;
+}
+
+function openWakeCharts(){
+
+state.step = "diagrams";
+
+renderCompass();
+
 }
 
 function nextStep(){

@@ -1600,6 +1600,82 @@ ${ringIndex+1}
 
 });
 
+function enableCompassTouch(svg){
+
+// центр — Дом
+
+svg.innerHTML += `
+
+<circle
+cx="200"
+cy="200"
+r="48"
+
+fill="transparent"
+
+style="
+cursor:pointer;
+"
+
+onclick="
+selectHomeAnalytics()
+"
+/>
+
+`;
+
+}
+
+function selectHomeAnalytics(){
+
+state.selectedBeam = "c";
+state.selectedRing = 0;
+
+showHomeAnalytics();
+
+}
+
+function showHomeAnalytics(){
+
+const box =
+document.getElementById("diagInfo");
+
+if(!box) return;
+
+const list = entries.filter(e=>
+e.beam === "c"
+);
+
+if(list.length === 0){
+
+box.innerHTML = `
+Наблюдений Дома пока нет
+`;
+
+return;
+
+}
+
+box.innerHTML = `
+
+<div style="
+font-size:24px;
+font-weight:700;
+margin-bottom:18px;
+color:#b388ff;
+">
+
+Дом
+
+</div>
+
+<div>
+Записей:
+<b>${list.length}</b>
+</div>
+
+`;
+
 }
 
 function selectCompassZone(dir,ring){

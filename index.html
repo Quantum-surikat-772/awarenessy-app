@@ -1565,6 +1565,7 @@ DIRS.forEach((dir,idx)=>{
 
 const visualDir = opposite(dir);
 const visualIdx = DIRS.indexOf(visualDir);
+
 const start =
 -Math.PI/2 - step/2 + visualIdx * step;
 
@@ -1598,6 +1599,9 @@ ${ringIndex+1}
 
 });
 
+});
+
+
 // центр — Дом
 
 svg.innerHTML += `
@@ -1619,8 +1623,6 @@ selectHomeAnalytics()
 />
 
 `;
-
-});
 
 }
 

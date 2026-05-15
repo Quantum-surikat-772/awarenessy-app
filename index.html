@@ -1664,7 +1664,7 @@ document.getElementById("diagInfo");
 if(!box) return;
 
 const list = entries.filter(e=>
-e.beam === "c"
+e.home === "c"
 );
 
 if(list.length === 0){
@@ -2152,8 +2152,8 @@ state.anomalies =
 entries.push({
 
 time: state.time,
-
-beam: state.home,
+home: state.home,
+beam: state.beam,
 ring: state.ring,
 
 activity: state.activity,

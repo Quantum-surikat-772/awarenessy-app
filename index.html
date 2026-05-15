@@ -1601,26 +1601,47 @@ ${ringIndex+1}
 
 });
 
+}
 
-// центр — Дом
+function enableHomeTouch(){
 
-svg.innerHTML += `
+const wrap =
+document.getElementById("compassWrap");
 
-<circle
-cx="200"
-cy="200"
-r="48"
+if(!wrap) return;
 
-fill="transparent"
+// удалить старую
+const old =
+document.getElementById("homeTouch");
+
+if(old) old.remove();
+
+wrap.innerHTML += `
+
+<div
+id="homeTouch"
+
+onclick="selectHomeAnalytics()"
 
 style="
+position:absolute;
+
+left:50%;
+top:50%;
+
+width:96px;
+height:96px;
+
+transform:translate(-50%,-50%);
+
+border-radius:50%;
+
+z-index:50;
+
 cursor:pointer;
 "
-
-onclick="
-selectHomeAnalytics()
-"
-/>
+>
+</div>
 
 `;
 
@@ -1649,7 +1670,7 @@ e.beam === "c"
 if(list.length === 0){
 
 box.innerHTML = `
-Наблюдений Дома пока нет
+Наблюдений Дома пока ет
 `;
 
 return;
@@ -2150,6 +2171,8 @@ state.step = "saved";
 renderCompass();
 
 enableCompassCenter();
+
+enableHomeTouch();
 
 }
 

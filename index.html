@@ -2187,8 +2187,6 @@ renderCompass();
 
 enableCompassCenter();
 
-enableHomeTouch();
-
 }
 
 function openAttentionInfo(){
@@ -2246,6 +2244,12 @@ if(old) old.remove();
 state.step = "diagrams";
 
 renderCompass();
+
+setTimeout(()=>{
+
+enableHomeTouch();
+
+},50);
 
 }
 

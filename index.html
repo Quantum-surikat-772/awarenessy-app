@@ -1816,14 +1816,13 @@ Math.round(energySum / list.length);
 
 if(avg === 0){
 
-// проверяем есть ли отрицательные состояния
 const hasNegativeZero =
 list.some(e =>
 (e.energy === 0) &&
 (
-e.emotion === "#26C6DA" || // мечтательность
-e.emotion === "#808080" || // нейтральность
-e.emotion === "#FF9800"    // самоуверенность
+e.emotion === "#26C6DA" ||
+e.emotion === "#808080" ||
+e.emotion === "#FF9800"
 )
 );
 
@@ -1833,6 +1832,10 @@ return hasNegativeZero ? "-0" : "0";
 return avg > 0 ? `+${avg}` : avg;
 
 })()}
+
+</div>
+
+`;
 
 }
   

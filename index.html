@@ -409,42 +409,38 @@ display:inline-flex;
 align-items:center;
 justify-content:center;
 
-vertical-align:middle;
-
-margin-left:8px;
+margin-left:6px;
 
 border:none;
 border-radius:6px;
 
 background:#6f4cff;
-color:#fff;
+color:white;
 
 font-size:14px;
 font-weight:700;
 
-box-shadow:
-0 0 8px rgba(111,76,255,0.35);
-
 flex-shrink:0;
 
+animation:emissaryGlow 5s ease-in-out infinite;
+
 }
 
-.helpBtn{
-animation:helpPulse 5s ease-in-out infinite;
-}
-
-@keyframes helpPulse{
+@keyframes emissaryGlow{
 
 0%{
-box-shadow:0 0 6px rgba(111,76,255,0.25);
+background:#6f4cff;
+box-shadow:0 0 6px rgba(111,76,255,0.35);
 }
 
 50%{
-box-shadow:0 0 14px rgba(111,76,255,0.55);
+background:#304ffe;
+box-shadow:0 0 14px rgba(48,79,254,0.65);
 }
 
 100%{
-box-shadow:0 0 6px rgba(111,76,255,0.25);
+background:#6f4cff;
+box-shadow:0 0 6px rgba(111,76,255,0.35);
 }
 
 }
@@ -1067,16 +1063,26 @@ topHTML = `
 <div style="flex:1;overflow:auto;padding:20px;">
 
 <div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+
+margin-bottom:20px;
+">
+
+<div style="
 font-size:20px;
 font-weight:700;
-text-align:center;
-margin-bottom:20px;
 color:${state.mode === 'wake' ? '#c9a86a' : '#fff'};
 ">
 Что ты сейчас чувствуешь?
 </div>
 
-<button class="helpBtn" onclick="openHelp('emotion')">?</button>
+<button class="helpBtn"
+onclick="openHelp('emotion')">?</button>
+
+</div>
 
 <div style="display:flex;flex-direction:column;gap:10px;">
 
@@ -1102,7 +1108,6 @@ ${e[1]}
 </div>
 </div>
 `;
-}
 
 if(state.step === "attention"){
 
@@ -1565,8 +1570,10 @@ const step = Math.PI * 2 / 8;
 
 DIRS.forEach((dir,idx)=>{
 
+const visualDir = opposite(dir);
+const visualIdx = DIRS.indexOf(visualDir);
 const start =
--Math.PI/2 - step/2 + idx * step;
+-Math.PI/2 - step/2 + visualIdx * step;
 
 const end = start + step;
 

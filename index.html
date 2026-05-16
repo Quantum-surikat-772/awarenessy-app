@@ -1329,7 +1329,22 @@ overflow:visible;
 `;
 
 drawFX();
+
+if(state.step === "saved"){
+
 enableCompassCenter();
+
+}
+
+if(state.step === "diagrams"){
+
+setTimeout(()=>{
+
+enableHomeTouch();
+
+},100);
+
+}
 
 }
 
@@ -1363,14 +1378,6 @@ z-index:20;
 </div>
 
 `;
-}
-
-function openWakeCharts(){
-
-state.step = "diagrams";
-
-renderCompass();
-
 }
 
 function nextStep(){
@@ -2246,12 +2253,6 @@ if(old) old.remove();
 state.step = "diagrams";
 
 renderCompass();
-
-setTimeout(()=>{
-
-enableHomeTouch();
-
-},50);
 
 }
 

@@ -1488,8 +1488,8 @@ const end = start + step;
 // кольца (исправленные)
 const rings = [
 [53,94],   // Близко
-[94,142],  // Не близко
-[142,191]  // Далеко
+[94,142],  // Далеко
+[142,191]  // Очень далеко
 ];
 
 let r;
@@ -1762,6 +1762,10 @@ const emos = {};
 
 let energySum = 0;
 
+let trSum = 0;
+let tzSum = 0;
+let anSum = 0;
+
 list.forEach(e=>{
 
 times[e.time] =
@@ -1774,6 +1778,10 @@ emos[e.emotions] =
 (emos[e.emotions] || 0) + 1;
 
 energySum += e.energy || 0;
+
+trSum += e.transformations || 0;
+tzSum += e.transits || 0;
+anSum += e.anomalies || 0;
 
 });
 
@@ -1954,6 +1962,48 @@ margin-top:16px;
 font-size:18px;
 font-weight:700;
 ">
+
+<div style="
+margin-top:16px;
+margin-bottom:16px;
+">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+">
+Внимание
+</div>
+
+<div>
+Трансформации —
+${(trSum / list.length).toFixed(1)}
+</div>
+
+<div>
+Транзиты —
+${(tzSum / list.length).toFixed(1)}
+</div>
+
+<div>
+Аномалии —
+${(anSum / list.length).toFixed(1)}
+</div>
+
+<div style="
+margin-top:10px;
+font-weight:700;
+color:#9b5cff;
+">
+Индекс внимания:
+${(
+(trSum + tzSum + anSum * 2)
+/ list.length
+).toFixed(1)}
+</div>
+
+</div>
 
 Энергетический коэффициент:
 ${(()=>{

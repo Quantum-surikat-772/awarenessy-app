@@ -1657,7 +1657,7 @@ cursor:pointer;
 function centerCompassAction(){
 
 // если ещё НЕ открыта аналитика
-if(state.step !== "charts"){
+if(state.step !== "diagrams"){
 
 openWakeCharts();
 return;
@@ -1694,7 +1694,7 @@ e.home === "c"
 if(list.length === 0){
 
 box.innerHTML = `
-Наблюдений Дома пока ет
+Наблюдений Дома пока нет
 `;
 
 return;

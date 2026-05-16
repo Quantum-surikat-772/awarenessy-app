@@ -1654,6 +1654,21 @@ cursor:pointer;
 
 }
 
+function centerCompassAction(){
+
+// если ещё НЕ открыта аналитика
+if(state.step !== "charts"){
+
+openWakeCharts();
+return;
+
+}
+
+// если уже внутри аналитики
+selectHomeAnalytics();
+
+}
+
 function selectHomeAnalytics(){
 
 alert("HOME OK");
@@ -1761,21 +1776,6 @@ emos[e.emotions] =
 energySum += e.energy || 0;
 
 });
-
-function centerCompassAction(){
-
-// если ещё НЕ открыта аналитика
-if(state.step !== "charts"){
-
-openWakeCharts();
-return;
-
-}
-
-// если уже внутри аналитики
-selectHomeAnalytics();
-
-}
 
 function percent(v){
 return Math.round(v / list.length * 100);

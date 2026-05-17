@@ -1420,8 +1420,11 @@ svg.innerHTML = `
 // кольцо времени рисуется ВСЕГДА
 drawSolarRing(svg);
 
-// если направление ещё не выбрано
-if(!state.beam) return;
+// интерактив Архикомпаса должен быть всегда
+enableCompassTouch(svg);
+
+// в режиме диаграмм touch должен работать всегда
+if(!state.beam && state.step !== "diagrams") return;
 
 // центр (ДОМ)
 
@@ -1554,8 +1557,6 @@ class="pulse"
 
 }
 
-// интерактив Архикомпаса
-enableCompassTouch(svg);
 }
 
 function enableCompassTouch(svg){

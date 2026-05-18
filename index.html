@@ -1813,15 +1813,137 @@ color:#b388ff;
 
 </div>
 
+<div style="margin-bottom:14px;">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+color:#b08a4f;
+">
+Время
+</div>
+
+${Object.entries(times).map(x=>`
+
 <div>
-Записей:
-<b>${list.length}</b>
+${labelTime(x[0])}
+—
+${percent(x[1])}%
+</div>
+
+`).join("")}
+
+</div>
+
+<div style="margin-bottom:14px;">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+color:#b08a4f;
+">
+Деятельность
+</div>
+
+${Object.entries(acts).map(x=>`
+
+<div>
+${activityName(x[0])}
+—
+${percent(x[1])}%
+</div>
+
+`).join("")}
+
+</div>
+
+<div style="margin-bottom:14px;">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+color:#b08a4f;
+">
+Состояния
+</div>
+
+${Object.entries(emos).map(x=>`
+
+<div>
+${emotionName(x[0])}
+—
+${percent(x[1])}%
+</div>
+
+`).join("")}
+
+</div>
+
+<div style="
+margin-top:16px;
+margin-bottom:16px;
+">
+
+<div style="
+font-size:17px;
+font-weight:700;
+margin-bottom:6px;
+color:#b08a4f;
+">
+Внимание
+</div>
+
+<div>
+Трансформации —
+${(trSum / list.length).toFixed(1)}
+</div>
+
+<div>
+Транзиты —
+${(tzSum / list.length).toFixed(1)}
+</div>
+
+<div>
+Аномалии —
+${(anSum / list.length).toFixed(1)}
+</div>
+
+<div style="
+margin-top:10px;
+font-weight:700;
+color:#9b5cff;
+">
+Индекс внимания:
+${(
+(trSum + tzSum + anSum * 2)
+/ list.length
+).toFixed(1)}
+</div>
+
+</div>
+
+<div style="
+margin-top:16px;
+font-size:18px;
+font-weight:700;
+">
+
+Энергетический коэффициент:
+${(()=>{
+const avg =
+Math.round(energySum / list.length);
+
+return avg > 0 ? `+${avg}` : avg;
+
+})()}
+
 </div>
 
 `;
-
-}
-
+  
 function selectCompassZone(dir,ring){
 
 state.selectedBeam = dir;
@@ -1979,7 +2101,7 @@ margin-bottom:18px;
 color:#b08a4f;
 ">
 
-${state.selectedBeam.toUpperCase()}
+${opposite(state.selectedBeam).toUpperCase()}
 •
 ${[
 "",

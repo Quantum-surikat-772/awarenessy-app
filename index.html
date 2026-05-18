@@ -1574,7 +1574,7 @@ const step = Math.PI * 2 / 8;
 
 DIRS.forEach((dir,idx)=>{
 
-const visualDir = opposite(dir);
+const visualDir = dir;
 const visualIdx = DIRS.indexOf(visualDir);
 
 const start =
@@ -1707,6 +1707,96 @@ box.innerHTML = `
 `;
 
 return;
+
+}
+
+const times = {};
+const acts = {};
+const emos = {};
+
+let energySum = 0;
+
+let trSum = 0;
+let tzSum = 0;
+let anSum = 0;
+
+list.forEach(e=>{
+
+times[e.time] =
+(times[e.time] || 0) + 1;
+
+acts[e.activity] =
+(acts[e.activity] || 0) + 1;
+
+emos[e.emotions] =
+(emos[e.emotions] || 0) + 1;
+
+energySum += e.energy || 0;
+
+trSum += e.transformations || 0;
+tzSum += e.transits || 0;
+anSum += e.anomalies || 0;
+
+});
+
+function percent(v){
+return Math.round(v / list.length * 100);
+}
+
+function labelTime(t){
+
+const map = {
+
+dawn:"Рассвет",
+morning:"Утро",
+day:"День",
+evening:"Вечер",
+sunset:"Закат",
+night:"Ночь"
+
+};
+
+return map[t] || t;
+
+}
+
+function activityName(a){
+
+const map = {
+
+create:"Творю",
+work:"Работаю",
+study:"Учусь",
+move:"Иду / Еду",
+rest:"Отдыхаю",
+eat:"Ем",
+substance:"Выпиваю и/или прочее",
+fun:"Развлекаюсь",
+freeze:"Торможу"
+
+};
+
+return map[a] || a;
+
+}
+
+function emotionName(c){
+
+const map = {
+
+"#FFFFFF":"Осознанное творчество",
+"#FFD700":"Позитивная деятельность, радость",
+"#3F51B5":"Спокойствие, творчество, вдохновение",
+"#26C6DA":"Мечтательность, фантазёрство",
+"#808080":"Нейтральность, пассивное вовлечение",
+"#FF9800":"Соревновательность, самоуверенность",
+"#4CAF50":"Тоска, зависимость, тревожность",
+"#F44336":"Превосходство, гнев, агрессия",
+"#000000":"Отсутствие контроля, хаос, ужас"
+
+};
+
+return map[c] || c;
 
 }
 

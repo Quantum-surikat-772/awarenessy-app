@@ -1739,8 +1739,6 @@ showZoneAnalytics();
 
 function showZoneAnalytics(){
 
-alert(dir + " / " + ring);
-
 const box =
 document.getElementById("diagInfo");
 
@@ -2027,9 +2025,9 @@ const hasNegativeZero =
 list.some(e =>
 (e.energy === 0) &&
 (
-e.emotion === "#26C6DA" ||
-e.emotion === "#808080" ||
-e.emotion === "#FF9800"
+e.emotions === "#26C6DA" ||
+e.emotions === "#808080" ||
+e.emotions === "#FF9800"
 )
 );
 

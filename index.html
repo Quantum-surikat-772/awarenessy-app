@@ -1404,6 +1404,7 @@ function drawFX(){
 
 const svg = document.getElementById("fx");
 if(!svg) return;
+svg.style.pointerEvents = "none";
 
 svg.innerHTML = `
 <defs>
@@ -1595,7 +1596,10 @@ svg.innerHTML += `
 <path
 d="${d}"
 fill="transparent"
-style="cursor:pointer"
+style="
+cursor:pointer;
+pointer-events:auto;
+"
 
 onclick="
 selectCompassZone(

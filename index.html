@@ -495,6 +495,7 @@ emotion: null,
 emotionLabel: null,
 selectedBeam: null,
 selectedRing: null
+interaction:0,
 };
 
 const TXT = {
@@ -1183,6 +1184,80 @@ placeholder="Аномалии"
 
 </div>
 
+<div style="
+margin-top:10px;
+padding:14px;
+border:1px solid #333;
+border-radius:14px;
+background:#111;
+">
+
+<div style="
+font-size:16px;
+font-weight:700;
+margin-bottom:12px;
+text-align:center;
+color:#b08a4f;
+">
+Наблюдатель во взаимодействии
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:6px;
+">
+
+${[-3,-2,-1,0,1,2,3].map(v=>`
+
+<button
+class="btn"
+style="
+padding:10px 0;
+font-size:14px;
+
+background:${
+v <= -2 ? "#111" :
+v === -1 ? "#333" :
+v === 0 ? "#666" :
+v === 1 ? "#6a5acd" :
+v === 2 ? "#8a4dff" :
+"#b388ff"
+};
+
+color:${
+v <= -2 ? "#777" :
+"#fff"
+};
+"
+
+onclick="
+setInteraction(${v})
+">
+
+${v > 0 ? "+"+v : v}
+
+</button>
+
+`).join("")}
+
+</div>
+
+<div id="interactionLabel"
+style="
+margin-top:12px;
+text-align:center;
+font-size:14px;
+color:#aaa;
+line-height:1.5;
+">
+
+Полное вовлечение
+
+</div>
+
+</div>
+
 <button class="btn"
 onclick="saveAttention()">
 OK
@@ -1719,6 +1794,7 @@ let energySum = 0;
 let trSum = 0;
 let tzSum = 0;
 let anSum = 0;
+let interactionSum = 0;
 
 list.forEach(e=>{
 
@@ -1988,6 +2064,7 @@ let energySum = 0;
 let trSum = 0;
 let tzSum = 0;
 let anSum = 0;
+let interactionSum = 0;
 
 list.forEach(e=>{
 
@@ -2454,6 +2531,8 @@ transformations: state.transformations,
 transits: state.transits,
 
 anomalies: state.anomalies,
+
+interaction: state.interaction,
 
 timestamp: Date.now()
 

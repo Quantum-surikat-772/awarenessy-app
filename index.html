@@ -1112,6 +1112,7 @@ ${e[1]}
 }
 
 if(state.step === "attention"){
+state.interaction = 0;
 
 topHTML = `
 
@@ -2498,6 +2499,33 @@ drawFX();
 state.step = "attention";
 
 renderCompass();
+
+}
+
+function setInteraction(v){
+
+state.interaction = v;
+
+const box =
+document.getElementById("interactionLabel");
+
+if(!box) return;
+
+const map = {
+
+"-3":"Конфликт / потеря себя",
+"-2":"Сильная реактивность",
+"-1":"Захваченность",
+
+"0":"Полное вовлечение",
+
+"1":"Иногда вспоминал себя",
+"2":"Удерживал наблюдение",
+"3":"Непрерывный наблюдатель"
+
+};
+
+box.innerHTML = map[v];
 
 }
 

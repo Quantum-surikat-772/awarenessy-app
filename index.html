@@ -1813,6 +1813,7 @@ energySum += e.energy || 0;
 trSum += e.transformations || 0;
 tzSum += e.transits || 0;
 anSum += e.anomalies || 0;
+interactionSum += e.interaction || 0;
 
 });
 
@@ -1986,6 +1987,11 @@ ${(tzSum / list.length).toFixed(1)}
 <div>
 Аномалии —
 ${(anSum / list.length).toFixed(1)}
+</div>
+
+<div>
+Взаимодействие —
+${(interactionSum / list.length).toFixed(1)}
 </div>
 
 <div style="

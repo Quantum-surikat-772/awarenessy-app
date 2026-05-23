@@ -1044,9 +1044,9 @@ padding:0 10px;
 `;
 }
 
-if(state.step === "emotions"){
+if(state.step === "emotion"){
 
-const emotions = [
+const emotion = [
 
 ["#FFFFFF","Осознанное творчество"],
 ["#FFD700","Позитивная деятельность, радость"],
@@ -1535,11 +1535,11 @@ if(!state.beam && state.step !== "diagrams") return;
 
 // центр (ДОМ)
 
-const activeColor = state.emotions || "#9b5cff";
+const activeColor = state.emotion || "#9b5cff";
 
 if(state.beam === "c"){
 
-if(state.emotions){
+if(state.emotion){
 
 svg.innerHTML += `
 
@@ -1615,20 +1615,20 @@ if(state.ring == null){
 const d = sector(r[0], r[1], start, end);
 
 // если эмоция уже выбрана
-if(state.emotions){
+if(state.emotion){
 
 svg.innerHTML += `
 
 <!-- цвет состояния -->
 <path d="${d}"
-fill="${state.emotions}"
+fill="${state.emotion}"
 opacity="0.42"
 style="pointer-events:none;"
 />
 
 <!-- внутреннее живое свечение -->
 <path d="${d}"
-fill="${state.emotions}"
+fill="${state.emotion}"
 opacity="0.18"
 filter="url(#glow)"
 class="pulse"
@@ -1835,8 +1835,8 @@ times[e.time] =
 acts[e.activity] =
 (acts[e.activity] || 0) + 1;
 
-emos[e.emotions] =
-(emos[e.emotions] || 0) + 1;
+emos[e.emotion] =
+(emos[e.emotion] || 0) + 1;
 
 energySum += e.energy || 0;
 
@@ -2111,8 +2111,8 @@ times[e.time] =
 acts[e.activity] =
 (acts[e.activity] || 0) + 1;
 
-emos[e.emotions] =
-(emos[e.emotions] || 0) + 1;
+emos[e.emotion] =
+(emos[e.emotion] || 0) + 1;
 
 energySum += e.energy || 0;
 
@@ -2359,9 +2359,9 @@ const hasNegativeZero =
 list.some(e =>
 (e.energy === 0) &&
 (
-e.emotions === "#26C6DA" ||
-e.emotions === "#808080" ||
-e.emotions === "#FF9800"
+e.emotion === "#26C6DA" ||
+e.emotion === "#808080" ||
+e.emotion === "#FF9800"
 )
 );
 
@@ -2515,7 +2515,7 @@ renderCompass();
 
 function pickActivity(v){
 state.activity = v;
-state.step = "emotions";
+state.step = "emotion";
 renderCompass();
 }
 
@@ -2523,14 +2523,14 @@ function pickCustomActivity(){
 const val = document.getElementById("customAct").value;
 if(val){
 state.activity = val;
-state.step = "emotions";
+state.step = "emotion";
 renderCompass();
 }
 }
 
 function selectEmotion(color){
 
-state.emotions = color;
+state.emotion = color;
 
 state.interaction = 0;
 
@@ -2589,7 +2589,7 @@ ring: state.ring,
 
 activity: state.activity,
 
-emotions: state.emotions,
+emotion: state.emotion,
 
 energy:
 ENERGY[state.emotions] || 0,

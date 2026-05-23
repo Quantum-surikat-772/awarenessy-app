@@ -1112,7 +1112,6 @@ ${e[1]}
 }
 
 if(state.step === "attention"){
-state.interaction = 0;
 
 topHTML = `
 
@@ -1257,24 +1256,6 @@ line-height:1.5;
 
 </div>
 
-</div>
-
-<div style="
-margin-top:10px;
-padding:14px;
-border:1px solid #333;
-border-radius:14px;
-background:#111;
-">
-
-<div style="
-font-size:16px;
-font-weight:700;
-margin-bottom:12px;
-text-align:center;
-color:#b08a4f;
-">
-Наблюдатель во взаимодействии
 </div>
 
 <div style="
@@ -2139,6 +2120,8 @@ trSum += e.transformations || 0;
 tzSum += e.transits || 0;
 anSum += e.anomalies || 0;
 
+interactionSum += e.interaction || 0;
+
 });
 
 function percent(v){
@@ -2548,6 +2531,8 @@ renderCompass();
 function selectEmotion(color){
 
 state.emotions = color;
+
+state.interaction = 0;
 
 drawFX();
 

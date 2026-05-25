@@ -1199,7 +1199,7 @@ margin-bottom:12px;
 text-align:center;
 color:#b08a4f;
 ">
-Наблюдатель во взаимодействии
+Интеракции
 </div>
 
 <div style="
@@ -1215,6 +1215,11 @@ class="btn"
 style="
 padding:10px 0;
 font-size:14px;
+
+opacity:${state.interaction === v ? "1" : "0.5"};
+transform:${state.interaction === v ? "scale(1.08)" : "scale(1)"};
+box-shadow:${state.interaction === v ? "0 0 14px rgba(179,136,255,0.8)" : "none"};
+transition:0.2s;
 
 background:${
 v <= -2 ? "#111" :
@@ -1255,22 +1260,6 @@ line-height:1.5;
 Полное вовлечение
 
 </div>
-
-</div>
-
-<div style="
-display:grid;
-grid-template-columns:repeat(7,1fr);
-gap:6px;
-">
-
-<button class="btn" onclick="setInteraction(-3)">-3</button>
-<button class="btn" onclick="setInteraction(-2)">-2</button>
-<button class="btn" onclick="setInteraction(-1)">-1</button>
-<button class="btn" onclick="setInteraction(0)">0</button>
-<button class="btn" onclick="setInteraction(1)">+1</button>
-<button class="btn" onclick="setInteraction(2)">+2</button>
-<button class="btn" onclick="setInteraction(3)">+3</button>
 
 </div>
 
@@ -2551,6 +2540,8 @@ const map = {
 };
 
 box.innerHTML = map[v];
+
+renderCompass();
 
 }
 

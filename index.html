@@ -1212,6 +1212,7 @@ ${[-3,-2,-1,0,1,2,3].map(v=>`
 
 <button
 class="btn"
+id="interactionBtn${v}"
 style="
 padding:10px 0;
 font-size:14px;
@@ -1271,6 +1272,26 @@ OK
 </div>
 </div>
 `;
+
+<div>
+Трансформации —
+${trSum}
+</div>
+
+<div>
+Транзиты —
+${tzSum}
+</div>
+
+<div>
+Аномалии —
+${anSum}
+</div>
+
+<div>
+Интеракции —
+${(interactionSum / list.length).toFixed(1)}
+</div>
 }
 
 if(state.step === "saved"){
@@ -2520,28 +2541,32 @@ function setInteraction(v){
 
 state.interaction = v;
 
-const box =
-document.getElementById("interactionLabel");
-
-if(!box) return;
-
 const map = {
-
 "-3":"Конфликт / потеря себя",
 "-2":"Сильная реактивность",
 "-1":"Захваченность",
-
 "0":"Полное вовлечение",
-
 "1":"Иногда вспоминал себя",
 "2":"Удерживал наблюдение",
 "3":"Непрерывный наблюдатель"
-
 };
 
-box.innerHTML = map[v];
+const box = document.getElementById("interactionLabel");
+if(box) box.innerHTML = map[v];
 
-renderCompass();
+[-3,-2,-1,0,1,2,3].forEach(n=>{
+
+const btn = document.getElementById("interactionBtn"+n);
+if(!btn) return;
+
+btn.style.opacity = n === v ? "1" : "0.5";
+btn.style.transform = n === v ? "scale(1.08)" : "scale(1)";
+btn.style.boxShadow =
+n === v
+? "0 0 18px rgba(179,136,255,0.8)"
+: "none";
+
+});
 
 }
 

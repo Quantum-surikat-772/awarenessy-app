@@ -1272,26 +1272,6 @@ OK
 </div>
 </div>
 `;
-
-<div>
-Трансформации —
-${trSum}
-</div>
-
-<div>
-Транзиты —
-${tzSum}
-</div>
-
-<div>
-Аномалии —
-${anSum}
-</div>
-
-<div>
-Интеракции —
-${(interactionSum / list.length).toFixed(1)}
-</div>
 }
 
 if(state.step === "saved"){
@@ -2327,6 +2307,11 @@ ${(tzSum / list.length).toFixed(1)}
 <div>
 Аномалии —
 ${(anSum / list.length).toFixed(1)}
+</div>
+
+<div>
+Интеракции —
+${(interactionSum / list.length).toFixed(1)}
 </div>
 
 <div style="

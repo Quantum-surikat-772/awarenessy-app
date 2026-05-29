@@ -876,6 +876,79 @@ now - e.timestamp <= limit
 
 }
 
+function metricValue(list,metric,time){
+
+const filtered = list.filter(e=>
+e.time === time
+);
+
+if(metric === "transformations"){
+
+return filtered.reduce(
+(sum,e)=>sum + (e.transformations || 0),
+0
+);
+
+}
+
+if(metric === "transits"){
+
+return filtered.reduce(
+(sum,e)=>sum + (e.transits || 0),
+0
+);
+
+}
+
+if(metric === "anomalies"){
+
+return filtered.reduce(
+(sum,e)=>sum + (e.anomalies || 0),
+0
+);
+
+}
+
+if(metric === "interaction"){
+
+return filtered.reduce(
+(sum,e)=>sum + (e.interaction || 0),
+0
+);
+
+}
+
+if(metric === "energy"){
+
+return filtered.reduce(
+(sum,e)=>sum + (e.energy || 0),
+0
+);
+
+}
+
+if(metric === "attention"){
+
+if(filtered.length === 0) return 0;
+
+const total = filtered.reduce((sum,e)=>
+
+sum +
+(e.transformations || 0) +
+(e.transits || 0) +
+(e.anomalies || 0) * 2 +
+(e.interaction || 0),
+
+0);
+
+return total / filtered.length;
+
+}
+
+return 0;
+
+}
+
 function renderCompass(){
 
 const topBox = document.getElementById("top");

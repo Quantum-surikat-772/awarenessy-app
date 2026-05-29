@@ -850,6 +850,32 @@ state.step = "south";
 renderCompass();
 }
 
+function filterByPeriod(period){
+
+const now = Date.now();
+
+let limit = 0;
+
+if(period === "day"){
+limit = 24 * 60 * 60 * 1000;
+}
+
+if(period === "week"){
+limit = 7 * 24 * 60 * 60 * 1000;
+}
+
+if(period === "month"){
+limit = 30 * 24 * 60 * 60 * 1000;
+}
+
+return entries.filter(e=>
+
+now - e.timestamp <= limit
+
+);
+
+}
+
 function renderCompass(){
 
 const topBox = document.getElementById("top");

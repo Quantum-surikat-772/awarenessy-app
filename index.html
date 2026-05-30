@@ -1443,6 +1443,95 @@ color:#c9a86a;
 Карта состояний
 </div>
 
+<div style="
+display:flex;
+gap:6px;
+margin-bottom:12px;
+">
+
+<button class="btn"
+onclick="
+state.analyticsPeriod='day';
+renderCompass();
+">
+Сутки
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsPeriod='week';
+renderCompass();
+">
+Неделя
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsPeriod='month';
+renderCompass();
+">
+Месяц
+</button>
+
+</div>
+
+<div style="
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-bottom:16px;
+">
+
+<button class="btn"
+onclick="
+state.analyticsMetric='transformations';
+renderCompass();
+">
+Трансформации
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsMetric='transits';
+renderCompass();
+">
+Транзиты
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsMetric='anomalies';
+renderCompass();
+">
+Аномалии
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsMetric='interaction';
+renderCompass();
+">
+Интеракции
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsMetric='energy';
+renderCompass();
+">
+Энергия
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsMetric='attention';
+renderCompass();
+">
+Индекс внимания
+</button>
+
+</div>
+
 <div id="diagInfo"
 style="
 line-height:1.7;

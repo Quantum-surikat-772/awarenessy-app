@@ -1783,6 +1783,9 @@ svg.innerHTML = `
 // кольцо времени рисуется ВСЕГДА
 drawSolarRing(svg);
 
+// аналитическая подсветка зон
+drawAnalyticsZones(svg);
+
 // интерактив Архикомпаса должен быть всегда
 enableCompassTouch(svg);
 
@@ -1921,6 +1924,80 @@ class="pulse"
 `;
 
 }
+
+}
+
+function drawAnalyticsZones(svg){
+
+if(state.step !== "diagrams") return;
+if(!state.analyticsTime) return;
+
+const zones = metricLocations();
+
+const values =
+Object.values(zones);
+
+if(values.length === 0) return;
+
+const max =
+Math.max(...values,1);
+
+const step = Math.PI * 2 / 8;
+
+const rings = [
+[53,94],
+[94,142],
+[142,191]
+];
+
+Object.entries(zones).forEach(item=>{
+
+const key = item[0];
+const value = item[1];
+
+const parts = key.split("_");
+
+const beam = parts[0];
+const ring = Number(parts[1]);
+
+if(beam === "c") return;
+
+const idx = DIRS.indexOf(beam);
+
+if(idx < 0) return;
+
+const start =
+-Math.PI/2 - step/2 + idx * step;
+
+const end = start + step;
+
+const rr = rings[ring - 1];
+
+if(!rr) return;
+
+const d = sector(
+rr[0],
+rr[1],
+start,
+end
+);
+
+const power =
+0.18 + (value / max) * 0.55;
+
+svg.innerHTML += `
+
+<path
+d="${d}"
+fill="#b388ff"
+opacity="${power}"
+filter="url(#glow)"
+style="pointer-events:none;"
+/>
+
+`;
+
+});
 
 }
 
@@ -3074,6 +3151,10 @@ function highlightMetricLocations(){
 
 state.analyticsBeam = null;
 state.analyticsRing = null;
+
+console.log(
+metricLocations()
+);
 
 drawFX();
 

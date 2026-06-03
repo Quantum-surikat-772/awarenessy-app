@@ -1789,6 +1789,10 @@ drawAnalyticsZones(svg);
 // интерактив Архикомпаса должен быть всегда
 enableCompassTouch(svg);
 
+if(state.step === "diagrams"){
+return;
+}
+
 // в режиме диаграмм touch должен работать всегда
 if(!state.beam && state.step !== "diagrams") return;
 

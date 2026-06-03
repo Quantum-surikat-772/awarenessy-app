@@ -3189,11 +3189,43 @@ const zones = {};
 
 list.forEach(e=>{
 
+let value = 0;
+
+if(state.analyticsMetric === "transformations"){
+value = e.transformations || 0;
+}
+
+if(state.analyticsMetric === "transits"){
+value = e.transits || 0;
+}
+
+if(state.analyticsMetric === "anomalies"){
+value = e.anomalies || 0;
+}
+
+if(state.analyticsMetric === "interaction"){
+value = Math.abs(e.interaction || 0);
+}
+
+if(state.analyticsMetric === "energy"){
+value = Math.abs(e.energy || 0);
+}
+
+if(state.analyticsMetric === "attention"){
+value =
+(e.transformations || 0) +
+(e.transits || 0) +
+(e.anomalies || 0) * 2 +
+Math.abs(e.interaction || 0);
+}
+
+if(value <= 0) return;
+
 const key =
 e.beam + "_" + e.ring;
 
 zones[key] =
-(zones[key] || 0) + 1;
+(zones[key] || 0) + value;
 
 });
 

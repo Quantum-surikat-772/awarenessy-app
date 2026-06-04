@@ -1008,10 +1008,14 @@ return filtered.reduce(
 
 if(metric === "energy"){
 
-return filtered.reduce(
-(sum,e)=>sum + (e.energy || 0),
+if(filtered.length === 0) return 0;
+
+const total = filtered.reduce((sum,e)=>
+sum + (e.energy || 0),
 0
 );
+
+return total / filtered.length;
 
 }
 
@@ -1024,7 +1028,7 @@ const total = filtered.reduce((sum,e)=>
 sum +
 (e.transformations || 0) +
 (e.transits || 0) +
-(e.anomalies || 0) * 2 +
+(e.anomalies || 0) +
 Math.abs(e.interaction || 0),
 
 0);

@@ -908,7 +908,7 @@ top:0;
 bottom:0;
 width:${values[i] === 0 ? 8 : Math.round(values[i] / max * 100)}%;
 background:${t[2]};
-opacity:0.75;
+opacity:${values[i] === 0 ? 0.45 : 0.75};
 box-shadow:0 0 14px ${t[2]};
 "></div>
 

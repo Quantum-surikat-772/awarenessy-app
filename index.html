@@ -907,8 +907,21 @@ left:0;
 top:0;
 bottom:0;
 background:${t[2]};
-width:${values[i] === 0 ? 100 : Math.round(values[i] / max * 100)}%;
-opacity:${values[i] === 0 ? 0.22 : 0.75};
+width:${
+values[i] > 0
+? Math.round(values[i] / max * 100)
+: state.analyticsTime === t[0]
+? 100
+: 8
+}%;
+
+opacity:${
+values[i] > 0
+? 0.75
+: state.analyticsTime === t[0]
+? 0.35
+: 0.45
+};
 box-shadow:0 0 14px ${t[2]};
 "></div>
 
@@ -1941,7 +1954,6 @@ if(state.step !== "diagrams") return;
 if(!state.analyticsTime) return;
 
 const zones = metricLocations();
-alert(JSON.stringify(zones));
 
 const values =
 Object.values(zones);

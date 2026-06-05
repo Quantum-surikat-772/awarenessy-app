@@ -3170,12 +3170,16 @@ alert(txt);
 
 function highlightMetricLocations(){
 
+const zones = metricLocations();
+
+if(Object.keys(zones).length === 0){
+
+return;
+
+}
+
 state.analyticsBeam = null;
 state.analyticsRing = null;
-
-console.log(
-metricLocations()
-);
 
 drawFX();
 

@@ -3277,6 +3277,27 @@ state.analyticsRing = null;
 renderCompass();
 
 }
+
+function observationLocations(){
+
+const list =
+getMetricEntries();
+
+const zones = {};
+
+list.forEach(e=>{
+
+const key =
+e.beam + "_" + e.ring;
+
+zones[key] =
+(zones[key] || 0) + 1;
+
+});
+
+return zones;
+
+}
   
 </script>
 

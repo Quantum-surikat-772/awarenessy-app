@@ -1952,7 +1952,16 @@ function drawAnalyticsZones(svg){
 if(state.step !== "diagrams") return;
 if(!state.analyticsTime) return;
 
-const zones = metricLocations();
+let zones = metricLocations();
+
+let isEmptyMetric = false;
+
+if(Object.keys(zones).length === 0){
+
+zones = observationLocations();
+isEmptyMetric = true;
+
+}
 
 const values =
 Object.values(zones);
@@ -2003,13 +2012,15 @@ end
 );
 
 const power =
-0.18 + (value / max) * 0.55;
+isEmptyMetric
+? 0.16
+: 0.18 + (value / max) * 0.55;
 
 svg.innerHTML += `
 
 <path
 d="${d}"
-fill="#b388ff"
+fill="${isEmptyMetric ? '#777' : '#b388ff'}"
 opacity="${power}"
 filter="url(#glow)"
 style="pointer-events:none;"

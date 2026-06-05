@@ -888,8 +888,7 @@ ${times.map((t,i)=>`
 
 <div
 onclick="
-state.analyticsTime='${t[0]}';
-highlightMetricLocations();
+selectAnalyticsTime('${t[0]}');
 "
 style="
 position:relative;
@@ -3251,6 +3250,31 @@ zones[key] =
 });
 
 return zones;
+
+}
+
+function selectAnalyticsTime(t){
+
+const oldTime =
+state.analyticsTime;
+
+state.analyticsTime = t;
+
+const zones =
+metricLocations();
+
+if(Object.keys(zones).length === 0){
+
+state.analyticsTime = oldTime;
+renderCompass();
+return;
+
+}
+
+state.analyticsBeam = null;
+state.analyticsRing = null;
+
+renderCompass();
 
 }
   

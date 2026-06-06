@@ -1989,7 +1989,25 @@ const parts = key.split("_");
 const beam = parts[0];
 const ring = Number(parts[1]);
 
-if(beam === "c") return;
+if(beam === "c"){
+
+svg.innerHTML += `
+
+<circle
+cx="200"
+cy="200"
+r="46"
+fill="${isEmptyMetric ? '#777' : '#b388ff'}"
+opacity="${isEmptyMetric ? 0.18 : 0.55}"
+filter="url(#glow)"
+style="pointer-events:none;"
+/>
+
+`;
+
+return;
+
+}
 
 const idx = DIRS.indexOf(beam);
 
@@ -3268,21 +3286,7 @@ return zones;
 
 function selectAnalyticsTime(t){
 
-const oldTime =
-state.analyticsTime;
-
 state.analyticsTime = t;
-
-const zones =
-metricLocations();
-
-if(Object.keys(zones).length === 0){
-
-state.analyticsTime = oldTime;
-renderCompass();
-return;
-
-}
 
 state.analyticsBeam = null;
 state.analyticsRing = null;

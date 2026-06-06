@@ -1963,13 +1963,11 @@ isEmptyMetric = true;
 
 }
 
-const values =
-Object.values(zones);
+const values = Object.values(zones);
 
 if(values.length === 0) return;
 
-const max =
-Math.max(...values,1);
+const max = Math.max(...values,1);
 
 const step = Math.PI * 2 / 8;
 
@@ -1989,6 +1987,15 @@ const parts = key.split("_");
 const beam = parts[0];
 const ring = Number(parts[1]);
 
+const color =
+isEmptyMetric ? "#777" : "#b388ff";
+
+const power =
+isEmptyMetric
+? 0.22
+: 0.18 + (value / max) * 0.55;
+
+// ДОМ / ЦЕНТР
 if(beam === "c"){
 
 svg.innerHTML += `
@@ -1996,9 +2003,9 @@ svg.innerHTML += `
 <circle
 cx="200"
 cy="200"
-r="46"
-fill="${isEmptyMetric ? '#777' : '#b388ff'}"
-opacity="${isEmptyMetric ? 0.18 : 0.55}"
+r="50"
+fill="${color}"
+opacity="${power}"
 filter="url(#glow)"
 style="pointer-events:none;"
 />
@@ -2009,18 +2016,17 @@ return;
 
 }
 
+// СЕКТОРА
 const idx = DIRS.indexOf(beam);
-
 if(idx < 0) return;
+
+const rr = rings[ring - 1];
+if(!rr) return;
 
 const start =
 -Math.PI/2 - step/2 + idx * step;
 
 const end = start + step;
-
-const rr = rings[ring - 1];
-
-if(!rr) return;
 
 const d = sector(
 rr[0],
@@ -2029,16 +2035,11 @@ start,
 end
 );
 
-const power =
-isEmptyMetric
-? 0.16
-: 0.18 + (value / max) * 0.55;
-
 svg.innerHTML += `
 
 <path
 d="${d}"
-fill="${isEmptyMetric ? '#777' : '#b388ff'}"
+fill="${color}"
 opacity="${power}"
 filter="url(#glow)"
 style="pointer-events:none;"

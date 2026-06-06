@@ -3287,7 +3287,6 @@ return zones;
 function selectAnalyticsTime(t){
 
 state.analyticsTime = t;
-
 state.analyticsBeam = null;
 state.analyticsRing = null;
 
@@ -3297,12 +3296,13 @@ renderCompass();
 
 function observationLocations(){
 
-const list =
-getMetricEntries();
+const list = getMetricEntries();
 
 const zones = {};
 
 list.forEach(e=>{
+
+if(!e.beam && e.beam !== "c") return;
 
 const key =
 e.beam + "_" + e.ring;

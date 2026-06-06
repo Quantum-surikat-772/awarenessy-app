@@ -1963,6 +1963,11 @@ isEmptyMetric = true;
 
 }
 
+alert(
+"analyticsTime: " + state.analyticsTime + "\n" +
+"zones: " + JSON.stringify(zones)
+);
+
 const values = Object.values(zones);
 
 if(values.length === 0) return;

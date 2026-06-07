@@ -976,6 +976,17 @@ now - e.timestamp <= limit
 
 }
 
+function entryAttention(e){
+
+return (
+(e.transformations || 0) +
+(e.transits || 0) +
+(e.anomalies || 0) +
+Math.abs(e.interaction || 0)
+);
+
+}
+
 function metricValue(list,metric,time){
 
 const filtered = list.filter(e=>
@@ -1036,14 +1047,9 @@ if(metric === "attention"){
 if(filtered.length === 0) return 0;
 
 const total = filtered.reduce((sum,e)=>
-
-sum +
-(e.transformations || 0) +
-(e.transits || 0) +
-(e.anomalies || 0) +
-Math.abs(e.interaction || 0),
-
-0);
+sum + entryAttention(e),
+0
+);
 
 return total / filtered.length;
 
@@ -3270,10 +3276,10 @@ e.time === state.analyticsTime
 
 function metricLocations(){
 
-const list =
-getMetricEntries();
+const list = getMetricEntries();
 
 const zones = {};
+const counts = {};
 
 list.forEach(e=>{
 
@@ -3296,26 +3302,32 @@ value = Math.abs(e.interaction || 0);
 }
 
 if(state.analyticsMetric === "energy"){
-value = Math.abs(e.energy || 0);
+value = e.energy || 0;
 }
 
 if(state.analyticsMetric === "attention"){
-value =
-(e.transformations || 0) +
-(e.transits || 0) +
-(e.anomalies || 0) +
-Math.abs(e.interaction || 0);
+value = entryAttention(e);
 }
 
-if(value <= 0) return;
+if(value === 0) return;
 
-const key =
-e.beam + "_" + e.ring;
+const key = e.beam + "_" + e.ring;
 
-zones[key] =
-(zones[key] || 0) + value;
+zones[key] = (zones[key] || 0) + value;
+counts[key] = (counts[key] || 0) + 1;
 
 });
+
+if(
+state.analyticsMetric === "energy" ||
+state.analyticsMetric === "attention"
+){
+
+Object.keys(zones).forEach(key=>{
+zones[key] = zones[key] / counts[key];
+});
+
+}
 
 return zones;
 

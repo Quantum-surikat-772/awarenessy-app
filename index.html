@@ -2500,10 +2500,15 @@ document.getElementById("diagInfo");
 
 if(!box) return;
 
-const list = entries.filter(e=>
+const list =
+filterByPeriod(state.analyticsPeriod).filter(e=>
 
 e.beam === state.selectedBeam &&
-e.ring === state.selectedRing
+e.ring === state.selectedRing &&
+(
+!state.analyticsTime ||
+e.time === state.analyticsTime
+)
 
 );
 

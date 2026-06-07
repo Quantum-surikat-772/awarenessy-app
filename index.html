@@ -1952,7 +1952,20 @@ function drawAnalyticsZones(svg){
 if(state.step !== "diagrams") return;
 if(!state.analyticsTime) return;
 
-let zones = metricLocations();
+const timeColors = {
+dawn:"#d84cff",
+morning:"#6fd7ff",
+day:"#ffd56a",
+evening:"#6fd7ff",
+sunset:"#d84cff",
+night:"#2f65ff"
+};
+
+const baseColor =
+timeColors[state.analyticsTime] || "#b388ff";
+
+let zones =
+metricLocations();
 
 let isEmptyMetric = false;
 
@@ -1963,18 +1976,16 @@ isEmptyMetric = true;
 
 }
 
-alert(
-"analyticsTime: " + state.analyticsTime + "\n" +
-"zones: " + JSON.stringify(zones)
-);
-
-const values = Object.values(zones);
+const values =
+Object.values(zones);
 
 if(values.length === 0) return;
 
-const max = Math.max(...values,1);
+const max =
+Math.max(...values,1);
 
-const step = Math.PI * 2 / 8;
+const step =
+Math.PI * 2 / 8;
 
 const rings = [
 [53,94],
@@ -1993,12 +2004,12 @@ const beam = parts[0];
 const ring = Number(parts[1]);
 
 const color =
-isEmptyMetric ? "#777" : "#b388ff";
+isEmptyMetric ? baseColor : "#b388ff";
 
 const power =
 isEmptyMetric
-? 0.22
-: 0.18 + (value / max) * 0.55;
+? 0.38
+: 0.22 + (value / max) * 0.58;
 
 // ДОМ / ЦЕНТР
 if(beam === "c"){
@@ -2008,10 +2019,19 @@ svg.innerHTML += `
 <circle
 cx="200"
 cy="200"
-r="50"
+r="52"
 fill="${color}"
 opacity="${power}"
 filter="url(#glow)"
+style="pointer-events:none;"
+/>
+
+<circle
+cx="200"
+cy="200"
+r="38"
+fill="${color}"
+opacity="${isEmptyMetric ? 0.18 : 0.42}"
 style="pointer-events:none;"
 />
 
@@ -2022,18 +2042,24 @@ return;
 }
 
 // СЕКТОРА
-const idx = DIRS.indexOf(beam);
+const idx =
+DIRS.indexOf(beam);
+
 if(idx < 0) return;
 
-const rr = rings[ring - 1];
+const rr =
+rings[ring - 1];
+
 if(!rr) return;
 
 const start =
 -Math.PI/2 - step/2 + idx * step;
 
-const end = start + step;
+const end =
+start + step;
 
-const d = sector(
+const d =
+sector(
 rr[0],
 rr[1],
 start,
@@ -2047,6 +2073,13 @@ d="${d}"
 fill="${color}"
 opacity="${power}"
 filter="url(#glow)"
+style="pointer-events:none;"
+/>
+
+<path
+d="${d}"
+fill="${color}"
+opacity="${isEmptyMetric ? 0.18 : 0.32}"
 style="pointer-events:none;"
 />
 
@@ -2173,8 +2206,6 @@ selectHomeAnalytics();
 }
 
 function selectHomeAnalytics(){
-
-alert("HOME OK");
 
 state.selectedBeam = "c";
 state.selectedRing = 0;

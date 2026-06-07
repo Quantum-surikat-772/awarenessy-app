@@ -2774,9 +2774,10 @@ margin-top:10px;
 font-weight:700;
 color:#9b5cff;
 ">
+
 Индекс внимания:
 ${(
-(trSum + tzSum + anSum * 2)
+list.reduce((sum,e)=>sum + entryAttention(e),0)
 / list.length
 ).toFixed(1)}
 </div>
@@ -2786,8 +2787,8 @@ ${(
 Энергетический коэффициент:
 ${(()=>{
 const avg =
-Math.round(energySum / list.length);
-
+energySum / list.length;
+  
 if(avg === 0){
 
 const hasNegativeZero =
@@ -2803,7 +2804,7 @@ e.emotion === "#FF9800"
 return hasNegativeZero ? "-0" : "0";
 }
 
-return avg > 0 ? `+${avg}` : avg;
+return avg > 0 ? `+${avg.toFixed(1)}` : avg.toFixed(1);
 
 })()}
 

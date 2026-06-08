@@ -1610,6 +1610,21 @@ renderCompass();
 
 </div>
 
+<div id="diagInfo"
+style="
+line-height:1.7;
+font-size:15px;
+color:#ddd;
+">
+
+${renderTimeMetricScale()}
+
+</div>
+
+</div>
+`;
+}
+
 <div style="
 display:flex;
 gap:6px;
@@ -1641,22 +1656,7 @@ renderCompass();
 </button>
 
 </div>
-
-<div id="diagInfo"
-style="
-line-height:1.7;
-font-size:15px;
-color:#ddd;
-">
-
-${renderTimeMetricScale()}
-
-</div>
-
-</div>
-`;
-}
-
+  
 if(!topHTML){
   
   topHTML = `<div style="padding:20px">STEP: ${state.step || 'undefined'}</div>`;

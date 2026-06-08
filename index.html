@@ -2457,7 +2457,7 @@ color:#9b5cff;
 ">
 Индекс внимания:
 ${(
-(trSum + tzSum + anSum * 2)
+list.reduce((sum,e)=>sum + entryAttention(e),0)
 / list.length
 ).toFixed(1)}
 </div>
@@ -2473,9 +2473,9 @@ font-weight:700;
 Энергетический коэффициент:
 ${(()=>{
 const avg =
-Math.round(energySum / list.length);
+energySum / list.length;
 
-return avg > 0 ? `+${avg}` : avg;
+return avg > 0 ? `+${avg.toFixed(1)}` : avg.toFixed(1);
 
 })()}
 

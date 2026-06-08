@@ -1555,38 +1555,6 @@ color:#c9a86a;
 
 <div style="
 display:flex;
-gap:6px;
-margin-bottom:12px;
-">
-
-<button class="btn"
-onclick="
-state.analyticsPeriod='day';
-renderCompass();
-">
-Сутки
-</button>
-
-<button class="btn"
-onclick="
-state.analyticsPeriod='week';
-renderCompass();
-">
-Неделя
-</button>
-
-<button class="btn"
-onclick="
-state.analyticsPeriod='month';
-renderCompass();
-">
-Месяц
-</button>
-
-</div>
-
-<div style="
-display:flex;
 flex-wrap:wrap;
 gap:6px;
 margin-bottom:16px;
@@ -1638,6 +1606,38 @@ state.analyticsMetric='attention';
 renderCompass();
 ">
 Индекс внимания
+</button>
+
+</div>
+
+<div style="
+display:flex;
+gap:6px;
+margin-bottom:12px;
+">
+
+<button class="btn"
+onclick="
+state.analyticsPeriod='day';
+renderCompass();
+">
+Сутки
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsPeriod='week';
+renderCompass();
+">
+Неделя
+</button>
+
+<button class="btn"
+onclick="
+state.analyticsPeriod='month';
+renderCompass();
+">
+Месяц
 </button>
 
 </div>

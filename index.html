@@ -978,12 +978,12 @@ now - e.timestamp <= limit
 
 function entryAttention(e){
 
-return (
-(e.transformations || 0) +
-(e.transits || 0) +
-(e.anomalies || 0) +
-Math.abs(e.interaction || 0)
-);
+const tr = e.transformations || 0;
+const tz = e.transits || 0;
+const an = e.anomalies || 0;
+const inter = Math.abs(e.interaction || 0);
+
+return (tr + tz + an + inter) / 4;
 
 }
 

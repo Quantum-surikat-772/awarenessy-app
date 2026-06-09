@@ -1629,25 +1629,34 @@ margin-bottom:22px;
 ">
 
 <button class="btn"
+style="
+border:${state.analyticsPeriod === 'day' ? '1px solid #c9a86a' : '1px solid #333'};
+color:${state.analyticsPeriod === 'day' ? '#c9a86a' : '#fff'};
+"
 onclick="
-state.analyticsPeriod='day';
-renderCompass();
+selectAnalyticsPeriod('day');
 ">
 Сутки
 </button>
 
 <button class="btn"
+style="
+border:${state.analyticsPeriod === 'week' ? '1px solid #c9a86a' : '1px solid #333'};
+color:${state.analyticsPeriod === 'week' ? '#c9a86a' : '#fff'};
+"
 onclick="
-state.analyticsPeriod='week';
-renderCompass();
+selectAnalyticsPeriod('week');
 ">
 Неделя
 </button>
 
 <button class="btn"
+style="
+border:${state.analyticsPeriod === 'month' ? '1px solid #c9a86a' : '1px solid #333'};
+color:${state.analyticsPeriod === 'month' ? '#c9a86a' : '#fff'};
+"
 onclick="
-state.analyticsPeriod='month';
-renderCompass();
+selectAnalyticsPeriod('month');
 ">
 Месяц
 </button>
@@ -3343,6 +3352,17 @@ return zones;
 function selectAnalyticsTime(t){
 
 state.analyticsTime = t;
+state.analyticsBeam = null;
+state.analyticsRing = null;
+
+renderCompass();
+
+}
+
+function selectAnalyticsPeriod(p){
+
+state.analyticsPeriod = p;
+
 state.analyticsBeam = null;
 state.analyticsRing = null;
 

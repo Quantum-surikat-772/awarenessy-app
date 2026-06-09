@@ -496,7 +496,7 @@ emotionLabel: null,
 selectedBeam: null,
 selectedRing: null,
 interaction:0,
-analyticsPeriod: "day",
+analyticsPeriod: null,
 analyticsMetric: "transformations",
 analyticsTime: null,
 analyticsBeam: null,
@@ -952,6 +952,15 @@ color:#fff;
 
 function filterByPeriod(period){
 
+if(!period){
+
+const last =
+entries[entries.length - 1];
+
+return last ? [last] : [];
+
+}
+
 const now = Date.now();
 
 let limit = 0;
@@ -969,10 +978,19 @@ limit = 30 * 24 * 60 * 60 * 1000;
 }
 
 return entries.filter(e=>
-
 now - e.timestamp <= limit
-
 );
+
+}
+
+function selectAnalyticsPeriod(p){
+
+state.analyticsPeriod = p;
+
+state.analyticsBeam = null;
+state.analyticsRing = null;
+
+renderCompass();
 
 }
 

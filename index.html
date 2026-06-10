@@ -462,7 +462,8 @@ box-shadow:0 0 6px rgba(111,76,255,0.35);
 const HAND_IMG = "https://i.postimg.cc/zXp9BVGf/Hands-1.png";
 const HAND_VIDEO = "https://i.imgur.com/ocTkSQj.mp4";
 
-const entries = [];
+let entries =
+JSON.parse(localStorage.getItem("awarenessy_entries") || "[]");
 const ENERGY = {
 
 "#FFFFFF":  3, // Осознанное творчество
@@ -3085,10 +3086,21 @@ timestamp: Date.now()
 
 });
 
+saveEntries();
+
 console.log(entries);
 
 // потом сохранение
 finishEntry();
+}
+
+function saveEntries(){
+
+localStorage.setItem(
+"awarenessy_entries",
+JSON.stringify(entries)
+);
+
 }
 
 function finishEntry(){

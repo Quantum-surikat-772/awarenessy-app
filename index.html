@@ -1006,6 +1006,37 @@ return (tr + tz + an + inter) / 4;
 
 }
 
+function activityAttentionData(list){
+
+const map = {};
+
+list.forEach(e=>{
+
+const a = e.activity || "other";
+
+if(!map[a]){
+map[a] = {
+sum:0,
+count:0
+};
+}
+
+map[a].sum += entryAttention(e);
+map[a].count += 1;
+
+});
+
+return Object.entries(map).map(x=>{
+
+return {
+activity:x[0],
+value:x[1].sum / x[1].count
+};
+
+});
+
+}
+  
 function metricValue(list,metric,time){
 
 const filtered = list.filter(e=>

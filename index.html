@@ -1998,15 +1998,24 @@ night:"#2f65ff"
 const baseColor =
 timeColors[state.analyticsTime] || "#b388ff";
 
-let zones =
-metricLocations();
-
+let zones;
 let isEmptyMetric = false;
+
+if(state.analyticsPeriod){
+
+zones = observationLocations();
+isEmptyMetric = true;
+
+}else{
+
+zones = metricLocations();
 
 if(Object.keys(zones).length === 0){
 
 zones = observationLocations();
 isEmptyMetric = true;
+
+}
 
 }
 

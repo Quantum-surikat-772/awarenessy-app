@@ -502,6 +502,8 @@ analyticsMetric: "transformations",
 analyticsTime: null,
 analyticsBeam: null,
 analyticsRing: null,
+reminderMinutes: null,
+reminderTimer: null,
 };
 
 const TXT = {
@@ -830,7 +832,7 @@ settingsBtn.style.opacity = 1;
 }, lines.length * 700 + 800);
 
 document.getElementById("settingsBtn").onclick = function(){
-alert("Здесь будет настройка будильника");
+openReminderSettings();
 };
 
 msg.style.opacity = 1;

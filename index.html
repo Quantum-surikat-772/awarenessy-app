@@ -674,6 +674,14 @@ window.onload = function(){
     }
   }
 
+  const savedReminder =
+  localStorage.getItem("awarenessy_reminder_minutes");
+
+  if(savedReminder){
+  state.reminderMinutes = Number(savedReminder);
+  startReminderTimer();
+  }
+
   render();
 };
 
@@ -3555,6 +3563,68 @@ zones[key] =
 });
 
 return zones;
+
+}
+
+function openReminderSettings(){
+
+const v = prompt(
+"Через сколько минут напоминать об осознанности?\n\nНапример: 15, 30, 60\n\n0 — выключить",
+localStorage.getItem("awarenessy_reminder_minutes") || "30"
+);
+
+if(v === null) return;
+
+const minutes = Number(v);
+
+if(!minutes || minutes <= 0){
+
+localStorage.removeItem("awarenessy_reminder_minutes");
+state.reminderMinutes = null;
+
+if(state.reminderTimer){
+clearInterval(state.reminderTimer);
+state.reminderTimer = null;
+}
+
+alert("Напоминания выключены");
+return;
+
+}
+
+localStorage.setItem("awarenessy_reminder_minutes", minutes);
+state.reminderMinutes = minutes;
+
+startReminderTimer();
+
+alert("Напоминание включено: каждые " + minutes + " минут");
+
+}
+
+function startReminderTimer(){
+
+if(state.reminderTimer){
+clearInterval(state.reminderTimer);
+}
+
+if(!state.reminderMinutes) return;
+
+state.reminderTimer = setInterval(()=>{
+
+showAwarenessReminder();
+
+}, state.reminderMinutes * 60 * 1000);
+
+}
+
+function showAwarenessReminder(){
+
+alert(
+"ОСоЗНАЙКА напоминает:\n\n" +
+"Где твоё внимание сейчас?\n\n" +
+"Посмотри на руки.\n" +
+"Вспомни внутреннего наблюдателя."
+);
 
 }
   

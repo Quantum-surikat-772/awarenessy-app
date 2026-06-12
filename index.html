@@ -487,6 +487,10 @@ lang: "ru",
 mode: null,   // wake / dream
 step: "intro", // где мы сейчас
 
+dreamCount: null,
+dreamTime: null,
+dreamIntroSeen: false,
+
 // будущий компас
 time: null,
 home: null,
@@ -856,9 +860,16 @@ function start(mode){
 document.body.classList.remove("alert");
 
 state.mode = mode;
-state.step = "south";
 
+if(mode === "dream"){
+state.step = "dream_count";
 renderCompass();
+return;
+}
+
+state.step = "south";
+renderCompass();
+
 }
 
 function renderTimeMetricScale(){
@@ -1220,6 +1231,54 @@ const bottomBox = document.getElementById("bottom");
 
 // 🔝 ВЕРХ — КОНТЕНТ
 let topHTML = "";
+
+if(state.step === "dream_count"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="width:100%;max-width:340px;">
+
+<div style="
+font-size:22px;
+font-weight:700;
+color:#fff;
+margin-bottom:18px;
+">
+Сколько снов за сегодня ты помнишь?
+</div>
+
+<input
+id="dreamCountInput"
+type="number"
+min="0"
+style="
+width:100%;
+height:50px;
+border-radius:12px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+font-size:22px;
+text-align:center;
+margin-bottom:14px;
+">
+
+<button class="btn" onclick="saveDreamCount()">
+OK
+</button>
+
+</div>
+</div>
+`;
+
+}
 
 if(state.step === "south"){
 
@@ -1893,6 +1952,179 @@ enableHomeTouch();
 },100);
 
 }
+
+if(state.step === "dream_zero"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="max-width:360px;line-height:1.55;">
+
+<div style="
+font-size:22px;
+font-weight:700;
+color:#b388ff;
+margin-bottom:16px;
+">
+Эмиссар Сновидений
+</div>
+
+<div style="font-size:15px;color:#ddd;">
+Если сегодня сны не вспомнились —
+это не ошибка.
+
+Перед сном мягко задай намерение:
+<br><br>
+<b>“Я вспомню свои сны.”</b>
+<br><br>
+Просыпаясь, не спеши двигаться.
+Сначала вспомни образы, настроение,
+время суток и направление пространства.
+
+Практика ЯВЬ усиливает память СНА.
+</div>
+
+<button class="btn"
+style="margin-top:22px;"
+onclick="returnToIntro()">
+Вернуться
+</button>
+
+</div>
+</div>
+`;
+
+}
+
+if(state.step === "dream_intro"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="
+font-size:26px;
+font-weight:800;
+color:#b388ff;
+line-height:1.35;
+animation:pulseGlow 4s ease-in-out infinite;
+">
+ПОСМОТРИ НА СНЫ<br>ПО-ДРУГОМУ
+</div>
+</div>
+`;
+
+}
+
+if(state.step === "dream_time"){
+
+const times = [
+["dawn","Рассвет"],
+["morning","Утро"],
+["day","День"],
+["evening","Вечер"],
+["sunset","Закат"],
+["night","Ночь"]
+];
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="width:100%;max-width:360px;">
+
+<div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+margin-bottom:18px;
+">
+
+<div style="
+font-size:22px;
+font-weight:700;
+color:#fff;
+">
+Какое было время суток в этом сне?
+</div>
+
+<button class="helpBtn" onclick="openDreamTimeHelp()">?</button>
+
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+">
+
+${times.map(t=>`
+
+<button class="btn"
+onclick="pickDreamTime('${t[0]}')">
+${t[1]}
+</button>
+
+`).join("")}
+
+</div>
+
+</div>
+</div>
+`;
+
+}
+
+}
+
+function saveDreamCount(){
+
+const input =
+document.getElementById("dreamCountInput");
+
+const count =
+Number(input.value || 0);
+
+state.dreamCount = count;
+
+if(count <= 0){
+state.step = "dream_zero";
+renderCompass();
+return;
+}
+
+if(!localStorage.getItem("dream_intro_seen") || Math.random() < 0.12){
+state.step = "dream_intro";
+localStorage.setItem("dream_intro_seen","1");
+renderCompass();
+
+setTimeout(()=>{
+state.step = "dream_time";
+renderCompass();
+},15000);
+
+return;
+}
+
+state.step = "dream_time";
+renderCompass();
 
 }
 
@@ -3624,6 +3856,47 @@ alert(
 "Где твоё внимание сейчас?\n\n" +
 "Посмотри на руки.\n" +
 "Вспомни внутреннего наблюдателя."
+);
+
+}
+
+function pickDreamTime(v){
+
+state.time = v;
+state.dreamTime = v;
+
+renderCompass();
+drawFX();
+
+// следующий экран потом добавим здесь
+}
+
+function returnToIntro(){
+
+state.mode = null;
+state.step = "intro";
+render();
+
+}
+
+function openDreamTimeHelp(){
+
+alert(
+`Предлагаю новый взгляд на Сновидения.
+
+Сюжет сна мы рассматриваем как вторичное явление.
+Не так важно, что происходило,
+и не надо искать значения из сонников.
+
+Во-первых нужно научиться
+ориентироваться во сне.
+
+В начале можно даже предположительно,
+по ощущениям, по любым признакам.
+
+Поэтому важно определить в сновидении:
+• время суток в
+• стороны света (где Юг, Восток и т.д.)`
 );
 
 }

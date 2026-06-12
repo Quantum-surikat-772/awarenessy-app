@@ -445,6 +445,23 @@ box-shadow:0 0 6px rgba(111,76,255,0.35);
 
 }
 
+.dreamTitle{
+color:#7fd4ff;
+}
+
+.dreamPanel{
+background:linear-gradient(135deg,#22336a,#4d2c78,#2a4f9a);
+background-size:300% 300%;
+animation:dreamPanelGlow 20s ease infinite;
+color:#fff;
+}
+
+@keyframes dreamPanelGlow{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
 </style>
 </head>
 
@@ -1248,7 +1265,7 @@ padding:20px;
 <div style="
 font-size:22px;
 font-weight:700;
-color:#fff;
+color:#7fd4ff;
 margin-bottom:18px;
 ">
 Сколько снов за сегодня ты помнишь?
@@ -1291,7 +1308,13 @@ justify-content:center;
 text-align:center;
 padding:20px;
 ">
-<div style="max-width:360px;line-height:1.55;">
+<div class="dreamPanel" style="
+max-width:360px;
+line-height:1.55;
+padding:22px;
+border-radius:22px;
+box-shadow:0 0 28px rgba(127,212,255,0.22);
+">
 
 <div style="
 font-size:22px;
@@ -1387,7 +1410,7 @@ margin-bottom:18px;
 <div style="
 font-size:22px;
 font-weight:700;
-color:#fff;
+color:#7fd4ff;
 ">
 Какое было время суток в этом сне?
 </div>

@@ -3921,23 +3921,111 @@ render();
 
 function openDreamTimeHelp(){
 
-alert(
-`Предлагаю новый взгляд на Сновидения.
+const old =
+document.getElementById("dreamHelpOverlay");
 
+if(old) old.remove();
+
+document.body.insertAdjacentHTML("beforeend", `
+
+<div id="dreamHelpOverlay"
+style="
+position:fixed;
+inset:0;
+z-index:9999;
+background:rgba(0,0,0,0.72);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:22px;
+">
+
+<div class="dreamPanel"
+style="
+max-width:380px;
+width:100%;
+max-height:82vh;
+overflow:auto;
+padding:24px;
+border-radius:24px;
+box-shadow:0 0 34px rgba(127,212,255,0.28);
+line-height:1.55;
+text-align:left;
+">
+
+<div style="
+font-size:22px;
+font-weight:800;
+color:#9ee6ff;
+margin-bottom:18px;
+text-align:center;
+">
+Ориентация во сне
+</div>
+
+<div style="
+font-size:15px;
+color:#fff;
+">
+Предлагаю новый взгляд на Сновидения.
+<br><br>
 Сюжет сна мы рассматриваем как вторичное явление.
 Не так важно, что происходило,
 и не надо искать значения из сонников.
-
+<br><br>
 Во-первых нужно научиться
 ориентироваться во сне.
+<br><br>
+В начале можно даже предположительно:
+по ощущениям,
+по свету,
+по направлению,
+по любым признакам.
+<br><br>
+Поэтому важно определить:
+<br>
+• время суток в сновидении
+<br>
+• стороны света
+<br>
+• где Юг
+<br>
+• где Восток
+<br>
+• где находился ты
+</div>
 
-В начале можно даже предположительно,
-по ощущениям, по любым признакам.
+<button
+onclick="closeDreamHelp()"
+style="
+display:block;
+margin:24px auto 0 auto;
+padding:12px 30px;
+background:transparent;
+border:2px solid #b388ff;
+border-radius:14px;
+color:#b388ff;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+box-shadow:0 0 12px rgba(179,136,255,.35);
+">
+Понятно
+</button>
 
-Поэтому важно определить в сновидении:
-• время суток в
-• стороны света (где Юг, Восток и т.д.)`
-);
+</div>
+</div>
+
+`);
+
+}
+
+function closeDreamHelp(){
+
+const el =
+document.getElementById("dreamHelpOverlay");
+
+if(el) el.remove();
 
 }
   

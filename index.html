@@ -1280,6 +1280,145 @@ OK
 
 }
 
+if(state.step === "dream_zero"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="max-width:360px;line-height:1.55;">
+
+<div style="
+font-size:22px;
+font-weight:700;
+color:#b388ff;
+margin-bottom:16px;
+">
+Эмиссар Сновидений
+</div>
+
+<div style="font-size:15px;color:#ddd;">
+Если сегодня сны не вспомнились —
+это не ошибка.
+
+Перед сном мягко задай намерение:
+<br><br>
+<b>“Я вспомню свои сны.”</b>
+<br><br>
+Просыпаясь, не спеши двигаться.
+Сначала вспомни образы, настроение,
+время суток и направление пространства.
+
+Практика ЯВЬ усиливает память СНА.
+</div>
+
+<button class="btn"
+style="margin-top:22px;"
+onclick="returnToIntro()">
+Вернуться
+</button>
+
+</div>
+</div>
+`;
+
+}
+
+if(state.step === "dream_intro"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="
+font-size:26px;
+font-weight:800;
+color:#b388ff;
+line-height:1.35;
+animation:pulseGlow 4s ease-in-out infinite;
+">
+ПОСМОТРИ НА СНЫ<br>ПО-ДРУГОМУ
+</div>
+</div>
+`;
+
+}
+
+if(state.step === "dream_time"){
+
+const times = [
+["dawn","Рассвет"],
+["morning","Утро"],
+["day","День"],
+["evening","Вечер"],
+["sunset","Закат"],
+["night","Ночь"]
+];
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="width:100%;max-width:360px;">
+
+<div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+margin-bottom:18px;
+">
+
+<div style="
+font-size:22px;
+font-weight:700;
+color:#fff;
+">
+Какое было время суток в этом сне?
+</div>
+
+<button class="helpBtn" onclick="openDreamTimeHelp()">?</button>
+
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+">
+
+${times.map(t=>`
+
+<button class="btn"
+onclick="pickDreamTime('${t[0]}')">
+${t[1]}
+</button>
+
+`).join("")}
+
+</div>
+
+</div>
+</div>
+`;
+
+}
+
 if(state.step === "south"){
 
 topHTML = `
@@ -1950,145 +2089,6 @@ setTimeout(()=>{
 enableHomeTouch();
 
 },100);
-
-}
-
-if(state.step === "dream_zero"){
-
-topHTML = `
-<div style="
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:20px;
-">
-<div style="max-width:360px;line-height:1.55;">
-
-<div style="
-font-size:22px;
-font-weight:700;
-color:#b388ff;
-margin-bottom:16px;
-">
-Эмиссар Сновидений
-</div>
-
-<div style="font-size:15px;color:#ddd;">
-Если сегодня сны не вспомнились —
-это не ошибка.
-
-Перед сном мягко задай намерение:
-<br><br>
-<b>“Я вспомню свои сны.”</b>
-<br><br>
-Просыпаясь, не спеши двигаться.
-Сначала вспомни образы, настроение,
-время суток и направление пространства.
-
-Практика ЯВЬ усиливает память СНА.
-</div>
-
-<button class="btn"
-style="margin-top:22px;"
-onclick="returnToIntro()">
-Вернуться
-</button>
-
-</div>
-</div>
-`;
-
-}
-
-if(state.step === "dream_intro"){
-
-topHTML = `
-<div style="
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:20px;
-">
-<div style="
-font-size:26px;
-font-weight:800;
-color:#b388ff;
-line-height:1.35;
-animation:pulseGlow 4s ease-in-out infinite;
-">
-ПОСМОТРИ НА СНЫ<br>ПО-ДРУГОМУ
-</div>
-</div>
-`;
-
-}
-
-if(state.step === "dream_time"){
-
-const times = [
-["dawn","Рассвет"],
-["morning","Утро"],
-["day","День"],
-["evening","Вечер"],
-["sunset","Закат"],
-["night","Ночь"]
-];
-
-topHTML = `
-<div style="
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:20px;
-">
-<div style="width:100%;max-width:360px;">
-
-<div style="
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-margin-bottom:18px;
-">
-
-<div style="
-font-size:22px;
-font-weight:700;
-color:#fff;
-">
-Какое было время суток в этом сне?
-</div>
-
-<button class="helpBtn" onclick="openDreamTimeHelp()">?</button>
-
-</div>
-
-<div style="
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-">
-
-${times.map(t=>`
-
-<button class="btn"
-onclick="pickDreamTime('${t[0]}')">
-${t[1]}
-</button>
-
-`).join("")}
-
-</div>
-
-</div>
-</div>
-`;
 
 }
 

@@ -4420,6 +4420,7 @@ if(!state.dreamCurrent.beam) return;
 
 const color = "#7fd4ff";
 
+// ЦЕНТР / ДОМ
 if(state.dreamCurrent.beam === "c"){
 
 svg.innerHTML += `
@@ -4444,44 +4445,6 @@ stroke-width="3"
 opacity="0.9"
 />
 
-`;
-
-const mid =
-(start + end) / 2;
-
-const labelR =
-(rr[0] + rr[1]) / 2;
-
-const lx =
-200 + Math.cos(mid) * labelR;
-
-const ly =
-200 + Math.sin(mid) * labelR;
-
-svg.innerHTML += `
-
-<text
-x="${lx}"
-y="${ly + 7}"
-text-anchor="middle"
-font-size="22"
-font-weight="800"
-fill="#ffffff"
-style="
-pointer-events:none;
-paint-order:stroke;
-stroke:#000;
-stroke-width:4px;
-stroke-linejoin:round;
-"
->
-${dreamLocationLabel()}
-</text>
-
-`;
-
-svg.innerHTML += `
-
 <text
 x="200"
 y="207"
@@ -4500,6 +4463,7 @@ return;
 
 }
 
+// СЕКТОР
 if(!state.dreamCurrent.ring) return;
 
 const rings = [
@@ -4546,6 +4510,40 @@ stroke="${color}"
 stroke-width="3"
 opacity="0.9"
 />
+
+`;
+
+const mid =
+(start + end) / 2;
+
+const labelR =
+(rr[0] + rr[1]) / 2;
+
+const lx =
+200 + Math.cos(mid) * labelR;
+
+const ly =
+200 + Math.sin(mid) * labelR;
+
+svg.innerHTML += `
+
+<text
+x="${lx}"
+y="${ly + 7}"
+text-anchor="middle"
+font-size="22"
+font-weight="800"
+fill="#ffffff"
+style="
+pointer-events:none;
+paint-order:stroke;
+stroke:#000;
+stroke-width:4px;
+stroke-linejoin:round;
+"
+>
+${dreamLocationLabel()}
+</text>
 
 `;
 

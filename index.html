@@ -1636,7 +1636,10 @@ margin:0 auto 18px auto;
 
 ` : ""}
 
-${state.dreamCurrent && state.dreamCurrent.ring !== null && state.dreamCurrent.ring !== undefined ? `
+${state.dreamCurrent &&
+state.dreamCurrent.home !== "c" &&
+state.dreamCurrent.ring !== null &&
+state.dreamCurrent.ring !== undefined ? `
 
 <div class="dreamTitle" style="
 font-size:19px;

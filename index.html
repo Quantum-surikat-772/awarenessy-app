@@ -1708,15 +1708,16 @@ margin:0 auto 18px auto;
 ">
 
 ${[
-["#FFFFFF","Осознанное творчество"],
-["#FFD700","Позитивная деятельность, радость"],
-["#3F51B5","Спокойствие, творчество, вдохновение"],
-["#26C6DA","Мечтательность, фантазёрство"],
-["#808080","Нейтральность, пассивное вовлечение"],
-["#FF9800","Соревновательность, самоуверенность"],
-["#4CAF50","Тоска, зависимость, тревожность"],
-["#F44336","Превосходство, гнев, агрессия"],
-["#000000","Отсутствие контроля, хаос, ужас"]
+["#9b5cff","Осознанность",3],
+["#FFFFFF","Осознанное творчество",2],
+["#FFD700","Позитивная деятельность, радость",1],
+["#3F51B5","Спокойствие, творчество, вдохновение",1],
+["#26C6DA","Мечтательность, фантазёрство",-1],
+["#808080","Нейтральность, пассивное вовлечение",-1],
+["#FF9800","Соревновательность, самоуверенность",-1],
+["#4CAF50","Тоска, зависимость, тревожность",-2],
+["#F44336","Превосходство, гнев, агрессия",-2],
+["#000000","Отсутствие контроля, хаос, кошмар",-3]
 ].map(e=>`
 
 <button class="btn"
@@ -1730,7 +1731,7 @@ font-size:14px;
 border:${state.dreamCurrent.emotion === e[0] ? '1px solid #7fd4ff' : '1px solid #333'};
 color:${state.dreamCurrent.emotion === e[0] ? '#7fd4ff' : '#fff'};
 "
-onclick="pickDreamLocationEmotion('${e[0]}')">
+onclick="pickDreamLocationEmotion('${e[0]}', ${e[2]})"
 
 <span style="
 width:18px;
@@ -4657,6 +4658,22 @@ const letters = ["А","Б","В","Г","Д"];
 const letter =
 letters[state.dreamLocationIndex - 1] || "?";
 
+if(
+state.dreamCurrent &&
+state.dreamCurrent.home === "c"
+){
+
+const energy =
+state.dreamCurrent.energy;
+
+if(!energy){
+return letter;
+}
+
+return letter + " " + (energy > 0 ? "+" + energy : energy);
+
+}
+
 const level =
 state.dreamCurrent && state.dreamCurrent.level;
 
@@ -4668,11 +4685,12 @@ return letter + " " + (level > 0 ? "+" + level : level);
 
 }
 
-function pickDreamLocationEmotion(color){
+function pickDreamLocationEmotion(color,energy){
 
 state.dreamCurrent = state.dreamCurrent || {};
 
 state.dreamCurrent.emotion = color;
+state.dreamCurrent.energy = energy;
 
 renderCompass();
 

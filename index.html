@@ -1521,6 +1521,77 @@ OK
 
 }
 
+if(state.step === "dream_location_form"){
+
+const letters = ["А","Б","В","Г","Д"];
+const letter = letters[state.dreamLocationIndex - 1] || "?";
+
+const dirs = [
+["nw","↖"],["n","↑"],["ne","↗"],
+["w","←"],["c","Я"],["e","→"],
+["sw","↙"],["s","↓"],["se","↘"]
+];
+
+topHTML = `
+<div style="
+flex:1;
+overflow:auto;
+padding:20px;
+text-align:center;
+">
+
+<div class="dreamTitle" style="
+font-size:22px;
+font-weight:800;
+margin-bottom:14px;
+">
+Сон ${state.dreamIndex}. Локация ${letter}
+</div>
+
+<div style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+margin-bottom:18px;
+">
+
+<div class="dreamTitle" style="
+font-size:19px;
+font-weight:700;
+">
+В каком направлении твой Дом?
+</div>
+
+<button class="helpBtn" onclick="openDreamLocationHelp()">?</button>
+
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+max-width:260px;
+margin:0 auto 18px auto;
+">
+
+${dirs.map(d=>`
+
+<button class="btn"
+style="${d[0]==='c' ? 'font-weight:700;border:1px solid #7fd4ff;' : ''}"
+onclick="pickDreamLocationHome('${d[0]}')">
+${d[1]}
+</button>
+
+`).join("")}
+
+</div>
+
+</div>
+`;
+
+}
+
 if(state.step === "south"){
 
 topHTML = `
@@ -2230,6 +2301,20 @@ return;
 
 state.step = "dream_location_count";
 renderCompass();
+
+}
+
+function openDreamLocationHelp(){
+
+alert(
+`Дом — это ориентир.
+
+Определи, в каком направлении относительно
+данной локации находился твой Дом.
+
+Если действие происходило дома —
+выбери центральную кнопку "Я".`
+);
 
 }
 

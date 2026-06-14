@@ -4453,6 +4453,28 @@ opacity="0.9"
 `;
 
 }
+
+function pickDreamLocationHome(v){
+
+state.dreamCurrent = state.dreamCurrent || {};
+
+state.dreamCurrent.home = v;
+
+if(v === "c"){
+
+state.dreamCurrent.beam = "c";
+state.dreamCurrent.ring = 0;
+
+}else{
+
+state.dreamCurrent.beam = opposite(v);
+state.dreamCurrent.ring = null;
+
+}
+
+renderCompass();
+
+}
   
 </script>
 

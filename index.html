@@ -508,6 +508,12 @@ dreamCount: null,
 dreamTime: null,
 dreamIntroSeen: false,
 
+dreamTotal: 0,
+dreamIndex: 1,
+dreamLocationTotal: 0,
+dreamLocationIndex: 1,
+dreamLocations: [],
+
 // будущий компас
 time: null,
 home: null,
@@ -1459,6 +1465,62 @@ ${t[1]}
 
 }
 
+if(state.step === "dream_location_count"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div style="width:100%;max-width:340px;">
+
+<div class="dreamTitle" style="
+font-size:22px;
+font-weight:700;
+margin-bottom:10px;
+">
+Сон ${state.dreamIndex}
+</div>
+
+<div class="dreamTitle" style="
+font-size:20px;
+font-weight:700;
+margin-bottom:18px;
+">
+Сколько локаций ты посетил(а) в этом сне?
+</div>
+
+<input
+id="dreamLocationCountInput"
+type="number"
+min="1"
+max="5"
+style="
+width:100%;
+height:50px;
+border-radius:12px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+font-size:22px;
+text-align:center;
+margin-bottom:14px;
+">
+
+<button class="btn" onclick="saveDreamLocationCount()">
+OK
+</button>
+
+</div>
+</div>
+`;
+
+}
+
 if(state.step === "south"){
 
 topHTML = `
@@ -2143,6 +2205,9 @@ const count =
 Number(input.value || 0);
 
 state.dreamCount = count;
+state.dreamTotal = count;
+state.dreamIndex = 1;
+state.dreamLocations = [];
 
 if(count <= 0){
 state.step = "dream_zero";
@@ -2156,14 +2221,14 @@ localStorage.setItem("dream_intro_seen","1");
 renderCompass();
 
 setTimeout(()=>{
-state.step = "dream_time";
+state.step = "dream_location_count";
 renderCompass();
 },15000);
 
 return;
 }
 
-state.step = "dream_time";
+state.step = "dream_location_count";
 renderCompass();
 
 }
@@ -4026,6 +4091,27 @@ const el =
 document.getElementById("dreamHelpOverlay");
 
 if(el) el.remove();
+
+}
+
+function saveDreamLocationCount(){
+
+const input =
+document.getElementById("dreamLocationCountInput");
+
+let count =
+Number(input.value || 1);
+
+if(count < 1) count = 1;
+if(count > 5) count = 5;
+
+state.dreamLocationTotal = count;
+state.dreamLocationIndex = 1;
+state.dreamLocations = [];
+
+state.step = "dream_location_form";
+
+renderCompass();
 
 }
   

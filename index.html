@@ -1636,6 +1636,50 @@ margin:0 auto 18px auto;
 
 ` : ""}
 
+${state.dreamCurrent && state.dreamCurrent.ring !== null && state.dreamCurrent.ring !== undefined ? `
+
+<div class="dreamTitle" style="
+font-size:19px;
+font-weight:700;
+margin-top:22px;
+margin-bottom:12px;
+">
+На каком уровне находится эта локация?
+</div>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:8px;
+max-width:300px;
+margin:0 auto 18px auto;
+">
+
+${[
+[3,"+3 Бесконечность"],
+[2,"+2 Высоко"],
+[1,"+1 Низко / невысоко"],
+[0,"0 Поверхность"],
+[-1,"-1 Мелко / неглубоко"],
+[-2,"-2 Глубоко"],
+[-3,"-3 Бездна"]
+].map(x=>`
+
+<button class="btn"
+style="
+border:${state.dreamCurrent.level === x[0] ? '1px solid #7fd4ff' : '1px solid #333'};
+color:${state.dreamCurrent.level === x[0] ? '#7fd4ff' : '#fff'};
+"
+onclick="pickDreamLocationLevel(${x[0]})">
+${x[1]}
+</button>
+
+`).join("")}
+
+</div>
+
+` : ""}
+
 ${state.dreamCurrent && state.dreamCurrent.home === "c" ? `
 
 <div style="
@@ -4475,6 +4519,16 @@ state.dreamCurrent.ring = null;
 renderCompass();
 
 }
+
+function pickDreamLocationLevel(v){
+
+state.dreamCurrent = state.dreamCurrent || {};
+
+state.dreamCurrent.level = v;
+
+renderCompass();
+
+  }
   
 </script>
 

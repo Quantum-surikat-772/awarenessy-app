@@ -2543,6 +2543,7 @@ drawAnalyticsZones(svg);
 // интерактив Архикомпаса должен быть всегда
 enableCompassTouch(svg);
 
+// сонная подсветка текущей локации
 if(state.step === "dream_location_form"){
 
 drawDreamCurrentLocation(svg);
@@ -4355,6 +4356,8 @@ renderCompass();
 }
 
 function pickDreamLocationDistance(v){
+
+alert(JSON.stringify(state.dreamCurrent));
 
 state.dreamCurrent = state.dreamCurrent || {};
 

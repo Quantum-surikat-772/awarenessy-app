@@ -2543,6 +2543,14 @@ drawAnalyticsZones(svg);
 // интерактив Архикомпаса должен быть всегда
 enableCompassTouch(svg);
 
+if(state.step === "dream_location_form"){
+
+drawDreamCurrentLocation(svg);
+
+return;
+
+}
+
 if(state.step === "diagrams"){
 return;
 }
@@ -4353,6 +4361,93 @@ state.dreamCurrent = state.dreamCurrent || {};
 state.dreamCurrent.ring = v;
 
 renderCompass();
+}
+
+function drawDreamCurrentLocation(svg){
+
+if(!state.dreamCurrent) return;
+if(!state.dreamCurrent.beam) return;
+
+const color = "#7fd4ff";
+
+if(state.dreamCurrent.beam === "c"){
+
+svg.innerHTML += `
+
+<circle
+cx="200"
+cy="200"
+r="52"
+fill="${color}"
+opacity="0.22"
+filter="url(#glow)"
+class="pulse"
+/>
+
+<circle
+cx="200"
+cy="200"
+r="42"
+fill="none"
+stroke="${color}"
+stroke-width="3"
+opacity="0.9"
+/>
+
+`;
+
+return;
+
+}
+
+if(!state.dreamCurrent.ring) return;
+
+const rings = [
+[53,94],
+[94,142],
+[142,191]
+];
+
+const step = Math.PI * 2 / 8;
+const idx = DIRS.indexOf(state.dreamCurrent.beam);
+
+if(idx < 0) return;
+
+const start =
+-Math.PI/2 - step/2 + idx * step;
+
+const end = start + step;
+
+const rr = rings[state.dreamCurrent.ring - 1];
+
+if(!rr) return;
+
+const d = sector(
+rr[0],
+rr[1],
+start,
+end
+);
+
+svg.innerHTML += `
+
+<path
+d="${d}"
+fill="${color}"
+opacity="0.32"
+filter="url(#glow)"
+class="pulse"
+/>
+
+<path
+d="${d}"
+fill="none"
+stroke="${color}"
+stroke-width="3"
+opacity="0.9"
+/>
+
+`;
 
 }
   

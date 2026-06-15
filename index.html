@@ -1535,6 +1535,52 @@ OK
 
 }
 
+if(state.step === "dream_map"){
+
+topHTML = `
+<div style="
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+">
+<div>
+
+<div class="dreamTitle" style="
+font-size:24px;
+font-weight:800;
+margin-bottom:14px;
+">
+Карта сна
+</div>
+
+<div style="
+font-size:15px;
+color:#ddd;
+line-height:1.5;
+margin-bottom:20px;
+">
+Посмотри, как перемещалось внимание
+между локациями этого сна.
+</div>
+
+<button class="btn"
+style="
+border:1px solid #b388ff;
+color:#b388ff;
+"
+onclick="returnToIntro()">
+ЦЕНТР
+</button>
+
+</div>
+</div>
+`;
+
+}
+
 if(state.step === "dream_location_form"){
 
 const letters = ["А","Б","В","Г","Д"];
@@ -1754,6 +1800,8 @@ display:inline-block;
 
 ${state.dreamCurrent && state.dreamCurrent.emotion ? `
 
+${state.dreamLocationIndex < state.dreamLocationTotal ? `
+
 <button class="btn"
 style="
 margin-top:18px;
@@ -1763,6 +1811,20 @@ color:#7fd4ff;
 onclick="saveDreamLocationAndNext()">
 Следующая локация
 </button>
+
+` : `
+
+<button class="btn"
+style="
+margin-top:18px;
+border:1px solid #b388ff;
+color:#b388ff;
+"
+onclick="saveDreamLocationAndShowMap()">
+Карта сна
+</button>
+
+`}
 
 ` : ""}
 
@@ -2674,8 +2736,12 @@ drawAnalyticsZones(svg);
 enableCompassTouch(svg);
 
 // сонная подсветка текущей локации
-if(state.step === "dream_location_form"){
+if(
+state.step === "dream_location_form" ||
+state.step === "dream_map"
+){
 
+drawDreamSavedLocations(svg);
 drawDreamCurrentLocation(svg);
 
 return;
@@ -4733,6 +4799,162 @@ return;
 renderCompass();
 
 }
+
+function saveDreamLocationAndShowMap(){
+
+state.dreamLocations.push({
+...state.dreamCurrent,
+letter:["А","Б","В","Г","Д"][state.dreamLocationIndex - 1] || "?"
+});
+
+state.dreamCurrent = {};
+
+state.step = "dream_map";
+
+renderCompass();
+
+}
+
+function drawDreamSavedLocations(svg){
+
+if(!state.dreamLocations) return;
+
+state.dreamLocations.forEach(loc=>{
+
+drawDreamLocation(svg, loc);
+
+});
+
+}
+
+function drawDreamLocation(svg, loc){
+
+if(!loc || !loc.beam) return;
+
+const color =
+loc.emotion || "#7fd4ff";
+
+const label =
+loc.letter +
+(
+loc.home === "c"
+? (
+loc.energy ? " " + (loc.energy > 0 ? "+" + loc.energy : loc.energy) : ""
+)
+: (
+loc.level ? " " + (loc.level > 0 ? "+" + loc.level : loc.level) : ""
+)
+);
+
+if(loc.beam === "c"){
+
+svg.innerHTML += `
+
+<circle
+cx="200"
+cy="200"
+r="52"
+fill="${color}"
+opacity="0.25"
+filter="url(#glow)"
+/>
+
+<text
+x="200"
+y="207"
+text-anchor="middle"
+font-size="22"
+font-weight="800"
+fill="#fff"
+style="pointer-events:none;"
+>
+${label}
+</text>
+
+`;
+
+return;
+
+}
+
+if(!loc.ring) return;
+
+const rings = [
+[53,94],
+[94,142],
+[142,191]
+];
+
+const step = Math.PI * 2 / 8;
+const idx = DIRS.indexOf(loc.beam);
+
+if(idx < 0) return;
+
+const start =
+-Math.PI/2 - step/2 + idx * step;
+
+const end = start + step;
+
+const rr = rings[loc.ring - 1];
+
+if(!rr) return;
+
+const d = sector(rr[0],rr[1],start,end);
+
+svg.innerHTML += `
+
+<path
+d="${d}"
+fill="${color}"
+opacity="0.28"
+filter="url(#glow)"
+/>
+
+<path
+d="${d}"
+fill="none"
+stroke="${color}"
+stroke-width="2"
+opacity="0.85"
+/>
+
+`;
+
+const mid =
+(start + end) / 2;
+
+const labelR =
+(rr[0] + rr[1]) / 2;
+
+const lx =
+200 + Math.cos(mid) * labelR;
+
+const ly =
+200 + Math.sin(mid) * labelR;
+
+svg.innerHTML += `
+
+<text
+x="${lx}"
+y="${ly + 7}"
+text-anchor="middle"
+font-size="20"
+font-weight="800"
+fill="#fff"
+style="
+pointer-events:none;
+paint-order:stroke;
+stroke:#000;
+stroke-width:4px;
+stroke-linejoin:round;
+"
+>
+${label}
+</text>
+
+`;
+
+  }
   
 </script>
 

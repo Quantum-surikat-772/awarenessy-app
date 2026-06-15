@@ -1553,7 +1553,7 @@ font-size:24px;
 font-weight:800;
 margin-bottom:14px;
 ">
-Карта сна
+ЛКС
 </div>
 
 <div style="
@@ -1562,15 +1562,34 @@ color:#ddd;
 line-height:1.5;
 margin-bottom:20px;
 ">
-Посмотри, как перемещалось внимание
-между локациями этого сна.
+Личная Карта Сновидений
 </div>
 
 <button class="btn"
 style="
 border:1px solid #b388ff;
 color:#b388ff;
+margin-bottom:12px;
 "
+onclick="saveWholeDream()">
+Записать этот сон
+</button>
+
+${state.dreamIndex < state.dreamTotal ? `
+
+<button class="btn"
+style="
+border:1px solid #7fd4ff;
+color:#7fd4ff;
+margin-bottom:12px;
+"
+onclick="addNextDream()">
+Добавить сон
+</button>
+
+` : ""}
+
+<button class="btn"
 onclick="returnToIntro()">
 ЦЕНТР
 </button>
@@ -4648,7 +4667,7 @@ svg.innerHTML += `
 <path
 d="${d}"
 fill="${color}"
-opacity="0.32"
+opacity="0.46"
 filter="url(#glow)"
 class="pulse"
 />
@@ -4906,7 +4925,7 @@ svg.innerHTML += `
 <path
 d="${d}"
 fill="${color}"
-opacity="0.28"
+opacity="0.42"
 filter="url(#glow)"
 />
 
@@ -4954,7 +4973,27 @@ ${label}
 
 `;
 
-  }
+}
+
+function saveWholeDream(){
+
+alert("Сон записан");
+
+}
+
+function addNextDream(){
+
+state.dreamIndex++;
+state.dreamLocationIndex = 1;
+state.dreamLocationTotal = 0;
+state.dreamLocations = [];
+state.dreamCurrent = {};
+
+state.step = "dream_location_count";
+
+renderCompass();
+
+}
   
 </script>
 

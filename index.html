@@ -1955,6 +1955,111 @@ font-weight:600;
 
 }
 
+if(state.step === "dream_attention"){
+
+const locs =
+state.dreamLocations || [];
+
+topHTML = `
+<div style="
+flex:1;
+overflow:auto;
+padding:20px;
+text-align:center;
+">
+
+<div class="dreamTitle" style="
+font-size:24px;
+font-weight:800;
+margin-bottom:16px;
+">
+Внимание во сне
+</div>
+
+<div style="
+font-size:15px;
+color:#ddd;
+line-height:1.5;
+margin-bottom:18px;
+">
+Отметь, что ты заметил(а)
+между локациями и внутри них.
+</div>
+
+<div class="dreamTitle" style="
+font-size:18px;
+font-weight:700;
+margin-bottom:10px;
+">
+Были ли транзиты между локациями?
+</div>
+
+<button class="btn" onclick="pickDreamTransit('door')">
+Дверь / проход / арка
+</button>
+
+<button class="btn" onclick="pickDreamTransit('stairs')">
+Лестница / лифт / спуск
+</button>
+
+<button class="btn" onclick="pickDreamTransit('transport')">
+Транспорт / полёт / перемещение
+</button>
+
+<button class="btn" onclick="pickDreamTransit('jump')">
+Резкая смена сцены
+</button>
+
+<button class="btn" onclick="pickDreamTransit('none')">
+Не помню / не заметил(а)
+</button>
+
+<div class="dreamTitle" style="
+font-size:18px;
+font-weight:700;
+margin-top:24px;
+margin-bottom:10px;
+">
+В какой локации была трансформация или аномалия?
+</div>
+
+<div style="
+display:flex;
+gap:8px;
+justify-content:center;
+flex-wrap:wrap;
+margin-bottom:18px;
+">
+
+${locs.map(loc=>`
+
+<button class="btn"
+style="
+width:54px;
+height:44px;
+"
+onclick="pickDreamAttentionLocation('${loc.letter}')">
+${loc.letter}
+</button>
+
+`).join("")}
+
+</div>
+
+<button class="btn"
+style="
+border:1px solid #b388ff;
+color:#b388ff;
+"
+onclick="openDreamTextEntry()">
+Перейти к записи сна
+</button>
+
+</div>
+`;
+
+}
+
 if(state.step === "south"){
 
 topHTML = `
@@ -4828,7 +4933,7 @@ letter:["А","Б","В","Г","Д"][state.dreamLocationIndex - 1] || "?"
 
 state.dreamCurrent = {};
 
-state.step = "dream_map";
+state.step = "dream_attention";
 
 renderCompass();
 
@@ -4972,6 +5077,30 @@ ${label}
 </text>
 
 `;
+
+}
+
+function pickDreamTransit(v){
+
+state.dreamTransit = v;
+
+renderCompass();
+
+}
+
+function pickDreamAttentionLocation(letter){
+
+state.dreamAttentionLocation = letter;
+
+renderCompass();
+
+}
+
+function openDreamTextEntry(){
+
+state.step = "dream_text_entry";
+
+renderCompass();
 
 }
 

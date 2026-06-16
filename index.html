@@ -1962,8 +1962,17 @@ font-weight:600;
 
 if(state.step === "dream_attention"){
 
-const locs =
-state.dreamLocations || [];
+const stage =
+state.dreamAttentionStage || "transits";
+
+const transitTypes = [
+["door","Дверь / проход / арка / поворот за угол"],
+["vertical","Лестница / лифт / спуск / подъём / мост"],
+["flight","Полёт / падение / телепортация"],
+["transport","Любой транспорт"],
+["scene","Резкая смена сцены"],
+["none","Не помню / не заметил(а)"]
+];
 
 topHTML = `
 <div style="
@@ -1981,74 +1990,145 @@ margin-bottom:16px;
 Внимание во сне
 </div>
 
+${stage === "transits" ? `
+
+<div class="dreamTitle" style="
+font-size:19px;
+font-weight:700;
+margin-bottom:10px;
+">
+Какие транзиты ты заметил(а)?
+</div>
+
 <div style="
-font-size:15px;
+font-size:14px;
 color:#ddd;
-line-height:1.5;
-margin-bottom:18px;
+line-height:1.45;
+margin-bottom:16px;
 ">
-Отметь, что ты заметил(а)
-между локациями и внутри них.
-</div>
-
-<div class="dreamTitle" style="
-font-size:18px;
-font-weight:700;
-margin-bottom:10px;
-">
-Были ли транзиты между локациями?
-</div>
-
-<button class="btn" onclick="pickDreamTransit('door')">
-Дверь / проход / арка
-</button>
-
-<button class="btn" onclick="pickDreamTransit('stairs')">
-Лестница / лифт / спуск
-</button>
-
-<button class="btn" onclick="pickDreamTransit('transport')">
-Транспорт / полёт / перемещение
-</button>
-
-<button class="btn" onclick="pickDreamTransit('jump')">
-Резкая смена сцены
-</button>
-
-<button class="btn" onclick="pickDreamTransit('none')">
-Не помню / не заметил(а)
-</button>
-
-<div class="dreamTitle" style="
-font-size:18px;
-font-weight:700;
-margin-top:24px;
-margin-bottom:10px;
-">
-В какой локации была трансформация или аномалия?
+Можно выбрать несколько видов транзита
 </div>
 
 <div style="
 display:flex;
+flex-direction:column;
 gap:8px;
-justify-content:center;
-flex-wrap:wrap;
-margin-bottom:18px;
+max-width:360px;
+margin:0 auto 14px auto;
 ">
 
-${locs.map(loc=>`
+${transitTypes.map(t=>`
 
 <button class="btn"
 style="
-width:54px;
-height:44px;
+justify-content:flex-start;
+text-align:left;
+padding:0 12px;
+font-size:14px;
+border:${state.dreamTransitTypes.includes(t[0]) ? '1px solid #7fd4ff' : '1px solid #333'};
+color:${state.dreamTransitTypes.includes(t[0]) ? '#7fd4ff' : '#fff'};
 "
-onclick="pickDreamAttentionLocation('${loc.letter}')">
-${loc.letter}
+onclick="toggleDreamTransit('${t[0]}')">
+${t[1]}
 </button>
 
 `).join("")}
 
+</div>
+
+<input
+id="dreamTransitCustomInput"
+placeholder="Свой вариант..."
+value="${state.dreamTransitCustom || ""}"
+style="
+width:100%;
+max-width:360px;
+height:46px;
+border-radius:12px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+font-size:16px;
+padding:0 12px;
+margin-bottom:14px;
+">
+
+<button class="btn"
+style="
+border:1px solid #7fd4ff;
+color:#7fd4ff;
+"
+onclick="saveDreamTransits()">
+OK
+</button>
+
+` : ""}
+
+${stage === "transformations" ? `
+
+<div class="dreamTitle" style="
+font-size:19px;
+font-weight:700;
+margin-bottom:14px;
+">
+Сколько и в какой локации ты заметил(а) трансформаций?
+</div>
+
+${renderDreamLocationCounters("dreamTransformations")}
+
+<button class="btn"
+style="
+margin-top:16px;
+border:1px solid #7fd4ff;
+color:#7fd4ff;
+"
+onclick="saveDreamTransformations()">
+OK
+</button>
+
+` : ""}
+
+${stage === "anomalies" ? `
+
+<div class="dreamTitle" style="
+font-size:19px;
+font-weight:700;
+margin-bottom:14px;
+">
+Сколько и в какой локации ты заметил(а) аномалий?
+</div>
+
+${renderDreamLocationCounters("dreamAnomalies")}
+
+<button class="btn"
+style="
+margin-top:16px;
+border:1px solid #7fd4ff;
+color:#7fd4ff;
+"
+onclick="saveDreamAnomalies()">
+OK
+</button>
+
+` : ""}
+
+${stage === "clusters" ? `
+
+<div class="dreamTitle" style="
+font-size:19px;
+font-weight:700;
+margin-bottom:14px;
+">
+Кластеры локаций
+</div>
+
+<div style="
+font-size:14px;
+color:#ddd;
+line-height:1.45;
+margin-bottom:16px;
+">
+Следующий этап: определить архетипический тип каждой локации.
 </div>
 
 <button class="btn"
@@ -2056,9 +2136,11 @@ style="
 border:1px solid #b388ff;
 color:#b388ff;
 "
-onclick="openDreamTextEntry()">
-Перейти к записи сна
+onclick="state.step='dream_map';renderCompass();">
+Перейти к ЛКС
 </button>
+
+` : ""}
 
 </div>
 `;
@@ -5145,6 +5227,132 @@ state.dreamLocations = [];
 state.dreamCurrent = {};
 
 state.step = "dream_location_count";
+
+renderCompass();
+
+}
+
+function toggleDreamTransit(v){
+
+state.dreamTransitTypes =
+state.dreamTransitTypes || [];
+
+if(v === "none"){
+
+state.dreamTransitTypes = ["none"];
+
+renderCompass();
+return;
+
+}
+
+state.dreamTransitTypes =
+state.dreamTransitTypes.filter(x=>x !== "none");
+
+if(state.dreamTransitTypes.includes(v)){
+
+state.dreamTransitTypes =
+state.dreamTransitTypes.filter(x=>x !== v);
+
+}else{
+
+state.dreamTransitTypes.push(v);
+
+}
+
+renderCompass();
+
+}
+
+function saveDreamTransits(){
+
+const input =
+document.getElementById("dreamTransitCustomInput");
+
+state.dreamTransitCustom =
+input ? input.value.trim() : "";
+
+state.dreamAttentionStage = "transformations";
+
+renderCompass();
+
+}
+
+function renderDreamLocationCounters(key){
+
+const locs =
+state.dreamLocations || [];
+
+return `
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:10px;
+max-width:320px;
+margin:0 auto;
+">
+
+${locs.map(loc=>`
+
+<div style="
+display:grid;
+grid-template-columns:52px 1fr;
+gap:10px;
+align-items:center;
+">
+
+<div class="dreamTitle" style="
+font-size:20px;
+font-weight:800;
+">
+${loc.letter}
+</div>
+
+<input
+type="number"
+min="0"
+value="${state[key] && state[key][loc.letter] ? state[key][loc.letter] : 0}"
+onchange="setDreamCounter('${key}','${loc.letter}',this.value)"
+style="
+height:44px;
+border-radius:12px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+font-size:18px;
+text-align:center;
+">
+
+</div>
+
+`).join("")}
+
+</div>
+`;
+
+}
+
+function setDreamCounter(key,letter,value){
+
+state[key] = state[key] || {};
+
+state[key][letter] =
+Number(value || 0);
+
+}
+
+function saveDreamTransformations(){
+
+state.dreamAttentionStage = "anomalies";
+
+renderCompass();
+
+}
+
+function saveDreamAnomalies(){
+
+state.dreamAttentionStage = "clusters";
 
 renderCompass();
 

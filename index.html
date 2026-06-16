@@ -514,6 +514,11 @@ dreamLocationTotal: 0,
 dreamLocationIndex: 1,
 dreamLocations: [],
 dreamLocationStage: "home",
+dreamAttentionStage: "transits",
+dreamTransitTypes: [],
+dreamTransitCustom: "",
+dreamTransformations: {},
+dreamAnomalies: {},
 
 // будущий компас
 time: null,
@@ -4946,6 +4951,8 @@ letter:["А","Б","В","Г","Д"][state.dreamLocationIndex - 1] || "?"
 });
 
 state.dreamCurrent = {};
+
+state.dreamAttentionStage = "transits";
 
 state.step = "dream_attention";
 

@@ -513,6 +513,7 @@ dreamIndex: 1,
 dreamLocationTotal: 0,
 dreamLocationIndex: 1,
 dreamLocations: [],
+dreamLocationStage: "home",
 
 // будущий компас
 time: null,
@@ -4671,6 +4672,9 @@ state.dreamLocations = [];
 
 state.step = "dream_location_form";
 
+state.dreamLocationStage = "home";
+state.dreamCurrent = {};
+
 renderCompass();
 
 }
@@ -4682,6 +4686,8 @@ alert(JSON.stringify(state.dreamCurrent));
 state.dreamCurrent = state.dreamCurrent || {};
 
 state.dreamCurrent.ring = v;
+
+state.dreamLocationStage = "level";
 
 renderCompass();
 }
@@ -4841,6 +4847,9 @@ state.dreamCurrent.ring = null;
 
 }
 
+state.dreamLocationStage =
+v === "c" ? "emotion" : "distance";
+
 renderCompass();
 
 }
@@ -4850,6 +4859,8 @@ function pickDreamLocationLevel(v){
 state.dreamCurrent = state.dreamCurrent || {};
 
 state.dreamCurrent.level = v;
+
+state.dreamLocationStage = "emotion";
 
 renderCompass();
 
@@ -4896,6 +4907,8 @@ state.dreamCurrent = state.dreamCurrent || {};
 state.dreamCurrent.emotion = color;
 state.dreamCurrent.energy = energy;
 
+state.dreamLocationStage = "done";
+  
 renderCompass();
 
 }
@@ -4910,6 +4923,8 @@ letter:["А","Б","В","Г","Д"][state.dreamLocationIndex - 1] || "?"
 state.dreamLocationIndex++;
 
 state.dreamCurrent = {};
+
+state.dreamLocationStage = "home";
 
 if(state.dreamLocationIndex > state.dreamLocationTotal){
 

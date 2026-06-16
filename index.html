@@ -497,6 +497,34 @@ const ENERGY = {
 
 "#000000": -3  // Хаос
 };
+
+const DREAM_CLUSTERS = [
+"Большой город",
+"Сельская местность",
+
+"Дом / квартира",
+"Улица / двор",
+
+"Поле",
+"Лес",
+"Горы",
+"Высокогорье",
+
+"Море",
+"Остров",
+"Подводный мир",
+
+"Учебное заведение",
+"Больница / лаборатория",
+"Завод / фабрика",
+"Тюрьма / лагерь",
+"Аэропорт / вокзал",
+"Бункер / подземелье",
+
+"Космос / небо",
+"Храм / сакральное место",
+"Иное"
+];
   
 const state = {
 lang: "ru",
@@ -519,6 +547,7 @@ dreamTransitTypes: [],
 dreamTransitCustom: "",
 dreamTransformations: {},
 dreamAnomalies: {},
+dreamClusterIndex: 0,
 
 // будущий компас
 time: null,
@@ -2139,21 +2168,22 @@ onclick="saveDreamAnomalies()">
 
 ${stage === "clusters" ? `
 
-<div class="dreamTitle" style="
-font-size:19px;
-font-weight:700;
-margin-bottom:14px;
-">
-Кластеры локаций
-</div>
+${(()=>{
 
-<div style="
-font-size:14px;
-color:#ddd;
-line-height:1.45;
+const locs =
+state.dreamLocations || [];
+
+const loc =
+locs[state.dreamClusterIndex || 0];
+
+if(!loc){
+return `
+<div class="dreamTitle" style="
+font-size:22px;
+font-weight:800;
 margin-bottom:16px;
 ">
-Следующий этап: определить архетипический тип каждой локации.
+Кластеры завершены
 </div>
 
 <button class="btn"
@@ -2162,8 +2192,96 @@ border:1px solid #b388ff;
 color:#b388ff;
 "
 onclick="state.step='dream_map';renderCompass();">
-Перейти к ЛКС
+ЛКС
 </button>
+`;
+}
+
+return `
+
+<div class="dreamTitle" style="
+font-size:21px;
+font-weight:800;
+margin-bottom:12px;
+">
+Кластер локации ${loc.letter}
+</div>
+
+<div style="
+font-size:14px;
+color:#ddd;
+line-height:1.45;
+margin-bottom:14px;
+">
+Выбери архетипический тип пространства
+для этой локации.
+</div>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:8px;
+max-width:360px;
+margin:0 auto 14px auto;
+">
+
+${DREAM_CLUSTERS.map(c=>`
+
+<button class="btn"
+style="
+justify-content:flex-start;
+text-align:left;
+padding:0 12px;
+font-size:14px;
+border:${loc.cluster === c ? '1px solid #7fd4ff' : '1px solid #333'};
+color:${loc.cluster === c ? '#7fd4ff' : '#fff'};
+"
+onclick="pickDreamCluster('${c}')">
+${c}
+</button>
+
+`).join("")}
+
+</div>
+
+<input
+id="dreamClusterCustomInput"
+placeholder="Свой вариант..."
+value="${loc.clusterCustom || ""}"
+style="
+width:100%;
+max-width:360px;
+height:46px;
+border-radius:12px;
+border:1px solid #333;
+background:#111;
+color:#fff;
+font-size:16px;
+padding:0 12px;
+margin-bottom:14px;
+">
+
+<div style="
+display:flex;
+justify-content:center;
+margin-top:16px;
+">
+
+<button class="btn"
+style="
+border:1px solid #7fd4ff;
+color:#7fd4ff;
+min-width:160px;
+"
+onclick="saveDreamClusterAndNext()">
+Далее →
+</button>
+
+</div>
+
+`;
+
+})()}
 
 ` : ""}
 
@@ -5378,6 +5496,51 @@ renderCompass();
 function saveDreamAnomalies(){
 
 state.dreamAttentionStage = "clusters";
+state.dreamClusterIndex = 0;
+
+renderCompass();
+
+}
+
+function pickDreamCluster(c){
+
+const loc =
+state.dreamLocations[state.dreamClusterIndex || 0];
+
+if(!loc) return;
+
+loc.cluster = c;
+
+renderCompass();
+
+}
+
+function saveDreamClusterAndNext(){
+
+const loc =
+state.dreamLocations[state.dreamClusterIndex || 0];
+
+if(!loc) return;
+
+const input =
+document.getElementById("dreamClusterCustomInput");
+
+if(input && input.value.trim()){
+loc.clusterCustom = input.value.trim();
+loc.cluster = input.value.trim();
+}
+
+state.dreamClusterIndex++;
+
+if(state.dreamClusterIndex >= state.dreamLocations.length){
+
+state.step = "dream_map";
+
+}else{
+
+state.dreamAttentionStage = "clusters";
+
+}
 
 renderCompass();
 

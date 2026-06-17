@@ -1736,6 +1736,17 @@ onclick="returnToIntro()">
 </div>
 `;
 
+<div style="
+margin-top:18px;
+font-size:14px;
+line-height:1.45;
+color:#7fd4ff;
+opacity:0.9;
+">
+Нажми на зону Архикомпаса,<br>
+чтобы увидеть кластеры, эмоции и энергию.
+</div>
+
 }
 
 if(state.step === "dream_sector_info"){
@@ -1748,6 +1759,61 @@ const locs =
 loc.beam === selected.beam &&
 loc.ring === selected.ring
 );
+
+if(locs.length === 0){
+
+topHTML = `
+<div style="
+flex:1;
+overflow:auto;
+padding:20px;
+text-align:center;
+">
+
+<div class="dreamTitle" style="
+font-size:24px;
+font-weight:800;
+margin-bottom:16px;
+">
+Зона Сновидения
+</div>
+
+<div style="
+font-size:16px;
+color:#ddd;
+line-height:1.5;
+margin-bottom:22px;
+">
+В этой зоне пока нет зафиксированных локаций.
+</div>
+
+<button class="btn"
+style="
+border:1px solid #b388ff;
+color:#b388ff;
+"
+onclick="state.step='dream_map';renderCompass();">
+Вернуться к ЛКС
+</button>
+
+</div>
+`;
+
+} else {
+
+const total =
+locs.length || 1;
+
+const clusterCounts = {};
+const emotionCounts = {};
+
+locs.forEach(loc=>{
+...
+});
+
+// здесь остаётся весь твой основной topHTML карточки
+
+}
 
 const total =
 locs.length || 1;
@@ -5888,145 +5954,68 @@ renderCompass();
 
 function enableDreamMapTouch(svg){
 
-const locs =
-state.dreamLocations || [];
-
-locs.forEach(loc=>{
-
-if(!loc.beam) return;
-
-const hit = document.createElementNS(
-"http://www.w3.org/2000/svg",
-loc.beam === "c" ? "circle" : "path"
-);
-
-hit.setAttribute("fill","transparent");
-hit.setAttribute("style","cursor:pointer;");
-
-if(loc.beam === "c"){
-
-hit.setAttribute("cx","200");
-hit.setAttribute("cy","200");
-hit.setAttribute("r","58");
-
-}else{
-
-if(!loc.ring) return;
-
 const rings = [
 [53,94],
 [94,142],
 [142,191]
 ];
 
-const step = Math.PI * 2 / 8;
-const idx = DIRS.indexOf(loc.beam);
+// центр
+const center = document.createElementNS(
+"http://www.w3.org/2000/svg",
+"circle"
+);
 
-if(idx < 0) return;
+center.setAttribute("cx","200");
+center.setAttribute("cy","200");
+center.setAttribute("r","62");
+center.setAttribute("fill","transparent");
+center.setAttribute("pointer-events","all");
+center.setAttribute("style","cursor:pointer;");
+
+center.onclick = ()=>{
+showDreamSectorInfo({beam:"c",ring:0});
+};
+
+svg.appendChild(center);
+
+// все сектора
+DIRS.forEach(beam=>{
+
+rings.forEach((rr,idx)=>{
+
+const step = Math.PI * 2 / 8;
+const dirIndex = DIRS.indexOf(beam);
 
 const start =
--Math.PI/2 - step/2 + idx * step;
+-Math.PI/2 - step/2 + dirIndex * step;
 
 const end =
 start + step;
 
-const rr =
-rings[loc.ring - 1];
-
-if(!rr) return;
-
-hit.setAttribute(
-"d",
-sector(rr[0],rr[1],start,end)
-);
-
-}
-
-hit.onclick = ()=>{
-showDreamSectorInfo(loc);
-};
-
-svg.appendChild(hit);
-
-});
-
-}
-
-function showDreamSectorInfo(loc){
-
-state.selectedDreamSector = {
-beam: loc.beam,
-ring: loc.ring
-};
-
-state.step = "dream_sector_info";
-
-renderCompass();
-
-}
-
-function enableDreamMapTouch(svg){
-
-const locs =
-state.dreamLocations || [];
-
-locs.forEach(loc=>{
-
-if(!loc.beam) return;
+const d =
+sector(rr[0],rr[1],start,end);
 
 const hit = document.createElementNS(
 "http://www.w3.org/2000/svg",
-loc.beam === "c" ? "circle" : "path"
+"path"
 );
 
+hit.setAttribute("d",d);
 hit.setAttribute("fill","transparent");
-hit.setAttribute("style","cursor:pointer;");
 hit.setAttribute("pointer-events","all");
-
-if(loc.beam === "c"){
-
-hit.setAttribute("cx","200");
-hit.setAttribute("cy","200");
-hit.setAttribute("r","62");
-
-}else{
-
-if(!loc.ring) return;
-
-const rings = [
-[53,94],
-[94,142],
-[142,191]
-];
-
-const step = Math.PI * 2 / 8;
-const idx = DIRS.indexOf(loc.beam);
-
-if(idx < 0) return;
-
-const start =
--Math.PI/2 - step/2 + idx * step;
-
-const end =
-start + step;
-
-const rr =
-rings[loc.ring - 1];
-
-if(!rr) return;
-
-hit.setAttribute(
-"d",
-sector(rr[0],rr[1],start,end)
-);
-
-}
+hit.setAttribute("style","cursor:pointer;");
 
 hit.onclick = ()=>{
-showDreamSectorInfo(loc);
+showDreamSectorInfo({
+beam:beam,
+ring:idx + 1
+});
 };
 
 svg.appendChild(hit);
+
+});
 
 });
 
@@ -6044,7 +6033,7 @@ state.step = "dream_sector_info";
 renderCompass();
 
 }
-  
+
 </script>
 
 <div id="modal">

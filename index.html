@@ -1900,6 +1900,64 @@ background:${color};
 
 }).join("")}
 
+<div class="dreamTitle" style="
+font-size:18px;
+font-weight:700;
+margin-top:20px;
+margin-bottom:10px;
+">
+Энергия
+</div>
+
+${(()=>{
+
+const energyValues =
+locs
+.map(loc => Number(loc.energy || 0));
+
+const avg =
+energyValues.reduce((a,b)=>a+b,0) / energyValues.length;
+
+const label =
+avg > 0 ? "+" + avg.toFixed(1) : avg.toFixed(1);
+
+const width =
+Math.min(100, Math.abs(avg) / 3 * 100);
+
+const color =
+avg > 0 ? "#7fd4ff" :
+avg < 0 ? "#ff6b6b" :
+"#888";
+
+return `
+
+<div style="
+font-size:22px;
+font-weight:800;
+color:${color};
+margin-bottom:8px;
+">
+${label}
+</div>
+
+<div style="
+height:14px;
+border-radius:10px;
+background:#111;
+overflow:hidden;
+border:1px solid #333;
+">
+<div style="
+height:100%;
+width:${width}%;
+background:${color};
+"></div>
+</div>
+
+`;
+
+})()}
+
 <button class="btn"
 style="
 margin-top:18px;

@@ -5908,6 +5908,86 @@ state.step = "dream_sector_info";
 renderCompass();
 
 }
+
+function enableDreamMapTouch(svg){
+
+const locs =
+state.dreamLocations || [];
+
+locs.forEach(loc=>{
+
+if(!loc.beam) return;
+
+const hit = document.createElementNS(
+"http://www.w3.org/2000/svg",
+loc.beam === "c" ? "circle" : "path"
+);
+
+hit.setAttribute("fill","transparent");
+hit.setAttribute("style","cursor:pointer;");
+hit.setAttribute("pointer-events","all");
+
+if(loc.beam === "c"){
+
+hit.setAttribute("cx","200");
+hit.setAttribute("cy","200");
+hit.setAttribute("r","62");
+
+}else{
+
+if(!loc.ring) return;
+
+const rings = [
+[53,94],
+[94,142],
+[142,191]
+];
+
+const step = Math.PI * 2 / 8;
+const idx = DIRS.indexOf(loc.beam);
+
+if(idx < 0) return;
+
+const start =
+-Math.PI/2 - step/2 + idx * step;
+
+const end =
+start + step;
+
+const rr =
+rings[loc.ring - 1];
+
+if(!rr) return;
+
+hit.setAttribute(
+"d",
+sector(rr[0],rr[1],start,end)
+);
+
+}
+
+hit.onclick = ()=>{
+showDreamSectorInfo(loc);
+};
+
+svg.appendChild(hit);
+
+});
+
+}
+
+function showDreamSectorInfo(loc){
+
+state.selectedDreamSector = {
+beam: loc.beam,
+ring: loc.ring
+};
+
+state.step = "dream_sector_info";
+
+renderCompass();
+
+}
   
 </script>
 

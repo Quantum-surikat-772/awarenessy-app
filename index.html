@@ -1738,6 +1738,183 @@ onclick="returnToIntro()">
 
 }
 
+if(state.step === "dream_sector_info"){
+
+const selected =
+state.selectedDreamSector || {};
+
+const locs =
+(state.dreamLocations || []).filter(loc =>
+loc.beam === selected.beam &&
+loc.ring === selected.ring
+);
+
+const total =
+locs.length || 1;
+
+const clusterCounts = {};
+const emotionCounts = {};
+
+locs.forEach(loc=>{
+
+const cluster =
+loc.cluster || "Не указано";
+
+clusterCounts[cluster] =
+(clusterCounts[cluster] || 0) + 1;
+
+const emotion =
+loc.emotion || "#7fd4ff";
+
+emotionCounts[emotion] =
+(emotionCounts[emotion] || 0) + 1;
+
+});
+
+topHTML = `
+<div style="
+flex:1;
+overflow:auto;
+padding:20px;
+text-align:center;
+">
+
+<div class="dreamTitle" style="
+font-size:24px;
+font-weight:800;
+margin-bottom:14px;
+">
+Сектор ЛКС
+</div>
+
+${locs.map(loc=>`
+
+<div style="
+margin-bottom:12px;
+font-size:16px;
+color:#fff;
+">
+<b>${loc.letter}</b>
+&nbsp;
+${CLUSTER_ICONS[loc.cluster] || "✨"}
+&nbsp;
+${loc.cluster || "Не указано"}
+</div>
+
+`).join("")}
+
+<div class="dreamTitle" style="
+font-size:18px;
+font-weight:700;
+margin-top:20px;
+margin-bottom:10px;
+">
+Кластеры
+</div>
+
+${Object.entries(clusterCounts).map(([name,count])=>{
+
+const pct =
+Math.round(count / total * 100);
+
+return `
+<div style="
+margin-bottom:8px;
+text-align:left;
+">
+<div style="font-size:14px;color:#fff;margin-bottom:4px;">
+${CLUSTER_ICONS[name] || "✨"} ${name} — ${pct}%
+</div>
+
+<div style="
+height:12px;
+border-radius:10px;
+background:#111;
+overflow:hidden;
+border:1px solid #333;
+">
+<div style="
+height:100%;
+width:${pct}%;
+background:#b388ff;
+"></div>
+</div>
+</div>
+`;
+
+}).join("")}
+
+<div class="dreamTitle" style="
+font-size:18px;
+font-weight:700;
+margin-top:20px;
+margin-bottom:10px;
+">
+Эмоции
+</div>
+
+${Object.entries(emotionCounts).map(([color,count])=>{
+
+const pct =
+Math.round(count / total * 100);
+
+return `
+<div style="
+margin-bottom:8px;
+text-align:left;
+">
+<div style="
+display:flex;
+align-items:center;
+gap:8px;
+font-size:14px;
+color:#fff;
+margin-bottom:4px;
+">
+<span style="
+width:14px;
+height:14px;
+border-radius:50%;
+background:${color};
+border:1px solid #777;
+display:inline-block;
+"></span>
+<span>${pct}%</span>
+</div>
+
+<div style="
+height:12px;
+border-radius:10px;
+background:#111;
+overflow:hidden;
+border:1px solid #333;
+">
+<div style="
+height:100%;
+width:${pct}%;
+background:${color};
+"></div>
+</div>
+</div>
+`;
+
+}).join("")}
+
+<button class="btn"
+style="
+margin-top:18px;
+border:1px solid #b388ff;
+color:#b388ff;
+"
+onclick="state.step='dream_map';renderCompass();">
+Вернуться к ЛКС
+</button>
+
+</div>
+`;
+
+}
+
 if(state.step === "dream_location_form"){
 
 const letters = ["А","Б","В","Г","Д"];
@@ -3200,6 +3377,10 @@ state.step === "dream_map"
 
 drawDreamSavedLocations(svg);
 drawDreamCurrentLocation(svg);
+
+if(state.step === "dream_map"){
+enableDreamMapTouch(svg);
+}
 
 return;
 
@@ -5644,6 +5825,85 @@ state.step = "dream_map";
 state.dreamAttentionStage = "clusters";
 
 }
+
+renderCompass();
+
+}
+
+function enableDreamMapTouch(svg){
+
+const locs =
+state.dreamLocations || [];
+
+locs.forEach(loc=>{
+
+if(!loc.beam) return;
+
+const hit = document.createElementNS(
+"http://www.w3.org/2000/svg",
+loc.beam === "c" ? "circle" : "path"
+);
+
+hit.setAttribute("fill","transparent");
+hit.setAttribute("style","cursor:pointer;");
+
+if(loc.beam === "c"){
+
+hit.setAttribute("cx","200");
+hit.setAttribute("cy","200");
+hit.setAttribute("r","58");
+
+}else{
+
+if(!loc.ring) return;
+
+const rings = [
+[53,94],
+[94,142],
+[142,191]
+];
+
+const step = Math.PI * 2 / 8;
+const idx = DIRS.indexOf(loc.beam);
+
+if(idx < 0) return;
+
+const start =
+-Math.PI/2 - step/2 + idx * step;
+
+const end =
+start + step;
+
+const rr =
+rings[loc.ring - 1];
+
+if(!rr) return;
+
+hit.setAttribute(
+"d",
+sector(rr[0],rr[1],start,end)
+);
+
+}
+
+hit.onclick = ()=>{
+showDreamSectorInfo(loc);
+};
+
+svg.appendChild(hit);
+
+});
+
+}
+
+function showDreamSectorInfo(loc){
+
+state.selectedDreamSector = {
+beam: loc.beam,
+ring: loc.ring
+};
+
+state.step = "dream_sector_info";
 
 renderCompass();
 

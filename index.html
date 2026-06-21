@@ -1745,7 +1745,7 @@ line-height:1.45;
 color:#7fd4ff;
 opacity:0.9;
 ">
-Нажми на зону Архикомпаса,<br>
+Нажми на Ячейку Карты,<br>
 чтобы увидеть кластеры, эмоции и энергию.
 </div>
 
@@ -6084,13 +6084,140 @@ document.getElementById("lksFx");
 
 if(!svg) return;
 
-svg.innerHTML = "";
+svg.innerHTML = `
+<defs>
+<filter id="lksGlow" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="4" result="blur"/>
+<feMerge>
+<feMergeNode in="blur"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
+`;
 
-// позже здесь будут:
-// подсветка ячеек
-// клики по зонам
-// молнии транзитов
-// анимация маршрута сна
+drawLKSHitCells(svg);
+drawLKSLocations(svg);
+
+}
+
+function drawLKSHitCells(svg){
+
+const cells = getLKSCells();
+
+cells.forEach(cell=>{
+
+const r = document.createElementNS(
+"http://www.w3.org/2000/svg",
+"rect"
+);
+
+r.setAttribute("x",cell.x);
+r.setAttribute("y",cell.y);
+r.setAttribute("width",cell.w);
+r.setAttribute("height",cell.h);
+r.setAttribute("fill","transparent");
+r.setAttribute("pointer-events","all");
+r.setAttribute("style","cursor:pointer;");
+
+r.onclick = ()=>{
+
+state.selectedDreamSector = {
+beam:cell.beam,
+ring:cell.ring
+};
+
+state.step = "dream_sector_info";
+
+renderCompass();
+
+};
+
+svg.appendChild(r);
+
+});
+
+}
+
+function getLKSCells(){
+
+return [
+
+// Дом
+{beam:"c", ring:0, x:170, y:170, w:60, h:60},
+
+// Близко
+{beam:"s",  ring:1, x:170, y:115, w:60, h:55},
+{beam:"n",  ring:1, x:170, y:230, w:60, h:55},
+{beam:"e",  ring:1, x:115, y:170, w:55, h:60},
+{beam:"w",  ring:1, x:230, y:170, w:55, h:60},
+{beam:"se", ring:1, x:115, y:115, w:55, h:55},
+{beam:"sw", ring:1, x:230, y:115, w:55, h:55},
+{beam:"ne", ring:1, x:115, y:230, w:55, h:55},
+{beam:"nw", ring:1, x:230, y:230, w:55, h:55},
+
+// Далеко
+{beam:"s",  ring:2, x:145, y:75,  w:110, h:40},
+{beam:"n",  ring:2, x:145, y:285, w:110, h:40},
+{beam:"e",  ring:2, x:75,  y:145, w:40,  h:110},
+{beam:"w",  ring:2, x:285, y:145, w:40,  h:110},
+{beam:"se", ring:2, x:75,  y:75,  w:70,  h:70},
+{beam:"sw", ring:2, x:255, y:75,  w:70,  h:70},
+{beam:"ne", ring:2, x:75,  y:255, w:70,  h:70},
+{beam:"nw", ring:2, x:255, y:255, w:70,  h:70},
+
+// Очень далеко
+{beam:"s",  ring:3, x:115, y:35,  w:170, h:40},
+{beam:"n",  ring:3, x:115, y:325, w:170, h:40},
+{beam:"e",  ring:3, x:35,  y:115, w:40,  h:170},
+{beam:"w",  ring:3, x:325, y:115, w:40,  h:170},
+{beam:"se", ring:3, x:35,  y:35,  w:80,  h:80},
+{beam:"sw", ring:3, x:285, y:35,  w:80,  h:80},
+{beam:"ne", ring:3, x:35,  y:285, w:80,  h:80},
+{beam:"nw", ring:3, x:285, y:285, w:80,  h:80}
+
+];
+
+}
+
+function drawLKSLocations(svg){
+
+const cells =
+getLKSCells();
+
+(state.dreamLocations || []).forEach(loc=>{
+
+const cell =
+cells.find(c =>
+c.beam === loc.beam &&
+c.ring === loc.ring
+);
+
+if(!cell) return;
+
+const color =
+loc.emotion || "#7fd4ff";
+
+const r = document.createElementNS(
+"http://www.w3.org/2000/svg",
+"rect"
+);
+
+r.setAttribute("x",cell.x);
+r.setAttribute("y",cell.y);
+r.setAttribute("width",cell.w);
+r.setAttribute("height",cell.h);
+r.setAttribute("rx","8");
+r.setAttribute("fill",color);
+r.setAttribute("opacity","0.18");
+r.setAttribute("stroke",color);
+r.setAttribute("stroke-width","2");
+r.setAttribute("filter","url(#lksGlow)");
+r.setAttribute("pointer-events","none");
+
+svg.appendChild(r);
+
+});
 
 }
 

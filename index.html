@@ -6185,7 +6185,10 @@ function drawLKSLocations(svg){
 const cells =
 getLKSCells();
 
-(state.dreamLocations || []).forEach(loc=>{
+const letters =
+["А","Б","В","Г","Д"];
+
+(state.dreamLocations || []).forEach((loc, i)=>{
 
 const cell =
 cells.find(c =>
@@ -6195,27 +6198,78 @@ c.ring === loc.ring
 
 if(!cell) return;
 
-const color =
-loc.emotion || "#7fd4ff";
+const cx =
+cell.x + cell.w / 2;
 
-const r = document.createElementNS(
-"http://www.w3.org/2000/svg",
-"rect"
-);
+const cy =
+cell.y + cell.h / 2;
 
-r.setAttribute("x",cell.x);
-r.setAttribute("y",cell.y);
-r.setAttribute("width",cell.w);
-r.setAttribute("height",cell.h);
-r.setAttribute("rx","8");
-r.setAttribute("fill",color);
-r.setAttribute("opacity","0.18");
-r.setAttribute("stroke",color);
-r.setAttribute("stroke-width","2");
-r.setAttribute("filter","url(#lksGlow)");
-r.setAttribute("pointer-events","none");
+const letter =
+loc.letter || letters[i] || "?";
 
-svg.appendChild(r);
+svg.innerHTML += `
+
+<g pointer-events="none">
+
+<circle
+cx="${cx}"
+cy="${cy}"
+r="24"
+fill="#b388ff"
+opacity="0.10"
+filter="url(#lksGlow)"
+>
+<animate
+attributeName="opacity"
+values="0.06;0.18;0.06"
+dur="4.5s"
+repeatCount="indefinite"
+/>
+<animate
+attributeName="r"
+values="18;28;18"
+dur="4.5s"
+repeatCount="indefinite"
+/>
+</circle>
+
+<circle
+cx="${cx}"
+cy="${cy}"
+r="7"
+fill="#d7b6ff"
+opacity="0.65"
+filter="url(#lksGlow)"
+>
+<animate
+attributeName="opacity"
+values="0.35;0.9;0.35"
+dur="3.8s"
+repeatCount="indefinite"
+/>
+</circle>
+
+<text
+x="${cx}"
+y="${cy + 8}"
+text-anchor="middle"
+font-size="28"
+font-weight="800"
+fill="#dcb8ff"
+filter="url(#lksGlow)"
+style="
+paint-order:stroke;
+stroke:#12001f;
+stroke-width:4px;
+stroke-linejoin:round;
+"
+>
+${letter}
+</text>
+
+</g>
+
+`;
 
 });
 

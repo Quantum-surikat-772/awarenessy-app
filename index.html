@@ -1470,7 +1470,7 @@ font-size:26px;
 font-weight:800;
 color:#b388ff;
 line-height:1.35;
-animation:pulseGlow 4s ease-in-out infinite;
+animation:pulseGlow 5s ease-in-out infinite;
 ">
 ПОСМОТРИ НА СНЫ<br>ПО-ДРУГОМУ
 </div>
@@ -1570,7 +1570,7 @@ font-size:20px;
 font-weight:700;
 margin-bottom:18px;
 ">
-Сколько локаций ты посетил(а) в этом сне?
+Сколько Пузырей Восприятия ты посетил(а) в этом сне?
 </div>
 
 <input
@@ -1790,7 +1790,7 @@ color:#ddd;
 line-height:1.5;
 margin-bottom:22px;
 ">
-В этой зоне пока нет зафиксированных локаций.
+В этой зоне пока нет зафиксированных Пузырей Восприятия.
 </div>
 
 <button class="btn"
@@ -2076,7 +2076,7 @@ margin-bottom:18px;
 font-size:19px;
 font-weight:700;
 ">
-В каком направлении твой Дом?
+В каком направлении может быть твой Дом?
 </div>
 
 <button class="helpBtn" onclick="openDreamLocationHelp()">?</button>
@@ -2146,7 +2146,7 @@ font-size:21px;
 font-weight:700;
 margin-bottom:16px;
 ">
-На каком уровне находится эта локация?
+На каком уровне находится этот Пузырь Восприятия?
 </div>
 
 <div style="
@@ -2189,7 +2189,7 @@ font-size:21px;
 font-weight:700;
 margin-bottom:16px;
 ">
-Какое состояние было в этой локации?
+Какое состояние было в этом Пузыре Восприятия?
 </div>
 
 <div style="
@@ -2252,7 +2252,7 @@ font-size:21px;
 font-weight:700;
 margin-bottom:14px;
 ">
-Локация ${letter} отмечена
+Пузырь Восприятия ${letter} отмечен
 </div>
 
 <div style="
@@ -2262,7 +2262,7 @@ line-height:1.5;
 margin-bottom:18px;
 ">
 Посмотри на Архикомпас:
-эта локация уже получила своё место и состояние.
+этот Пузырь Восприятия уже получил своё место и состояние.
 </div>
 
 ${state.dreamLocationIndex < state.dreamLocationTotal ? `
@@ -2273,7 +2273,7 @@ border:1px solid #7fd4ff;
 color:#7fd4ff;
 "
 onclick="saveDreamLocationAndNext()">
-Следующая локация
+Следующий Пузырь Восприятия 
 </button>
 
 ` : `
@@ -2507,7 +2507,7 @@ font-size:19px;
 font-weight:700;
 margin-bottom:14px;
 ">
-Сколько и в какой локации ты заметил(а) трансформаций?
+Сколько и в каком Пузыре Восприятия ты заметил(а) трансформаций?
 </div>
 
 ${renderDreamLocationCounters("dreamTransformations")}
@@ -2539,7 +2539,7 @@ font-size:19px;
 font-weight:700;
 margin-bottom:14px;
 ">
-Сколько и в какой локации ты заметил(а) аномалий?
+Сколько и в каком Пузыре Восприятия ты заметил(а) аномалий?
 </div>
 
 ${renderDreamLocationCounters("dreamAnomalies")}
@@ -2612,7 +2612,7 @@ line-height:1.45;
 margin-bottom:14px;
 ">
 Выбери архетипический тип пространства
-для этой локации.
+для этого Пузыря Восприятия.
 </div>
 
 <div style="

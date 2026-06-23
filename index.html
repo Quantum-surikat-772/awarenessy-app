@@ -5993,6 +5993,22 @@ state.dreamAttentionStage = "clusters";
 
 renderCompass();
 
+setTimeout(()=>{
+
+const topBox =
+document.getElementById("top");
+
+if(topBox){
+topBox.scrollTop = 0;
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+},80);
+
 }
 
 function enableDreamMapTouch(svg){

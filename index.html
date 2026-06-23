@@ -6229,8 +6229,11 @@ const counts = {};
 
 locs.forEach(loc=>{
 
+const beam =
+lksBeam(loc.beam);
+
 const key =
-loc.beam + "_" + loc.ring;
+beam + "_" + loc.ring;
 
 counts[key] =
 (counts[key] || 0) + 1;

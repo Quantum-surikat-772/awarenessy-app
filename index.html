@@ -6155,6 +6155,24 @@ svg.appendChild(r);
 
 }
 
+function lksBeam(beam){
+
+const opposite = {
+n:"s",
+s:"n",
+e:"w",
+w:"e",
+ne:"sw",
+sw:"ne",
+nw:"se",
+se:"nw",
+c:"c"
+};
+
+return opposite[beam] || beam;
+
+}
+
 function getLKSCells(){
 
 return [
@@ -6251,7 +6269,7 @@ locs.forEach(loc=>{
 
 const cell =
 cells.find(c =>
-c.beam === loc.beam &&
+c.beam === lksBeam(loc.beam)
 c.ring === loc.ring
 );
 

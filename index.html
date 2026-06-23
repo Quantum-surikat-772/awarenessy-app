@@ -6290,7 +6290,7 @@ svg.innerHTML += `
 x="${cx}"
 y="${cy + 5}"
 text-anchor="middle"
-font-size="15"
+font-size="11"
 font-weight="800"
 fill="#ead6ff"
 filter="url(#lksGlow)"
@@ -6313,89 +6313,62 @@ ${loc.letter || ""}
 
 function drawLKSCellPlasma(svg, cell, power){
 
+const id =
+"plasma_" + Math.random().toString(36).slice(2);
+
+const opacity =
+0.12 + power * 0.58;
+
 const cx =
 cell.x + cell.w / 2;
 
 const cy =
 cell.y + cell.h / 2;
 
-const opacity =
-0.14 + power * 0.34;
+let x1 = "50%";
+let y1 = "50%";
+let x2 = "50%";
+let y2 = "50%";
 
-const width =
-2 + power * 3.5;
+if(cell.beam === "s"){ x1="50%"; y1="0%";   x2="50%"; y2="55%"; }
+if(cell.beam === "n"){ x1="50%"; y1="100%"; x2="50%"; y2="45%"; }
+if(cell.beam === "e"){ x1="0%";  y1="50%";  x2="55%"; y2="50%"; }
+if(cell.beam === "w"){ x1="100%";y1="50%";  x2="45%"; y2="50%"; }
 
-let sx = cx;
-let sy = cy;
-
-if(cell.beam === "s"){ sx = cx; sy = cell.y; }
-if(cell.beam === "n"){ sx = cx; sy = cell.y + cell.h; }
-if(cell.beam === "e"){ sx = cell.x; sy = cy; }
-if(cell.beam === "w"){ sx = cell.x + cell.w; sy = cy; }
-
-if(cell.beam === "se"){ sx = cell.x; sy = cell.y; }
-if(cell.beam === "sw"){ sx = cell.x + cell.w; sy = cell.y; }
-if(cell.beam === "ne"){ sx = cell.x; sy = cell.y + cell.h; }
-if(cell.beam === "nw"){ sx = cell.x + cell.w; sy = cell.y + cell.h; }
-
-if(cell.beam === "c"){
+if(cell.beam === "se"){ x1="0%";   y1="0%";   x2="55%"; y2="55%"; }
+if(cell.beam === "sw"){ x1="100%"; y1="0%";   x2="45%"; y2="55%"; }
+if(cell.beam === "ne"){ x1="0%";   y1="100%"; x2="55%"; y2="45%"; }
+if(cell.beam === "nw"){ x1="100%"; y1="100%"; x2="45%"; y2="45%"; }
 
 svg.innerHTML += `
 
-<path
-d="
-M ${cx-22} ${cy}
-Q ${cx} ${cy-18} ${cx+22} ${cy}
-Q ${cx} ${cy+18} ${cx-22} ${cy}
-"
-fill="none"
-stroke="#b388ff"
-stroke-width="${width}"
-opacity="${opacity}"
+<defs>
+<linearGradient id="${id}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
+<stop offset="0%" stop-color="#b388ff" stop-opacity="${opacity}"/>
+<stop offset="45%" stop-color="#d8a6ff" stop-opacity="${opacity * 0.85}"/>
+<stop offset="100%" stop-color="#b388ff" stop-opacity="0"/>
+</linearGradient>
+</defs>
+
+<rect
+x="${cell.x}"
+y="${cell.y}"
+width="${cell.w}"
+height="${cell.h}"
+rx="10"
+fill="url(#${id})"
 filter="url(#lksGlow)"
-style="pointer-events:none;"
-/>
-
-`;
-
-return;
-
-}
-
-const mx =
-(sx + cx) / 2;
-
-const my =
-(sy + cy) / 2;
-
-svg.innerHTML += `
-
-<path
-d="M ${sx} ${sy} Q ${mx} ${my} ${cx} ${cy}"
-fill="none"
-stroke="#b388ff"
-stroke-width="${width}"
-opacity="${opacity}"
-filter="url(#lksGlow)"
+opacity="1"
 style="pointer-events:none;"
 />
 
 <path
-d="M ${sx} ${sy} Q ${mx + 10} ${my - 8} ${cx} ${cy}"
+d="M ${cell.x + 6} ${cy}
+Q ${cx} ${cy - 10} ${cell.x + cell.w - 6} ${cy}"
 fill="none"
-stroke="#d8b6ff"
-stroke-width="${Math.max(1.2,width * 0.45)}"
-opacity="${opacity * 0.75}"
-filter="url(#lksGlow)"
-style="pointer-events:none;"
-/>
-
-<path
-d="M ${sx} ${sy} Q ${mx - 10} ${my + 8} ${cx} ${cy}"
-fill="none"
-stroke="#7fd4ff"
-stroke-width="${Math.max(1,width * 0.35)}"
-opacity="${opacity * 0.45}"
+stroke="#d8a6ff"
+stroke-width="${1.2 + power * 2.2}"
+opacity="${opacity * 0.55}"
 filter="url(#lksGlow)"
 style="pointer-events:none;"
 />

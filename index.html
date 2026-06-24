@@ -6123,16 +6123,26 @@ const cells = getLKSCells();
 
 cells.forEach(cell=>{
 
-const r = document.createElementNS(
+const r =
+document.createElementNS(
 "http://www.w3.org/2000/svg",
-"rect"
+cell.points ? "polygon" : "rect"
 );
 
-r.setAttribute("x",cell.x);
-r.setAttribute("y",cell.y);
-r.setAttribute("width",cell.w);
-r.setAttribute("height",cell.h);
-r.setAttribute("fill","rgba(179,136,255,0.12)");
+if(cell.points){
+
+r.setAttribute("points", cell.points);
+
+}else{
+
+r.setAttribute("x", cell.x);
+r.setAttribute("y", cell.y);
+r.setAttribute("width", cell.w);
+r.setAttribute("height", cell.h);
+
+}
+
+r.setAttribute("fill","rgba(179,136,255,0.10)");
 r.setAttribute("stroke","#b388ff");
 r.setAttribute("stroke-width","1");
 r.setAttribute("pointer-events","all");
@@ -6200,7 +6210,7 @@ return [
 {beam:"se", ring:2, x:75,  y:75,  w:70,  h:70},
 {beam:"sw", ring:2, x:255, y:75,  w:70,  h:70},
 {beam:"ne", ring:2, x:75,  y:255, w:70,  h:70},
-{beam:"nw", ring:2, x:255, y:255, w:70,  h:70},
+{beam:"nw", ring:3, points:"286,286 365,286 365,365 286,365"}
 
 // Очень далеко
 {beam:"s",  ring:3, x:115, y:35,  w:170, h:40},
@@ -6213,6 +6223,34 @@ return [
 {beam:"nw", ring:3, x:285, y:285, w:80,  h:80}
 
 ];
+
+}
+
+function getCellCenter(cell){
+
+if(!cell.points){
+return {
+x: cell.x + cell.w / 2,
+y: cell.y + cell.h / 2
+};
+}
+
+const pts =
+cell.points.trim().split(/\s+/).map(p=>{
+const [x,y] = p.split(",").map(Number);
+return {x,y};
+});
+
+const sum =
+pts.reduce((a,p)=>({
+x:a.x+p.x,
+y:a.y+p.y
+}),{x:0,y:0});
+
+return {
+x: sum.x / pts.length,
+y: sum.y / pts.length
+};
 
 }
 
@@ -6280,11 +6318,14 @@ c.ring === loc.ring
 
 if(!cell) return;
 
+const center =
+getCellCenter(cell);
+
 const cx =
-cell.x + cell.w / 2;
+center.x;
 
 const cy =
-cell.y + cell.h / 2;
+center.y;
 
 svg.innerHTML += `
 

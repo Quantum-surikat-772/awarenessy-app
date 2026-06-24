@@ -6316,60 +6316,93 @@ function drawLKSCellPlasma(svg, cell, power){
 const id =
 "plasma_" + Math.random().toString(36).slice(2);
 
-const opacity =
-0.12 + power * 0.58;
+const x = cell.x;
+const y = cell.y;
+const w = cell.w;
+const h = cell.h;
 
-const cx =
-cell.x + cell.w / 2;
+const cx = x + w / 2;
+const cy = y + h / 2;
 
-const cy =
-cell.y + cell.h / 2;
+const alpha =
+0.18 + power * 0.62;
 
-let x1 = "50%";
+const blur =
+6 + power * 10;
+
+let x1 = "0%";
 let y1 = "50%";
-let x2 = "50%";
+let x2 = "100%";
 let y2 = "50%";
 
-if(cell.beam === "s"){ x1="50%"; y1="0%";   x2="50%"; y2="55%"; }
-if(cell.beam === "n"){ x1="50%"; y1="100%"; x2="50%"; y2="45%"; }
-if(cell.beam === "e"){ x1="0%";  y1="50%";  x2="55%"; y2="50%"; }
-if(cell.beam === "w"){ x1="100%";y1="50%";  x2="45%"; y2="50%"; }
+// направление луча внутри ячейки
+if(cell.beam === "s" || cell.beam === "n"){
+x1 = "50%"; y1 = "0%";
+x2 = "50%"; y2 = "100%";
+}
 
-if(cell.beam === "se"){ x1="0%";   y1="0%";   x2="55%"; y2="55%"; }
-if(cell.beam === "sw"){ x1="100%"; y1="0%";   x2="45%"; y2="55%"; }
-if(cell.beam === "ne"){ x1="0%";   y1="100%"; x2="55%"; y2="45%"; }
-if(cell.beam === "nw"){ x1="100%"; y1="100%"; x2="45%"; y2="45%"; }
+if(cell.beam === "e" || cell.beam === "w"){
+x1 = "0%"; y1 = "50%";
+x2 = "100%"; y2 = "50%";
+}
+
+if(cell.beam === "se" || cell.beam === "nw"){
+x1 = "0%"; y1 = "0%";
+x2 = "100%"; y2 = "100%";
+}
+
+if(cell.beam === "sw" || cell.beam === "ne"){
+x1 = "100%"; y1 = "0%";
+x2 = "0%"; y2 = "100%";
+}
 
 svg.innerHTML += `
 
 <defs>
-<linearGradient id="${id}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
-<stop offset="0%" stop-color="#b388ff" stop-opacity="${opacity}"/>
-<stop offset="45%" stop-color="#d8a6ff" stop-opacity="${opacity * 0.85}"/>
+
+<linearGradient id="${id}_line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
+<stop offset="0%" stop-color="#b388ff" stop-opacity="0"/>
+<stop offset="38%" stop-color="#b388ff" stop-opacity="${alpha * 0.45}"/>
+<stop offset="50%" stop-color="#f0c8ff" stop-opacity="${alpha}"/>
+<stop offset="62%" stop-color="#b388ff" stop-opacity="${alpha * 0.45}"/>
 <stop offset="100%" stop-color="#b388ff" stop-opacity="0"/>
 </linearGradient>
+
+<radialGradient id="${id}_halo" cx="50%" cy="50%" r="70%">
+<stop offset="0%" stop-color="#d8a6ff" stop-opacity="${alpha * 0.55}"/>
+<stop offset="45%" stop-color="#b388ff" stop-opacity="${alpha * 0.28}"/>
+<stop offset="100%" stop-color="#b388ff" stop-opacity="0"/>
+</radialGradient>
+
+<filter id="${id}_blur" x="-80%" y="-80%" width="260%" height="260%">
+<feGaussianBlur stdDeviation="${blur}" result="blur"/>
+<feMerge>
+<feMergeNode in="blur"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+
 </defs>
 
 <rect
-x="${cell.x}"
-y="${cell.y}"
-width="${cell.w}"
-height="${cell.h}"
+x="${x}"
+y="${y}"
+width="${w}"
+height="${h}"
 rx="10"
-fill="url(#${id})"
-filter="url(#lksGlow)"
-opacity="1"
+fill="url(#${id}_halo)"
+filter="url(#${id}_blur)"
 style="pointer-events:none;"
 />
 
-<path
-d="M ${cell.x + 6} ${cy}
-Q ${cx} ${cy - 10} ${cell.x + cell.w - 6} ${cy}"
-fill="none"
-stroke="#d8a6ff"
-stroke-width="${1.2 + power * 2.2}"
-opacity="${opacity * 0.55}"
-filter="url(#lksGlow)"
+<rect
+x="${x}"
+y="${y}"
+width="${w}"
+height="${h}"
+rx="10"
+fill="url(#${id}_line)"
+filter="url(#${id}_blur)"
 style="pointer-events:none;"
 />
 

@@ -6362,9 +6362,11 @@ svg.innerHTML += `
 
 <linearGradient id="${id}_line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
 <stop offset="0%" stop-color="#b388ff" stop-opacity="0"/>
-<stop offset="38%" stop-color="#b388ff" stop-opacity="${alpha * 0.45}"/>
+<stop offset="30%" stop-color="#b388ff" stop-opacity="0"/>
+<stop offset="46%" stop-color="#c77dff" stop-opacity="${alpha * 0.45}"/>
 <stop offset="50%" stop-color="#f0c8ff" stop-opacity="${alpha}"/>
-<stop offset="62%" stop-color="#b388ff" stop-opacity="${alpha * 0.45}"/>
+<stop offset="54%" stop-color="#c77dff" stop-opacity="${alpha * 0.45}"/>
+<stop offset="70%" stop-color="#b388ff" stop-opacity="0"/>
 <stop offset="100%" stop-color="#b388ff" stop-opacity="0"/>
 </linearGradient>
 
@@ -6385,24 +6387,26 @@ svg.innerHTML += `
 </defs>
 
 <rect
-x="${x}"
-y="${y}"
-width="${w}"
-height="${h}"
-rx="10"
+x="${x + 4}"
+y="${y + 4}"
+width="${w - 8}"
+height="${h - 8}"
+rx="8"
 fill="url(#${id}_halo)"
 filter="url(#${id}_blur)"
+opacity="0.55"
 style="pointer-events:none;"
 />
 
 <rect
-x="${x}"
-y="${y}"
-width="${w}"
-height="${h}"
-rx="10"
+x="${x + 6}"
+y="${y + 6}"
+width="${w - 12}"
+height="${h - 12}"
+rx="8"
 fill="url(#${id}_line)"
 filter="url(#${id}_blur)"
+opacity="0.85"
 style="pointer-events:none;"
 />
 

@@ -6354,15 +6354,51 @@ ${loc.letter || ""}
 
 }
 
+function getCellBox(cell){
+
+if(!cell.points){
+return {
+x:cell.x,
+y:cell.y,
+w:cell.w,
+h:cell.h
+};
+}
+
+const pts =
+cell.points.trim().split(/\s+/).map(p=>{
+const [x,y] = p.split(",").map(Number);
+return {x,y};
+});
+
+const xs = pts.map(p=>p.x);
+const ys = pts.map(p=>p.y);
+
+const minX = Math.min(...xs);
+const maxX = Math.max(...xs);
+const minY = Math.min(...ys);
+const maxY = Math.max(...ys);
+
+return {
+x:minX,
+y:minY,
+w:maxX-minX,
+h:maxY-minY
+};
+
+}
+
 function drawLKSCellPlasma(svg, cell, power){
 
 const id =
 "plasma_" + Math.random().toString(36).slice(2);
 
-const x = cell.x;
-const y = cell.y;
-const w = cell.w;
-const h = cell.h;
+const box = getCellBox(cell);
+
+const x = box.x;
+const y = box.y;
+const w = box.w;
+const h = box.h;
 
 const cx = x + w / 2;
 const cy = y + h / 2;

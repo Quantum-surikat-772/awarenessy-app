@@ -6187,41 +6187,54 @@ return opposite[beam] || beam;
 
 function getLKSCells(){
 
+const g = {
+far1:36,
+far2:364,
+mid1:75,
+mid2:325,
+near1:118,
+near2:282,
+home1:166,
+home2:234
+};
+
 return [
 
 // Дом
-{beam:"c", ring:0, points:"166,166 234,166 234,234 166,234"},
+{beam:"c", ring:0, points:`${g.home1},${g.home1} ${g.home2},${g.home1} ${g.home2},${g.home2} ${g.home1},${g.home2}`},
 
 // Близко
-{beam:"s",  ring:1, points:"166,118 234,118 234,166 166,166"},
-{beam:"n",  ring:1, points:"166,234 234,234 234,282 166,282"},
-{beam:"e",  ring:1, points:"118,166 166,166 166,234 118,234"},
-{beam:"w",  ring:1, points:"234,166 282,166 282,234 234,234"},
+{beam:"s",  ring:1, points:`${g.home1},${g.near1} ${g.home2},${g.near1} ${g.home2},${g.home1} ${g.home1},${g.home1}`},
+{beam:"n",  ring:1, points:`${g.home1},${g.home2} ${g.home2},${g.home2} ${g.home2},${g.near2} ${g.home1},${g.near2}`},
+{beam:"e",  ring:1, points:`${g.near1},${g.home1} ${g.home1},${g.home1} ${g.home1},${g.home2} ${g.near1},${g.home2}`},
+{beam:"w",  ring:1, points:`${g.home2},${g.home1} ${g.near2},${g.home1} ${g.near2},${g.home2} ${g.home2},${g.home2}`},
 
-{beam:"se", ring:1, points:"118,118 166,118 166,166 118,166"},
-{beam:"sw", ring:1, points:"234,118 282,118 282,166 234,166"},
-{beam:"ne", ring:1, points:"118,234 166,234 166,282 118,282"},
-{beam:"nw", ring:1, points:"234,234 282,234 282,282 234,282"},
+{beam:"se", ring:1, points:`${g.near1},${g.near1} ${g.home1},${g.near1} ${g.home1},${g.home1} ${g.near1},${g.home1}`},
+{beam:"sw", ring:1, points:`${g.home2},${g.near1} ${g.near2},${g.near1} ${g.near2},${g.home1} ${g.home2},${g.home1}`},
+{beam:"ne", ring:1, points:`${g.near1},${g.home2} ${g.home1},${g.home2} ${g.home1},${g.near2} ${g.near1},${g.near2}`},
+{beam:"nw", ring:1, points:`${g.home2},${g.home2} ${g.near2},${g.home2} ${g.near2},${g.near2} ${g.home2},${g.near2}`},
 
 // Далеко
-{beam:"s",  ring:2, x:145, y:75,  w:110, h:40},
-{beam:"n",  ring:2, x:145, y:285, w:110, h:40},
-{beam:"e",  ring:2, x:75,  y:145, w:40,  h:110},
-{beam:"w",  ring:2, x:285, y:145, w:40,  h:110},
-{beam:"se", ring:2, x:75,  y:75,  w:70,  h:70},
-{beam:"sw", ring:2, x:255, y:75,  w:70,  h:70},
-{beam:"ne", ring:2, x:75,  y:255, w:70,  h:70},
-{beam:"nw", ring:2, x:255, y:255, w:70,  h:70},
+{beam:"s",  ring:2, points:`${g.home1},${g.mid1} ${g.home2},${g.mid1} ${g.home2},${g.near1} ${g.home1},${g.near1}`},
+{beam:"n",  ring:2, points:`${g.home1},${g.near2} ${g.home2},${g.near2} ${g.home2},${g.mid2} ${g.home1},${g.mid2}`},
+{beam:"e",  ring:2, points:`${g.mid1},${g.home1} ${g.near1},${g.home1} ${g.near1},${g.home2} ${g.mid1},${g.home2}`},
+{beam:"w",  ring:2, points:`${g.near2},${g.home1} ${g.mid2},${g.home1} ${g.mid2},${g.home2} ${g.near2},${g.home2}`},
+
+{beam:"se", ring:2, points:`${g.mid1},${g.mid1} ${g.home1},${g.mid1} ${g.home1},${g.near1} ${g.near1},${g.near1} ${g.near1},${g.home1} ${g.mid1},${g.home1}`},
+{beam:"sw", ring:2, points:`${g.home2},${g.mid1} ${g.mid2},${g.mid1} ${g.mid2},${g.home1} ${g.near2},${g.home1} ${g.near2},${g.near1} ${g.home2},${g.near1}`},
+{beam:"ne", ring:2, points:`${g.mid1},${g.home2} ${g.near1},${g.home2} ${g.near1},${g.near2} ${g.home1},${g.near2} ${g.home1},${g.mid2} ${g.mid1},${g.mid2}`},
+{beam:"nw", ring:2, points:`${g.near2},${g.home2} ${g.mid2},${g.home2} ${g.mid2},${g.mid2} ${g.home2},${g.mid2} ${g.home2},${g.near2} ${g.near2},${g.near2}`},
 
 // Очень далеко
-{beam:"s",  ring:3, x:115, y:35,  w:170, h:40},
-{beam:"n",  ring:3, x:115, y:325, w:170, h:40},
-{beam:"e",  ring:3, x:35,  y:115, w:40,  h:170},
-{beam:"w",  ring:3, x:325, y:115, w:40,  h:170},
-{beam:"se", ring:3, points:"36,36 115,36 115,75 76,115 36,115"},
-{beam:"sw", ring:3, points:"285,36 364,36 364,115 324,115 285,75"},
-{beam:"ne", ring:3, points:"36,285 76,285 115,324 115,364 36,364"},
-{beam:"nw", ring:3, points:"324,285 364,285 364,364 285,364 285,324"}
+{beam:"s",  ring:3, points:`${g.home1},${g.far1} ${g.home2},${g.far1} ${g.home2},${g.mid1} ${g.home1},${g.mid1}`},
+{beam:"n",  ring:3, points:`${g.home1},${g.mid2} ${g.home2},${g.mid2} ${g.home2},${g.far2} ${g.home1},${g.far2}`},
+{beam:"e",  ring:3, points:`${g.far1},${g.home1} ${g.mid1},${g.home1} ${g.mid1},${g.home2} ${g.far1},${g.home2}`},
+{beam:"w",  ring:3, points:`${g.mid2},${g.home1} ${g.far2},${g.home1} ${g.far2},${g.home2} ${g.mid2},${g.home2}`},
+
+{beam:"se", ring:3, points:`${g.far1},${g.far1} ${g.home1},${g.far1} ${g.home1},${g.mid1} ${g.mid1},${g.mid1} ${g.mid1},${g.home1} ${g.far1},${g.home1}`},
+{beam:"sw", ring:3, points:`${g.home2},${g.far1} ${g.far2},${g.far1} ${g.far2},${g.home1} ${g.mid2},${g.home1} ${g.mid2},${g.mid1} ${g.home2},${g.mid1}`},
+{beam:"ne", ring:3, points:`${g.far1},${g.home2} ${g.mid1},${g.home2} ${g.mid1},${g.mid2} ${g.home1},${g.mid2} ${g.home1},${g.far2} ${g.far1},${g.far2}`},
+{beam:"nw", ring:3, points:`${g.mid2},${g.home2} ${g.far2},${g.home2} ${g.far2},${g.far2} ${g.home2},${g.far2} ${g.home2},${g.mid2} ${g.mid2},${g.mid2}`}
 
 ];
 

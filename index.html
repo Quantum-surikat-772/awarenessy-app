@@ -6465,6 +6465,16 @@ svg.innerHTML += `
 
 </defs>
 
+${cell.points ? `
+<clipPath id="${id}_clip">
+<polygon points="${cell.points}"/>
+</clipPath>
+` : `
+<clipPath id="${id}_clip">
+<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>
+</clipPath>
+`}
+
 <rect
 x="${x + 4}"
 y="${y + 4}"
@@ -6474,6 +6484,7 @@ rx="8"
 fill="url(#${id}_halo)"
 filter="url(#${id}_blur)"
 opacity="0.55"
+clip-path="url(#${id}_clip)"
 style="pointer-events:none;"
 />
 
@@ -6486,6 +6497,7 @@ rx="8"
 fill="url(#${id}_line)"
 filter="url(#${id}_blur)"
 opacity="0.85"
+clip-path="url(#${id}_clip)"
 style="pointer-events:none;"
 />
 

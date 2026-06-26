@@ -6198,7 +6198,9 @@ mid2:318,
 near1:126,
 near2:274,
 home1:160,
-home2:240
+home2:240,
+slot1:44,
+slot2:54
 };
 
 return [
@@ -6216,27 +6218,30 @@ return [
 {beam:"sw", ring:1, points:`${g.home2},${g.near1} ${g.near2},${g.near1} ${g.near2},${g.home1} ${g.home2},${g.home1}`},
 {beam:"ne", ring:1, points:`${g.near1},${g.home2} ${g.home1},${g.home2} ${g.home1},${g.near2} ${g.near1},${g.near2}`},
 {beam:"nw", ring:1, points:`${g.home2},${g.home2} ${g.near2},${g.home2} ${g.near2},${g.near2} ${g.home2},${g.near2}`},
-
+  
 // Далеко
-{beam:"se", ring:2, points:`${g.mid1},${g.mid1} ${g.home1},${g.mid1} ${g.home1},${g.near1} ${g.near1},${g.near1} ${g.near1},${g.home1} ${g.mid1},${g.home1}`},
+{beam:"se", ring:2, points:`${g.mid1},${g.mid1} ${g.mid1+g.slot2},${g.mid1} ${g.mid1+g.slot2},${g.near1} ${g.near1},${g.near1} ${g.near1},${g.mid1+g.slot2} ${g.mid1},${g.mid1+g.slot2}`},
 
-{beam:"sw", ring:2, points:`${g.home2},${g.mid1} ${g.mid2},${g.mid1} ${g.mid2},${g.home1} ${g.near2},${g.home1} ${g.near2},${g.near1} ${g.home2},${g.near1}`},
+{beam:"sw", ring:2, points:`${g.mid2-g.slot2},${g.mid1} ${g.mid2},${g.mid1} ${g.mid2},${g.mid1+g.slot2} ${g.near2},${g.mid1+g.slot2} ${g.near2},${g.near1} ${g.mid2-g.slot2},${g.near1}`},
 
-{beam:"ne", ring:2, points:`${g.mid1},${g.home2} ${g.near1},${g.home2} ${g.near1},${g.near2} ${g.home1},${g.near2} ${g.home1},${g.mid2} ${g.mid1},${g.mid2}`},
+{beam:"ne", ring:2, points:`${g.mid1},${g.mid2-g.slot2} ${g.near1},${g.mid2-g.slot2} ${g.near1},${g.near2} ${g.mid1+g.slot2},${g.near2} ${g.mid1+g.slot2},${g.mid2} ${g.mid1},${g.mid2}`},
 
-{beam:"nw", ring:2, points:`${g.near2},${g.home2} ${g.mid2},${g.home2} ${g.mid2},${g.mid2} ${g.home2},${g.mid2} ${g.home2},${g.near2} ${g.near2},${g.near2}`},
-
+{beam:"nw", ring:2, points:`${g.near2},${g.mid2-g.slot2} ${g.mid2},${g.mid2-g.slot2} ${g.mid2},${g.mid2} ${g.mid2-g.slot2},${g.mid2} ${g.mid2-g.slot2},${g.near2} ${g.near2},${g.near2}`},
+  
 // Очень далеко
 {beam:"s",  ring:3, points:`${g.home1},${g.far1} ${g.home2},${g.far1} ${g.home2},${g.mid1} ${g.home1},${g.mid1}`},
 {beam:"n",  ring:3, points:`${g.home1},${g.mid2} ${g.home2},${g.mid2} ${g.home2},${g.far2} ${g.home1},${g.far2}`},
 {beam:"e",  ring:3, points:`${g.far1},${g.home1} ${g.mid1},${g.home1} ${g.mid1},${g.home2} ${g.far1},${g.home2}`},
 {beam:"w",  ring:3, points:`${g.mid2},${g.home1} ${g.far2},${g.home1} ${g.far2},${g.home2} ${g.mid2},${g.home2}`},
 
-{beam:"se", ring:3, points:`${g.far1},${g.far1} ${g.home1},${g.far1} ${g.home1},${g.mid1} ${g.mid1},${g.mid1} ${g.mid1},${g.home1} ${g.far1},${g.home1}`},
-{beam:"sw", ring:3, points:`${g.home2},${g.far1} ${g.far2},${g.far1} ${g.far2},${g.home1} ${g.mid2},${g.home1} ${g.mid2},${g.mid1} ${g.home2},${g.mid1}`},
-{beam:"ne", ring:3, points:`${g.far1},${g.home2} ${g.mid1},${g.home2} ${g.mid1},${g.mid2} ${g.home1},${g.mid2} ${g.home1},${g.far2} ${g.far1},${g.far2}`},
-{beam:"nw", ring:3, points:`${g.mid2},${g.home2} ${g.far2},${g.home2} ${g.far2},${g.far2} ${g.home2},${g.far2} ${g.home2},${g.mid2} ${g.mid2},${g.mid2}`}
+{beam:"se", ring:3, points:`${g.far1},${g.far1} ${g.far1+g.slot1},${g.far1} ${g.far1+g.slot1},${g.mid1} ${g.mid1},${g.mid1} ${g.mid1},${g.far1+g.slot1} ${g.far1},${g.far1+g.slot1}`},
 
+{beam:"sw", ring:3, points:`${g.far2-g.slot1},${g.far1} ${g.far2},${g.far1} ${g.far2},${g.far1+g.slot1} ${g.mid2},${g.far1+g.slot1} ${g.mid2},${g.mid1} ${g.far2-g.slot1},${g.mid1}`},
+
+{beam:"ne", ring:3, points:`${g.far1},${g.far2-g.slot1} ${g.mid1},${g.far2-g.slot1} ${g.mid1},${g.mid2} ${g.far1+g.slot1},${g.mid2} ${g.far1+g.slot1},${g.far2} ${g.far1},${g.far2}`},
+
+{beam:"nw", ring:3, points:`${g.mid2},${g.far2-g.slot1} ${g.far2},${g.far2-g.slot1} ${g.far2},${g.far2} ${g.far2-g.slot1},${g.far2} ${g.far2-g.slot1},${g.mid2} ${g.mid2},${g.mid2}`},
+  
 ];
 
 }

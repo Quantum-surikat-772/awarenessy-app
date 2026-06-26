@@ -6188,6 +6188,43 @@ return opposite[beam] || beam;
 
 }
 
+function makeCell(beam, ring, x1, y1, x2, y2){
+
+return {
+beam,
+ring,
+points:`${x1},${y1} ${x2},${y1} ${x2},${y2} ${x1},${y2}`
+};
+
+}
+
+function makeCornerCell(beam, ring, outer, inner, home, flipX=false, flipY=false){
+
+let pts = [
+[outer, outer],
+[home, outer],
+[home, inner],
+[inner, inner],
+[inner, home],
+[outer, home]
+];
+
+if(flipX){
+pts = pts.map(([x,y])=>[400-x,y]);
+}
+
+if(flipY){
+pts = pts.map(([x,y])=>[x,400-y]);
+}
+
+return {
+beam,
+ring,
+points:pts.map(p=>p.join(",")).join(" ")
+};
+
+}
+
 function getLKSCells(){
 
 const g = {
@@ -6198,50 +6235,46 @@ mid2:318,
 near1:126,
 near2:274,
 home1:160,
-home2:240,
-slot1:44,
-slot2:54
+home2:240
 };
 
 return [
 
-// Дом
-{beam:"c", ring:0, points:`${g.home1},${g.home1} ${g.home2},${g.home1} ${g.home2},${g.home2} ${g.home1},${g.home2}`},
+makeCell("c", 0, g.home1, g.home1, g.home2, g.home2),
 
 // Близко
-{beam:"s",  ring:1, points:`${g.home1},${g.near1} ${g.home2},${g.near1} ${g.home2},${g.home1} ${g.home1},${g.home1}`},
-{beam:"n",  ring:1, points:`${g.home1},${g.home2} ${g.home2},${g.home2} ${g.home2},${g.near2} ${g.home1},${g.near2}`},
-{beam:"e",  ring:1, points:`${g.near1},${g.home1} ${g.home1},${g.home1} ${g.home1},${g.home2} ${g.near1},${g.home2}`},
-{beam:"w",  ring:1, points:`${g.home2},${g.home1} ${g.near2},${g.home1} ${g.near2},${g.home2} ${g.home2},${g.home2}`},
+makeCell("s", 1, g.home1, g.near1, g.home2, g.home1),
+makeCell("n", 1, g.home1, g.home2, g.home2, g.near2),
+makeCell("e", 1, g.near1, g.home1, g.home1, g.home2),
+makeCell("w", 1, g.home2, g.home1, g.near2, g.home2),
 
-{beam:"se", ring:1, points:`${g.near1},${g.near1} ${g.home1},${g.near1} ${g.home1},${g.home1} ${g.near1},${g.home1}`},
-{beam:"sw", ring:1, points:`${g.home2},${g.near1} ${g.near2},${g.near1} ${g.near2},${g.home1} ${g.home2},${g.home1}`},
-{beam:"ne", ring:1, points:`${g.near1},${g.home2} ${g.home1},${g.home2} ${g.home1},${g.near2} ${g.near1},${g.near2}`},
-{beam:"nw", ring:1, points:`${g.home2},${g.home2} ${g.near2},${g.home2} ${g.near2},${g.near2} ${g.home2},${g.near2}`},
-  
+makeCell("se", 1, g.near1, g.near1, g.home1, g.home1),
+makeCell("sw", 1, g.home2, g.near1, g.near2, g.home1),
+makeCell("ne", 1, g.near1, g.home2, g.home1, g.near2),
+makeCell("nw", 1, g.home2, g.home2, g.near2, g.near2),
+
 // Далеко
-{beam:"se", ring:2, points:`${g.mid1},${g.mid1} ${g.mid1+g.slot2},${g.mid1} ${g.mid1+g.slot2},${g.near1} ${g.near1},${g.near1} ${g.near1},${g.mid1+g.slot2} ${g.mid1},${g.mid1+g.slot2}`},
+makeCell("s", 2, g.home1, g.mid1, g.home2, g.near1),
+makeCell("n", 2, g.home1, g.near2, g.home2, g.mid2),
+makeCell("e", 2, g.mid1, g.home1, g.near1, g.home2),
+makeCell("w", 2, g.near2, g.home1, g.mid2, g.home2),
 
-{beam:"sw", ring:2, points:`${g.mid2-g.slot2},${g.mid1} ${g.mid2},${g.mid1} ${g.mid2},${g.mid1+g.slot2} ${g.near2},${g.mid1+g.slot2} ${g.near2},${g.near1} ${g.mid2-g.slot2},${g.near1}`},
+makeCornerCell("se", 2, g.mid1, g.near1, g.home1),
+makeCornerCell("sw", 2, g.mid1, g.near1, g.home1, true),
+makeCornerCell("ne", 2, g.mid1, g.near1, g.home1, false, true),
+makeCornerCell("nw", 2, g.mid1, g.near1, g.home1, true, true),
 
-{beam:"ne", ring:2, points:`${g.mid1},${g.mid2-g.slot2} ${g.near1},${g.mid2-g.slot2} ${g.near1},${g.near2} ${g.mid1+g.slot2},${g.near2} ${g.mid1+g.slot2},${g.mid2} ${g.mid1},${g.mid2}`},
-
-{beam:"nw", ring:2, points:`${g.near2},${g.mid2-g.slot2} ${g.mid2},${g.mid2-g.slot2} ${g.mid2},${g.mid2} ${g.mid2-g.slot2},${g.mid2} ${g.mid2-g.slot2},${g.near2} ${g.near2},${g.near2}`},
-  
 // Очень далеко
-{beam:"s",  ring:3, points:`${g.home1},${g.far1} ${g.home2},${g.far1} ${g.home2},${g.mid1} ${g.home1},${g.mid1}`},
-{beam:"n",  ring:3, points:`${g.home1},${g.mid2} ${g.home2},${g.mid2} ${g.home2},${g.far2} ${g.home1},${g.far2}`},
-{beam:"e",  ring:3, points:`${g.far1},${g.home1} ${g.mid1},${g.home1} ${g.mid1},${g.home2} ${g.far1},${g.home2}`},
-{beam:"w",  ring:3, points:`${g.mid2},${g.home1} ${g.far2},${g.home1} ${g.far2},${g.home2} ${g.mid2},${g.home2}`},
+makeCell("s", 3, g.home1, g.far1, g.home2, g.mid1),
+makeCell("n", 3, g.home1, g.mid2, g.home2, g.far2),
+makeCell("e", 3, g.far1, g.home1, g.mid1, g.home2),
+makeCell("w", 3, g.mid2, g.home1, g.far2, g.home2),
 
-{beam:"se", ring:3, points:`${g.far1},${g.far1} ${g.far1+g.slot1},${g.far1} ${g.far1+g.slot1},${g.mid1} ${g.mid1},${g.mid1} ${g.mid1},${g.far1+g.slot1} ${g.far1},${g.far1+g.slot1}`},
+makeCornerCell("se", 3, g.far1, g.mid1, g.home1),
+makeCornerCell("sw", 3, g.far1, g.mid1, g.home1, true),
+makeCornerCell("ne", 3, g.far1, g.mid1, g.home1, false, true),
+makeCornerCell("nw", 3, g.far1, g.mid1, g.home1, true, true)
 
-{beam:"sw", ring:3, points:`${g.far2-g.slot1},${g.far1} ${g.far2},${g.far1} ${g.far2},${g.far1+g.slot1} ${g.mid2},${g.far1+g.slot1} ${g.mid2},${g.mid1} ${g.far2-g.slot1},${g.mid1}`},
-
-{beam:"ne", ring:3, points:`${g.far1},${g.far2-g.slot1} ${g.mid1},${g.far2-g.slot1} ${g.mid1},${g.mid2} ${g.far1+g.slot1},${g.mid2} ${g.far1+g.slot1},${g.far2} ${g.far1},${g.far2}`},
-
-{beam:"nw", ring:3, points:`${g.mid2},${g.far2-g.slot1} ${g.far2},${g.far2-g.slot1} ${g.far2},${g.far2} ${g.far2-g.slot1},${g.far2} ${g.far2-g.slot1},${g.mid2} ${g.mid2},${g.mid2}`},
-  
 ];
 
 }

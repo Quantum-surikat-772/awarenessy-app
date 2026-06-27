@@ -6239,6 +6239,33 @@ points:pts.map(p=>p.join(",")).join(" ")
 
 }
 
+function makeLCell(beam, ring, x, y, size, cut, flipX=false, flipY=false){
+
+let pts = [
+[x,y],
+[x+size,y],
+[x+size,y+cut],
+[x+cut,y+cut],
+[x+cut,y+size],
+[x,y+size]
+];
+
+if(flipX){
+pts = pts.map(([px,py])=>[400-px,py]);
+}
+
+if(flipY){
+pts = pts.map(([px,py])=>[px,400-py]);
+}
+
+return {
+beam,
+ring,
+points:pts.map(p=>p.join(",")).join(" ")
+};
+
+}
+
 function getLKSCells(){
 
 const g = {
@@ -6262,33 +6289,33 @@ makeCell("n", 1, g.home1, g.home2, g.home2, g.near2),
 makeCell("e", 1, g.near1, g.home1, g.home1, g.home2),
 makeCell("w", 1, g.home2, g.home1, g.near2, g.home2),
 
-makeCell("se", 1, g.near1, g.near1, g.home1, g.home1),
-makeCell("sw", 1, g.home2, g.near1, g.near2, g.home1),
-makeCell("ne", 1, g.near1, g.home2, g.home1, g.near2),
-makeCell("nw", 1, g.home2, g.home2, g.near2, g.near2),
-
+makeLCell("se",1,126,126,48,12),
+makeLCell("sw",1,226,126,48,12,true),
+makeLCell("ne",1,126,226,48,12,false,true),
+makeLCell("nw",1,226,226,48,12,true,true),
+  
 // Далеко
 makeCell("s", 2, g.home1, g.mid1, g.home2, g.near1),
 makeCell("n", 2, g.home1, g.near2, g.home2, g.mid2),
 makeCell("e", 2, g.mid1, g.home1, g.near1, g.home2),
 makeCell("w", 2, g.near2, g.home1, g.mid2, g.home2),
 
-makeCornerCell("se", 2, g.mid1, g.near1, g.home1),
-makeCornerCell("sw", 2, g.mid1, g.near1, g.home1, true),
-makeCornerCell("ne", 2, g.mid1, g.near1, g.home1, false, true),
-makeCornerCell("nw", 2, g.mid1, g.near1, g.home1, true, true),
-
+makeLCell("se",2,82,82,64,16),
+makeLCell("sw",2,254,82,64,16,true),
+makeLCell("ne",2,82,254,64,16,false,true),
+makeLCell("nw",2,254,254,64,16,true,true),
+  
 // Очень далеко
 makeCell("s", 3, g.home1, g.far1, g.home2, g.mid1),
 makeCell("n", 3, g.home1, g.mid2, g.home2, g.far2),
 makeCell("e", 3, g.far1, g.home1, g.mid1, g.home2),
 makeCell("w", 3, g.mid2, g.home1, g.far2, g.home2),
 
-makeCornerCell("se", 3, g.far1, g.mid1, g.home1),
-makeCornerCell("sw", 3, g.far1, g.mid1, g.home1, true),
-makeCornerCell("ne", 3, g.far1, g.mid1, g.home1, false, true),
-makeCornerCell("nw", 3, g.far1, g.mid1, g.home1, true, true)
-
+makeLCell("se",3,28,28,92,18),
+makeLCell("sw",3,280,28,92,18,true),
+makeLCell("ne",3,28,280,92,18,false,true),
+makeLCell("nw",3,280,280,92,18,true,true),
+  
 ];
 
 }

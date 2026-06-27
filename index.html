@@ -6126,10 +6126,14 @@ cells.forEach(cell=>{
 const r =
 document.createElementNS(
 "http://www.w3.org/2000/svg",
-cell.points ? "polygon" : "rect"
+cell.path ? "path" : (cell.points ? "polygon" : "rect")
 );
 
-if(cell.points){
+if(cell.path){
+
+r.setAttribute("d", cell.path);
+
+}else if(cell.points){
 
 r.setAttribute("points", cell.points);
 
@@ -6291,13 +6295,14 @@ makeCornerCell("nw", 3, g.far1, g.mid1, g.home1, true, true)
 
 function getCellCenter(cell){
 
-if(!cell.points){
+if(cell.center){
 return {
-x: cell.x + cell.w / 2,
-y: cell.y + cell.h / 2
+x:cell.center[0],
+y:cell.center[1]
 };
 }
 
+if(cell.points){
 const pts =
 cell.points.trim().split(/\s+/).map(p=>{
 const [x,y] = p.split(",").map(Number);
@@ -6311,8 +6316,18 @@ y:a.y+p.y
 }),{x:0,y:0});
 
 return {
-x: sum.x / pts.length,
-y: sum.y / pts.length
+x:sum.x/pts.length,
+y:sum.y/pts.length
+};
+}
+
+if(cell.path){
+return {x:200,y:200};
+}
+
+return {
+x:cell.x + cell.w / 2,
+y:cell.y + cell.h / 2
 };
 
 }
@@ -6419,15 +6434,16 @@ ${loc.letter || ""}
 
 function getCellBox(cell){
 
-if(!cell.points){
+if(cell.box){
 return {
-x:cell.x,
-y:cell.y,
-w:cell.w,
-h:cell.h
+x:cell.box[0],
+y:cell.box[1],
+w:cell.box[2],
+h:cell.box[3]
 };
 }
 
+if(cell.points){
 const pts =
 cell.points.trim().split(/\s+/).map(p=>{
 const [x,y] = p.split(",").map(Number);
@@ -6437,16 +6453,19 @@ return {x,y};
 const xs = pts.map(p=>p.x);
 const ys = pts.map(p=>p.y);
 
-const minX = Math.min(...xs);
-const maxX = Math.max(...xs);
-const minY = Math.min(...ys);
-const maxY = Math.max(...ys);
+return {
+x:Math.min(...xs),
+y:Math.min(...ys),
+w:Math.max(...xs)-Math.min(...xs),
+h:Math.max(...ys)-Math.min(...ys)
+};
+}
 
 return {
-x:minX,
-y:minY,
-w:maxX-minX,
-h:maxY-minY
+x:cell.x,
+y:cell.y,
+w:cell.w,
+h:cell.h
 };
 
 }
@@ -6528,7 +6547,11 @@ svg.innerHTML += `
 
 </defs>
 
-${cell.points ? `
+${cell.path ? `
+<clipPath id="${id}_clip">
+<path d="${cell.path}"/>
+</clipPath>
+` : cell.points ? `
 <clipPath id="${id}_clip">
 <polygon points="${cell.points}"/>
 </clipPath>

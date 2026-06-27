@@ -6200,18 +6200,31 @@ points:`${x1},${y1} ${x2},${y1} ${x2},${y2} ${x1},${y2}`
 
 function makeCornerCell(beam, ring, outer, inner, home, flipX=false, flipY=false){
 
-const cut =
-ring === 1 ? 34 :
-ring === 2 ? 44 :
-54;
+const corner = {
+1: {outerSize:52, innerCut:18},
+2: {outerSize:64, innerCut:24},
+3: {outerSize:82, innerCut:30}
+}[ring];
+
+const a =
+outer;
+
+const b =
+outer + corner.outerSize;
+
+const c =
+inner;
+
+const d =
+inner + corner.innerCut;
 
 let pts = [
-[outer, outer],
-[inner, outer],
-[inner, outer + cut],
-[outer + cut, outer + cut],
-[outer + cut, inner],
-[outer, inner]
+[a,a],
+[b,a],
+[b,d],
+[d,d],
+[d,b],
+[a,b]
 ];
 
 if(flipX){

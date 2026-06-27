@@ -6205,9 +6205,9 @@ points:`${x1},${y1} ${x2},${y1} ${x2},${y2} ${x1},${y2}`
 function makeCornerCell(beam, ring, outer, inner, home, flipX=false, flipY=false){
 
 const cfg = {
-1:{size:70, cut:23},
-2:{size:64, cut:21},
-3:{size:90, cut:30}
+1:{size:74, cut:10},
+2:{size:64, cut:10},
+3:{size:96, cut:14}
 }[ring];
 
 const a = outer;
@@ -6562,10 +6562,10 @@ ${cell.path ? `
 `}
 
 <rect
-x="${x + 4}"
-y="${y + 4}"
-width="${w - 8}"
-height="${h - 8}"
+x="${x}"
+y="${y}"
+width="${w}"
+height="${h}"
 rx="8"
 fill="url(#${id}_halo)"
 filter="url(#${id}_blur)"
@@ -6575,10 +6575,10 @@ style="pointer-events:none;"
 />
 
 <rect
-x="${x + 6}"
-y="${y + 6}"
-width="${w - 12}"
-height="${h - 12}"
+x="${x}"
+y="${y}"
+width="${w}"
+height="${h}"
 rx="8"
 fill="url(#${id}_line)"
 filter="url(#${id}_blur)"

@@ -6277,35 +6277,54 @@ center
 
 }
 
+function rectCell(beam, ring, x1, y1, x2, y2, center=null){
+return cell(
+beam,
+ring,
+`${x1},${y1} ${x2},${y1} ${x2},${y2} ${x1},${y2}`,
+center || [(x1+x2)/2,(y1+y2)/2]
+);
+}
+
+function lCell(beam, ring, x, y, size, cut, center=null){
+return cell(
+beam,
+ring,
+`${x},${y} ${x+size},${y} ${x+size},${y+cut} ${x+cut},${y+cut} ${x+cut},${y+size} ${x},${y+size}`,
+center || [x+size/2,y+size/2]
+);
+}
+
 function getLKSCells(){
 
-const g = {
-far1:28,
-far2:372,
-mid1:82,
-mid2:318,
-near1:126,
-near2:274,
-home1:166,
-home2:234
+const near = {
+dx:-2,
+home1:158,
+home2:242,
+near1:122,
+near2:278,
+cut:12
 };
 
-return [
+const H1 = near.home1 + near.dx;
+const H2 = near.home2 + near.dx;
+const N1 = near.near1 + near.dx;
+const N2 = near.near2 + near.dx;
 
 // Дом
-cell("c", 0, "158,158 242,158 242,242 158,242", [200,200]),
+rectCell("c",0,H1,H1,H2,H2,[200+near.dx,200]),
 
 // Близко
-cell("s", 1, "162,124 238,124 238,162 162,162", [200,133]),
-cell("n", 1, "162,238 238,238 238,276 162,276", [200,267]),
-cell("e", 1, "124,162 162,162 162,238 124,238", [133,200]),
-cell("w", 1, "238,162 276,162 276,238 238,238", [267,200]),
+rectCell("s",1,H1,N1,H2,H1),
+rectCell("n",1,H1,H2,H2,N2),
+rectCell("e",1,N1,H1,H1,H2),
+rectCell("w",1,H2,H1,N2,H2),
 
-cell("se",1,"112,112 154,112 154,126 126,126 126,154 112,154",[133,133]),
-cell("sw",1,"246,112 288,112 288,154 274,154 274,126 246,126",[267,133]),
-cell("ne",1,"112,246 126,246 126,274 154,274 154,288 112,288",[133,267]),
-cell("nw",1,"274,246 288,246 288,288 246,288 246,274 274,274",[267,267]),
-  
+lCell("se",1,N1,N1,H1-N1,near.cut),
+lCell("sw",1,H2,N1,N2-H2,near.cut),
+lCell("ne",1,N1,H2,H1-N1,near.cut),
+lCell("nw",1,H2,H2,N2-H2,near.cut),
+
 // Далеко
 makeCell("s", 2, g.home1, g.mid1, g.home2, g.near1),
 makeCell("n", 2, g.home1, g.near2, g.home2, g.mid2),

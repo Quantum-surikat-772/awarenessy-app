@@ -6310,7 +6310,7 @@ home2:234
 
 const near = {
 dx:-2,
-home1:158,
+home1:162,
 home2:242,
 near1:122,
 near2:278,
@@ -6325,7 +6325,7 @@ const N2 = near.near2 + near.dx;
 return [
 
 // Дом
-rectCell("c",0,H1,H1,H2,H2,[200+near.dx,200]),
+rectCell("c",0,H1,H1,H2,H2,[198,200]),
 
 // Близко
 rectCell("s",1,H1,N1,H2,H1),
@@ -6333,10 +6333,13 @@ rectCell("n",1,H1,H2,H2,N2),
 rectCell("e",1,N1,H1,H1,H2),
 rectCell("w",1,H2,H1,N2,H2),
 
-lCell("se",1,N1,N1,H1-N1,near.cut),
-lCell("sw",1,H2,N1,N2-H2,near.cut),
-lCell("ne",1,N1,H2,H1-N1,near.cut),
-lCell("nw",1,H2,H2,N2-H2,near.cut),
+cell("se",1,"120,120 166,120 166,136 136,136 136,166 120,166",[142,142]),
+
+cell("sw",1,"242,120 278,120 278,166 262,166 262,136 242,136",[260,142]),
+
+cell("ne",1,"120,242 136,242 136,262 166,262 166,278 120,278",[142,260]),
+
+cell("nw",1,"262,242 278,242 278,278 242,278 242,262 262,262",[260,260]),
 
 // Далеко
 makeCell("s", 2, g.home1, g.mid1, g.home2, g.near1),

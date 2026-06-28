@@ -6295,11 +6295,11 @@ return [
 makeCell("c", 0, g.home1, g.home1, g.home2, g.home2),
 
 // Близко
-makeCell("s", 1, g.home1, g.near1, g.home2, g.home1),
-makeCell("n", 1, g.home1, g.home2, g.home2, g.near2),
-makeCell("e", 1, g.near1, g.home1, g.home1, g.home2),
-makeCell("w", 1, g.home2, g.home1, g.near2, g.home2),
-
+cell("se",1,"126,126 166,126 166,140 140,140 140,166 126,166",[146,146]),
+cell("sw",1,"234,126 274,126 274,166 260,166 260,140 234,140",[254,146]),
+cell("ne",1,"126,234 140,234 140,260 166,260 166,274 126,274",[146,254]),
+cell("nw",1,"234,234 260,234 260,260 274,260 274,274 234,274",[254,254]),
+  
 makeLCell("se",1,126,126,48,12),
 makeLCell("sw",1,226,126,48,12,true),
 makeLCell("ne",1,126,226,48,12,false,true),

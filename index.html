@@ -6297,6 +6297,33 @@ center || [x+size/2,y+size/2]
 
 function getLKSCells(){
 
+const g = {
+far1:28,
+far2:372,
+mid1:82,
+mid2:318,
+near1:126,
+near2:274,
+home1:166,
+home2:234
+};
+
+const near = {
+dx:-2,
+home1:158,
+home2:242,
+near1:122,
+near2:278,
+cut:12
+};
+
+const H1 = near.home1 + near.dx;
+const H2 = near.home2 + near.dx;
+const N1 = near.near1 + near.dx;
+const N2 = near.near2 + near.dx;
+
+return [
+
 const near = {
 dx:-2,
 home1:158,

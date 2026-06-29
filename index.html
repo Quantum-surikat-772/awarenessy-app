@@ -6619,14 +6619,15 @@ svg.innerHTML += `
 
 <defs>
 
-<linearGradient id="${id}_line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
-<stop offset="0%" stop-color="#b388ff" stop-opacity="0"/>
-<stop offset="30%" stop-color="#b388ff" stop-opacity="0"/>
-<stop offset="46%" stop-color="#c77dff" stop-opacity="${alpha * 0.45}"/>
-<stop offset="50%" stop-color="#f0c8ff" stop-opacity="${alpha}"/>
-<stop offset="54%" stop-color="#c77dff" stop-opacity="${alpha * 0.45}"/>
-<stop offset="70%" stop-color="#b388ff" stop-opacity="0"/>
-<stop offset="100%" stop-color="#b388ff" stop-opacity="0"/>
+<linearGradient id="${id}_beam" x1="0%" y1="0%" x2="100%" y2="0%">
+  <stop offset="0%" stop-color="#c77dff" stop-opacity="0"/>
+  <stop offset="28%" stop-color="#c77dff" stop-opacity="0.03"/>
+  <stop offset="40%" stop-color="#d99bff" stop-opacity="0.28"/>
+  <stop offset="48%" stop-color="#f1d6ff" stop-opacity="0.82"/>
+  <stop offset="52%" stop-color="#f1d6ff" stop-opacity="0.82"/>
+  <stop offset="60%" stop-color="#d99bff" stop-opacity="0.28"/>
+  <stop offset="72%" stop-color="#c77dff" stop-opacity="0.03"/>
+  <stop offset="100%" stop-color="#c77dff" stop-opacity="0"/>
 </linearGradient>
 
 <radialGradient id="${id}_halo" cx="50%" cy="50%" r="70%">

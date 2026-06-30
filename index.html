@@ -6614,27 +6614,27 @@ svg.innerHTML += `
 
 <defs>
 
-<linearGradient id="${id}_beam" x1="0%" y1="0%" x2="100%" y2="0%">
+<linearGradient id="${id}_plasmaWide" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
+  <stop offset="0%" stop-color="#b86cff" stop-opacity="0"/>
+  <stop offset="16%" stop-color="#b86cff" stop-opacity="0"/>
+  <stop offset="30%" stop-color="#b86cff" stop-opacity="${0.22 * power}"/>
+  <stop offset="42%" stop-color="#d68cff" stop-opacity="${0.55 * power}"/>
+  <stop offset="50%" stop-color="#f0c8ff" stop-opacity="${0.78 * power}"/>
+  <stop offset="58%" stop-color="#d68cff" stop-opacity="${0.55 * power}"/>
+  <stop offset="70%" stop-color="#b86cff" stop-opacity="${0.22 * power}"/>
+  <stop offset="84%" stop-color="#b86cff" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#b86cff" stop-opacity="0"/>
+</linearGradient>
 
-  <stop offset="0%"   stop-color="#c77dff" stop-opacity="0"/>
-  <stop offset="15%"  stop-color="#c77dff" stop-opacity="0"/>
-
-  <stop offset="28%"  stop-color="#bb7cff" stop-opacity="${0.18*power}"/>
-  <stop offset="38%"  stop-color="#cf95ff" stop-opacity="${0.45*power}"/>
-
-  <stop offset="44%"  stop-color="#efd3ff" stop-opacity="${0.82*power}"/>
-
-  <stop offset="47%"  stop-color="#ffffff" stop-opacity="${1.00*power}"/>
-  <stop offset="53%"  stop-color="#ffffff" stop-opacity="${1.00*power}"/>
-
-  <stop offset="56%"  stop-color="#efd3ff" stop-opacity="${0.82*power}"/>
-
-  <stop offset="62%"  stop-color="#cf95ff" stop-opacity="${0.45*power}"/>
-  <stop offset="72%"  stop-color="#bb7cff" stop-opacity="${0.18*power}"/>
-
-  <stop offset="85%"  stop-color="#c77dff" stop-opacity="0"/>
-  <stop offset="100%" stop-color="#c77dff" stop-opacity="0"/>
-
+<linearGradient id="${id}_plasmaCore" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
+  <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+  <stop offset="38%" stop-color="#ffffff" stop-opacity="0"/>
+  <stop offset="45%" stop-color="#f8e6ff" stop-opacity="${0.35 * power}"/>
+  <stop offset="48%" stop-color="#ffffff" stop-opacity="${0.95 * power}"/>
+  <stop offset="52%" stop-color="#ffffff" stop-opacity="${0.95 * power}"/>
+  <stop offset="55%" stop-color="#f8e6ff" stop-opacity="${0.35 * power}"/>
+  <stop offset="62%" stop-color="#ffffff" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
 </linearGradient>
 
 <radialGradient id="${id}_halo" cx="50%" cy="50%" r="70%">
@@ -6675,7 +6675,7 @@ height="${h}"
 rx="8"
 fill="url(#${id}_halo)"
 filter="url(#${id}_blur)"
-opacity="0.55"
+opacity="0.75"
 clip-path="url(#${id}_clip)"
 style="pointer-events:none;"
 />
@@ -6686,9 +6686,22 @@ y="${y}"
 width="${w}"
 height="${h}"
 rx="8"
-fill="url(#${id}_line)"
+fill="url(#${id}_plasmaWide)"
 filter="url(#${id}_blur)"
-opacity="0.85"
+opacity="1"
+clip-path="url(#${id}_clip)"
+style="pointer-events:none;"
+/>
+
+<rect
+x="${x}"
+y="${y}"
+width="${w}"
+height="${h}"
+rx="8"
+fill="url(#${id}_plasmaCore)"
+filter="url(#${id}_blur)"
+opacity="1"
 clip-path="url(#${id}_clip)"
 style="pointer-events:none;"
 />

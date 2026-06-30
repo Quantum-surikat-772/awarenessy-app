@@ -6353,10 +6353,10 @@ rectCell("e",1,N1,H1,H1,H2),
 rectCell("w",1,H2,H1,N2,H2),
 
 // Углы Близко
-lSE("se",1,N1,N1,H1+10,H1+10,38,[144,144]),
-lSW("sw",1,H2-10,N1,N2,H1+10,38,[256,144]),
-lNE("ne",1,N1,H2-10,H1+10,N2,38,[144,256]),
-lNW("nw",1,H2-10,H2-10,N2,N2,38,[256,256]),
+lSE("se",1,N1,N1,H1+14,H1+14,40,[145,145]),
+lSW("sw",1,H2-14,N1,N2,H1+14,40,[255,145]),
+lNE("ne",1,N1,H2-14,H1+14,N2,40,[145,255]),
+lNW("nw",1,H2-14,H2-14,N2,N2,40,[255,255]),
   
 // Далеко
 makeCell("s", 2, g.home1, g.mid1, g.home2, g.near1),
@@ -6626,13 +6626,42 @@ svg.innerHTML += `
   <stop offset="100%" stop-opacity="0"/>
 </linearGradient>
 
-<linearGradient id="${id}_plasmaCore" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
-  <stop offset="40%" stop-opacity="0"/>
-  <stop offset="45%" stop-opacity="${0.55*power}"/>
-  <stop offset="47%" stop-opacity="${power}"/>
-  <stop offset="53%" stop-opacity="${power}"/>
-  <stop offset="55%" stop-opacity="${0.55*power}"/>
-  <stop offset="60%" stop-opacity="0"/>
+<linearGradient id="${id}_plasmaCore"
+    x1="${x1}" y1="${y1}"
+    x2="${x2}" y2="${y2}">
+
+  <stop offset="0%"
+        stop-color="#ffffff"
+        stop-opacity="0"/>
+
+  <stop offset="40%"
+        stop-color="#ffffff"
+        stop-opacity="0"/>
+
+  <stop offset="45%"
+        stop-color="#f7ddff"
+        stop-opacity="${0.35*power}"/>
+
+  <stop offset="47%"
+        stop-color="#ffffff"
+        stop-opacity="${0.75*power}"/>
+
+  <stop offset="53%"
+        stop-color="#ffffff"
+        stop-opacity="${0.75*power}"/>
+
+  <stop offset="55%"
+        stop-color="#f7ddff"
+        stop-opacity="${0.35*power}"/>
+
+  <stop offset="60%"
+        stop-color="#ffffff"
+        stop-opacity="0"/>
+
+  <stop offset="100%"
+        stop-color="#ffffff"
+        stop-opacity="0"/>
+
 </linearGradient>
 
 <radialGradient id="${id}_halo" cx="50%" cy="50%" r="70%">

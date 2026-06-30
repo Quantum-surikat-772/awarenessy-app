@@ -6353,10 +6353,10 @@ rectCell("e",1,N1,H1,H1,H2),
 rectCell("w",1,H2,H1,N2,H2),
 
 // Углы Близко
-lSE("se",1,N1,N1,H1+10,H1+10,34,[144,144]),
-lSW("sw",1,H2-10,N1,N2,H1+10,34,[256,144]),
-lNE("ne",1,N1,H2-10,H1+10,N2,34,[144,256]),
-lNW("nw",1,H2-10,H2-10,N2,N2,34,[256,256]),
+lSE("se",1,N1,N1,H1+10,H1+10,38,[144,144]),
+lSW("sw",1,H2-10,N1,N2,H1+10,38,[256,144]),
+lNE("ne",1,N1,H2-10,H1+10,N2,38,[144,256]),
+lNW("nw",1,H2-10,H2-10,N2,N2,38,[256,256]),
   
 // Далеко
 makeCell("s", 2, g.home1, g.mid1, g.home2, g.near1),
@@ -6615,26 +6615,24 @@ svg.innerHTML += `
 <defs>
 
 <linearGradient id="${id}_plasmaWide" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
-  <stop offset="0%" stop-color="#b86cff" stop-opacity="0"/>
-  <stop offset="16%" stop-color="#b86cff" stop-opacity="0"/>
-  <stop offset="30%" stop-color="#b86cff" stop-opacity="${0.22 * power}"/>
-  <stop offset="42%" stop-color="#d68cff" stop-opacity="${0.55 * power}"/>
-  <stop offset="50%" stop-color="#f0c8ff" stop-opacity="${0.78 * power}"/>
-  <stop offset="58%" stop-color="#d68cff" stop-opacity="${0.55 * power}"/>
-  <stop offset="70%" stop-color="#b86cff" stop-opacity="${0.22 * power}"/>
-  <stop offset="84%" stop-color="#b86cff" stop-opacity="0"/>
-  <stop offset="100%" stop-color="#b86cff" stop-opacity="0"/>
+  <stop offset="0%"  stop-opacity="0"/>
+  <stop offset="20%" stop-opacity="0"/>
+  <stop offset="34%" stop-opacity="${0.20*power}"/>
+  <stop offset="44%" stop-opacity="${0.60*power}"/>
+  <stop offset="50%" stop-opacity="${0.85*power}"/>
+  <stop offset="56%" stop-opacity="${0.60*power}"/>
+  <stop offset="66%" stop-opacity="${0.20*power}"/>
+  <stop offset="80%" stop-opacity="0"/>
+  <stop offset="100%" stop-opacity="0"/>
 </linearGradient>
 
 <linearGradient id="${id}_plasmaCore" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">
-  <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
-  <stop offset="38%" stop-color="#ffffff" stop-opacity="0"/>
-  <stop offset="45%" stop-color="#f8e6ff" stop-opacity="${0.35 * power}"/>
-  <stop offset="48%" stop-color="#ffffff" stop-opacity="${0.95 * power}"/>
-  <stop offset="52%" stop-color="#ffffff" stop-opacity="${0.95 * power}"/>
-  <stop offset="55%" stop-color="#f8e6ff" stop-opacity="${0.35 * power}"/>
-  <stop offset="62%" stop-color="#ffffff" stop-opacity="0"/>
-  <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  <stop offset="40%" stop-opacity="0"/>
+  <stop offset="45%" stop-opacity="${0.55*power}"/>
+  <stop offset="47%" stop-opacity="${power}"/>
+  <stop offset="53%" stop-opacity="${power}"/>
+  <stop offset="55%" stop-opacity="${0.55*power}"/>
+  <stop offset="60%" stop-opacity="0"/>
 </linearGradient>
 
 <radialGradient id="${id}_halo" cx="50%" cy="50%" r="70%">

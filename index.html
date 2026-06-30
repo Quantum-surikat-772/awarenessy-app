@@ -6146,14 +6146,9 @@ r.setAttribute("height", cell.h);
 
 }
 
-r.setAttribute("fill","rgba(179,136,255,0.10)");
-r.setAttribute("stroke","#b388ff");
+r.setAttribute("fill","transparent");
+r.setAttribute("stroke","transparent");
 r.setAttribute("stroke-width","1");
-r.setAttribute("pointer-events","all");
-r.setAttribute("style","cursor:pointer;");
-
-r.setAttribute("fill","rgba(179,136,255,0.04)");
-r.setAttribute("stroke","rgba(179,136,255,0.45)");
 
 r.onclick = ()=>{
 
@@ -6621,12 +6616,14 @@ svg.innerHTML += `
 
 <linearGradient id="${id}_beam" x1="0%" y1="0%" x2="100%" y2="0%">
   <stop offset="0%" stop-color="#c77dff" stop-opacity="0"/>
-  <stop offset="28%" stop-color="#c77dff" stop-opacity="0.03"/>
-  <stop offset="40%" stop-color="#d99bff" stop-opacity="0.28"/>
-  <stop offset="48%" stop-color="#f1d6ff" stop-opacity="0.82"/>
-  <stop offset="52%" stop-color="#f1d6ff" stop-opacity="0.82"/>
-  <stop offset="60%" stop-color="#d99bff" stop-opacity="0.28"/>
-  <stop offset="72%" stop-color="#c77dff" stop-opacity="0.03"/>
+  <stop offset="18%" stop-color="#c77dff" stop-opacity="0"/>
+  <stop offset="32%" stop-color="#c77dff" stop-opacity="${0.20 * power}"/>
+  <stop offset="42%" stop-color="#e6b6ff" stop-opacity="${0.65 * power}"/>
+  <stop offset="47%" stop-color="#fff0ff" stop-opacity="${0.95 * power}"/>
+  <stop offset="53%" stop-color="#fff0ff" stop-opacity="${0.95 * power}"/>
+  <stop offset="58%" stop-color="#e6b6ff" stop-opacity="${0.65 * power}"/>
+  <stop offset="68%" stop-color="#c77dff" stop-opacity="${0.20 * power}"/>
+  <stop offset="82%" stop-color="#c77dff" stop-opacity="0"/>
   <stop offset="100%" stop-color="#c77dff" stop-opacity="0"/>
 </linearGradient>
 

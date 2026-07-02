@@ -2081,15 +2081,19 @@ ${stage === "home" ? `
 
 <div style="
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
-gap:8px;
+gap:22px;
 margin-bottom:18px;
 ">
 
 <div class="dreamTitle" style="
-font-size:19px;
+font-size:22px;
 font-weight:700;
+line-height:1.2;
+text-align:center;
+max-width:330px;
 ">
 В каком направлении может быть твой Дом?
 </div>
@@ -2098,19 +2102,26 @@ font-weight:700;
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:8px;
-max-width:260px;
+max-width:190px;
 margin:0 auto 18px auto;
 ">
 
 ${dirs.map(d=>`
 
 <button class="btn"
-style="${d[0]==='c' ? 'font-weight:700;border:1px solid #7fd4ff;' : ''}"
+style="
+width:52px;
+height:52px;
+padding:0;
+${d[0]==='c' ? 'font-weight:700;border:1px solid #7fd4ff;' : ''}
+"
 onclick="pickDreamLocationHome('${d[0]}')">
 ${d[1]}
 </button>
 
 `).join("")}
+
+</div>
 
 </div>
 

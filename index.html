@@ -5381,6 +5381,27 @@ renderCompass();
 
 }
 
+function pickDreamTime(time){
+
+state.dreamTime = time;
+
+state.dreamLocationIndex = 1;
+state.dreamLocationStage = "home";
+state.step = "dream_location_form";
+
+renderCompass();
+
+}
+
+function drawDreamTimeAura(svg){
+
+if(!state.dreamTime) return;
+
+// позже здесь нарисуем цветовой слой времени суток
+// dawn / morning / day / evening / sunset / night
+
+}
+
 function pickDreamLocationDistance(v){
 
 state.dreamCurrent = state.dreamCurrent || {};

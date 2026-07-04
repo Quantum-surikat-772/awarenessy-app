@@ -5540,6 +5540,92 @@ ${dreamLocationLabel()}
 
 }
 
+function drawDreamTimeRing(svg){
+
+if(!state.dreamTime) return;
+if(svg.dataset.dreamTimeRingDrawn === "1") return;
+
+svg.dataset.dreamTimeRingDrawn = "1";
+
+const cx = 200;
+const cy = 200;
+const r = 178;
+const sw = 18;
+
+const colors = {
+dawn:    "#7fd4ff",
+morning: "#9be7ff",
+day:     "#ffd36a",
+evening: "#ff9b5c",
+sunset:  "#ff6a3d",
+night:   "#4f6dff"
+};
+
+const angles = {
+day:     -90,  // Юг / верх
+morning: -135,
+dawn:    -180, // Восток / слева
+evening: 0,    // Запад / справа
+sunset:  35,
+night:   90    // Север / низ
+};
+
+const a = angles[state.dreamTime];
+const color = colors[state.dreamTime] || "#7fd4ff";
+
+const start = a - 28;
+const end = a + 28;
+
+function polar(angle){
+const rad = (angle - 90) * Math.PI / 180;
+return {
+x: cx + r * Math.cos(rad),
+y: cy + r * Math.sin(rad)
+};
+}
+
+const p1 = polar(start);
+const p2 = polar(end);
+
+const largeArc = end - start > 180 ? 1 : 0;
+
+svg.innerHTML += `
+
+<defs>
+<filter id="dreamTimeGlow" x="-80%" y="-80%" width="260%" height="260%">
+<feGaussianBlur stdDeviation="6" result="blur"/>
+<feMerge>
+<feMergeNode in="blur"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
+
+<path
+d="M ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y}"
+fill="none"
+stroke="${color}"
+stroke-width="${sw}"
+stroke-linecap="round"
+opacity="0.72"
+filter="url(#dreamTimeGlow)"
+style="pointer-events:none;"
+/>
+
+<path
+d="M ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y}"
+fill="none"
+stroke="#ffffff"
+stroke-width="2"
+stroke-linecap="round"
+opacity="0.55"
+style="pointer-events:none;"
+/>
+
+`;
+
+}
+
 function pickDreamLocationHome(v){
 
 state.dreamCurrent = state.dreamCurrent || {};

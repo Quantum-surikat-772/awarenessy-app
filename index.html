@@ -3594,6 +3594,8 @@ svg.innerHTML = `
 // кольцо времени рисуется ВСЕГДА
 drawSolarRing(svg);
 
+drawDreamTimeRing(svg);
+
 // аналитическая подсветка зон
 drawAnalyticsZones(svg);
 
@@ -5593,87 +5595,69 @@ ${dreamLocationLabel()}
 
 function drawDreamTimeRing(svg){
 
-if(!state.dreamTime) return;
-if(svg.dataset.dreamTimeRingDrawn === "1") return;
+const time =
+state.dreamCurrent && state.dreamCurrent.time;
 
-svg.dataset.dreamTimeRingDrawn = "1";
+if(!time) return;
 
-const cx = 200;
-const cy = 200;
-const r = 178;
-const sw = 18;
+const map = {
+dawn: 2,
+morning: 3,
+day: 4,
+evening: 5,
+sunset: 6,
+night: 0
+};
 
 const colors = {
-dawn:    "#7fd4ff",
-morning: "#9be7ff",
-day:     "#ffd36a",
-evening: "#ff9b5c",
-sunset:  "#ff6a3d",
-night:   "#4f6dff"
+dawn:"#d84cff",
+morning:"#6fd7ff",
+day:"#ffd56a",
+evening:"#6fd7ff",
+sunset:"#d84cff",
+night:"#2f65ff"
 };
 
-const angles = {
-day:     -90,  // Юг / верх
-morning: -135,
-dawn:    -180, // Восток / слева
-evening: 0,    // Запад / справа
-sunset:  35,
-night:   90    // Север / низ
-};
+const idx = map[time];
+const col = colors[time];
 
-const a = angles[state.dreamTime];
-const color = colors[state.dreamTime] || "#7fd4ff";
+const step = Math.PI * 2 / 8;
 
-const start = a - 28;
-const end = a + 28;
+const segments = [
+{ offset:-1, power:0.22, ring:[198,200], cls:"solarSide solarA" },
+{ offset:0,  power:0.95, ring:[195,203], cls:"" },
+{ offset:1,  power:0.22, ring:[198,200], cls:"solarSide solarB" }
+];
 
-function polar(angle){
-const rad = (angle - 90) * Math.PI / 180;
-return {
-x: cx + r * Math.cos(rad),
-y: cy + r * Math.sin(rad)
-};
-}
+segments.forEach(seg=>{
 
-const p1 = polar(start);
-const p2 = polar(end);
+const i = (idx + seg.offset + 8) % 8;
 
-const largeArc = end - start > 180 ? 1 : 0;
+const a0 =
+Math.PI/2 - step/2 + i * step;
+
+const a1 = a0 + step;
 
 svg.innerHTML += `
 
-<defs>
-<filter id="dreamTimeGlow" x="-80%" y="-80%" width="260%" height="260%">
-<feGaussianBlur stdDeviation="6" result="blur"/>
-<feMerge>
-<feMergeNode in="blur"/>
-<feMergeNode in="SourceGraphic"/>
-</feMerge>
-</filter>
-</defs>
-
 <path
-d="M ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y}"
-fill="none"
-stroke="${color}"
-stroke-width="${sw}"
-stroke-linecap="round"
-opacity="0.72"
-filter="url(#dreamTimeGlow)"
-style="pointer-events:none;"
+d="${sector(seg.ring[0]-2,seg.ring[1]+2,a0,a1)}"
+fill="${col}"
+opacity="${seg.power * 0.18}"
+filter="url(#glow)"
+class="${seg.cls}"
 />
 
 <path
-d="M ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y}"
-fill="none"
-stroke="#ffffff"
-stroke-width="2"
-stroke-linecap="round"
-opacity="0.55"
-style="pointer-events:none;"
+d="${sector(seg.ring[0],seg.ring[1],a0,a1)}"
+fill="${col}"
+opacity="${seg.power}"
+class="${seg.cls}"
 />
 
 `;
+
+});
 
 }
 

@@ -3609,6 +3609,9 @@ state.step === "dream_attention" ||
 state.step === "dream_map"
 ){
 
+drawDreamSavedTimeRings(svg);
+drawDreamTimeRing(svg);
+
 drawDreamSavedLocations(svg);
 drawDreamCurrentLocation(svg);
 
@@ -5657,6 +5660,28 @@ class="${seg.cls}"
 />
 
 `;
+
+});
+
+}
+
+function drawDreamSavedTimeRings(svg){
+
+if(!state.dreamLocations) return;
+
+state.dreamLocations.forEach(loc=>{
+
+if(!loc.time) return;
+
+const oldCurrent = state.dreamCurrent;
+
+state.dreamCurrent = {
+time: loc.time
+};
+
+drawDreamTimeRing(svg);
+
+state.dreamCurrent = oldCurrent;
 
 });
 

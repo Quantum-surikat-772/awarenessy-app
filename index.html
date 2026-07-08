@@ -6919,6 +6919,32 @@ style="pointer-events:none;"
 
 }
 
+function getDreamTimeStats(){
+
+const stats = {
+dawn:0,
+morning:0,
+day:0,
+evening:0,
+sunset:0,
+night:0
+};
+
+const total = state.dreamLocations.length || 0;
+
+state.dreamLocations.forEach(loc=>{
+if(loc.time && stats[loc.time] !== undefined){
+stats[loc.time]++;
+}
+});
+
+return {
+total,
+stats
+};
+
+}
+
 </script>
 
 <div id="modal">

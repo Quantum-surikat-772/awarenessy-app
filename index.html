@@ -504,8 +504,39 @@ const ENERGY = {
 "#000000": -3  // Хаос
 };
 
+const TIME_LABELS = {
+dawn:"Рассвет",
+morning:"Утро",
+day:"День",
+evening:"Вечер",
+sunset:"Закат",
+night:"Ночь"
+};
+
+const TIME_COLORS = {
+dawn:"#d84cff",
+morning:"#6fd7ff",
+day:"#ffd56a",
+evening:"#6fd7ff",
+sunset:"#d84cff",
+night:"#2f65ff"
+};
+
+const TIME_MAP = {
+dawn:2,
+morning:3,
+day:4,
+evening:5,
+sunset:6,
+night:0
+};
+
+const TIME_OPTIONS = Object.entries(TIME_LABELS);
+
 const DREAM_CLUSTERS = [
 "Большой город",
+"Маленький городок",
+"Посёлок",
 "Сельская местность",
 
 "Дом / квартира",
@@ -521,6 +552,9 @@ const DREAM_CLUSTERS = [
 "Подводный мир",
 
 "Учебное заведение",
+"Офис",
+"Концертный зал",
+"Стадион",
 "Больница / лаборатория",
 "Завод / фабрика",
 "Тюрьма / лагерь",

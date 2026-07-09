@@ -533,6 +533,142 @@ night:0
 
 const TIME_OPTIONS = Object.entries(TIME_LABELS);
 
+const EMOTIONS = [
+{
+id:"awareness",
+color:"#9b5cff",
+title:"Осознанность",
+energy:3,
+awareness:100,
+activity:60,
+creativity:80,
+dependence:0,
+tension:5,
+icon:"👁"
+},
+
+{
+id:"conscious_creativity",
+color:"#FFFFFF",
+title:"Осознанное творчество",
+energy:3,
+awareness:95,
+activity:75,
+creativity:100,
+dependence:0,
+tension:5,
+icon:"⚪"
+},
+
+{
+id:"joy",
+color:"#FFD700",
+title:"Позитивная деятельность, радость",
+energy:1,
+awareness:75,
+activity:85,
+creativity:65,
+dependence:5,
+tension:10,
+icon:"☀️"
+},
+
+{
+id:"inspiration",
+color:"#3F51B5",
+title:"Спокойствие, творчество, вдохновение",
+energy:1,
+awareness:80,
+activity:45,
+creativity:90,
+dependence:5,
+tension:5,
+icon:"🔵"
+},
+
+{
+id:"dreaming",
+color:"#26C6DA",
+title:"Мечтательность, фантазёрство",
+energy:0,
+awareness:40,
+activity:20,
+creativity:65,
+dependence:25,
+tension:10,
+icon:"💭"
+},
+
+{
+id:"neutral",
+color:"#808080",
+title:"Нейтральность, пассивное вовлечение",
+energy:0,
+awareness:35,
+activity:25,
+creativity:20,
+dependence:20,
+tension:10,
+icon:"⚙️"
+},
+
+{
+id:"competition",
+color:"#FF9800",
+title:"Соревновательность, самоуверенность",
+energy:0,
+awareness:45,
+activity:85,
+creativity:35,
+dependence:25,
+tension:45,
+icon:"🔥"
+},
+
+{
+id:"anxiety",
+color:"#4CAF50",
+title:"Тоска, зависимость, тревожность",
+energy:-1,
+awareness:25,
+activity:35,
+creativity:15,
+dependence:75,
+tension:70,
+icon:"🟢"
+},
+
+{
+id:"anger",
+color:"#F44336",
+title:"Превосходство, гнев, агрессия",
+energy:-1,
+awareness:20,
+activity:90,
+creativity:10,
+dependence:55,
+tension:90,
+icon:"🔴"
+},
+
+{
+id:"chaos",
+color:"#000000",
+title:"Отсутствие контроля, хаос, кошмар",
+energy:-3,
+awareness:5,
+activity:60,
+creativity:5,
+dependence:95,
+tension:100,
+icon:"⚫"
+}
+];
+
+function emotionByColor(color){
+return EMOTIONS.find(e=>e.color === color);
+}
+
 const DREAM_CLUSTERS = [
 "Большой город",
 "Маленький городок",

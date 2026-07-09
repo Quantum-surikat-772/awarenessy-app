@@ -2434,18 +2434,35 @@ max-width:320px;
 margin:0 auto;
 ">
 
-${[
-["#9b5cff","Осознанность",3],
-["#FFFFFF","Осознанное творчество",2],
-["#FFD700","Позитивная деятельность, радость",1],
-["#3F51B5","Спокойствие, творчество, вдохновение",1],
-["#26C6DA","Мечтательность, фантазёрство",-1],
-["#808080","Нейтральность, пассивное вовлечение",-1],
-["#FF9800","Соревновательность, самоуверенность",-1],
-["#4CAF50","Тоска, зависимость, тревожность",-2],
-["#F44336","Превосходство, гнев, агрессия",-2],
-["#000000","Отсутствие контроля, хаос, кошмар",-3]
-].map(e=>`
+${EMOTIONS.map(e=>`
+
+<button class="btn"
+style="
+display:flex;
+align-items:center;
+justify-content:flex-start;
+gap:10px;
+padding:0 12px;
+font-size:14px;
+border:${state.dreamCurrent.emotion===e.color ? '1px solid #7fd4ff' : '1px solid #333'};
+color:${state.dreamCurrent.emotion===e.color ? '#7fd4ff' : '#fff'};
+"
+onclick="pickDreamLocationEmotion('${e.color}', ${e.energy})">
+
+<span style="
+width:18px;
+height:18px;
+border-radius:50%;
+background:${e.color};
+border:1px solid #777;
+display:inline-block;
+"></span>
+
+<span>${e.title}</span>
+
+</button>
+
+`).join("")}
 
 <button class="btn"
 style="
@@ -3115,20 +3132,6 @@ padding:0 10px;
 
 if(state.step === "emotion"){
 
-const emotion = [
-
-["#FFFFFF","Осознанное творчество"],
-["#FFD700","Позитивная деятельность, радость"],
-["#3F51B5","Спокойствие, творчество, вдохновение"],
-["#26C6DA","Мечтательность, фантазёрство"],
-["#808080","Нейтральность, пассивное вовлечение"],
-["#FF9800","Соревновательность, самоуверенность"],
-["#4CAF50","Тоска, зависимость, тревожность"],
-["#F44336","Превосходство, гнев, агрессия"],
-["#000000","Отсутствие контроля, хаос, ужас"]
-
-];
-
 topHTML = `
 <div style="flex:1;overflow:auto;padding:20px;">
 
@@ -3137,7 +3140,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:8px;
-
 margin-bottom:20px;
 ">
 
@@ -3156,20 +3158,38 @@ onclick="openHelp('emotion')">?</button>
 
 <div style="display:flex;flex-direction:column;gap:10px;">
 
-${emotion.map(e=>`
+${EMOTIONS
+.filter(e=>e.id !== "awareness")
+.map(e=>`
 
 <button class="btn"
 style="
 justify-content:flex-start;
+gap:10px;
 padding:0 14px;
 font-size:15px;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 "
-onclick="selectEmotion('${e[0]}', '${e[1]}')">
+onclick="selectEmotion('${e.color}', '${e.title}')">
 
-${e[1]}
+<span style="
+width:18px;
+height:18px;
+border-radius:50%;
+background:${e.color};
+border:1px solid #777;
+display:inline-block;
+flex-shrink:0;
+"></span>
+
+<span style="
+overflow:hidden;
+text-overflow:ellipsis;
+">
+${e.title}
+</span>
 
 </button>
 
@@ -3178,6 +3198,7 @@ ${e[1]}
 </div>
 </div>
 `;
+
 }
 
 if(state.step === "attention"){

@@ -5597,10 +5597,7 @@ ${dreamLocationLabel()}
 
 }
 
-function drawDreamTimeRing(svg){
-
-const time =
-state.dreamCurrent && state.dreamCurrent.time;
+function drawTimeRingByValue(svg, time){
 
 if(!time) return;
 
@@ -5625,6 +5622,8 @@ night:"#2f65ff"
 const idx = map[time];
 const col = colors[time];
 
+if(idx === undefined) return;
+
 const step = Math.PI * 2 / 8;
 
 const segments = [
@@ -5637,9 +5636,7 @@ segments.forEach(seg=>{
 
 const i = (idx + seg.offset + 8) % 8;
 
-const a0 =
-Math.PI/2 - step/2 + i * step;
-
+const a0 = Math.PI/2 - step/2 + i * step;
 const a1 = a0 + step;
 
 svg.innerHTML += `
@@ -5665,24 +5662,21 @@ class="${seg.cls}"
 
 }
 
+function drawDreamTimeRing(svg){
+
+const time =
+state.dreamCurrent && state.dreamCurrent.time;
+
+drawTimeRingByValue(svg, time);
+
+}
+
 function drawDreamSavedTimeRings(svg){
 
 if(!state.dreamLocations) return;
 
 state.dreamLocations.forEach(loc=>{
-
-if(!loc.time) return;
-
-const oldCurrent = state.dreamCurrent;
-
-state.dreamCurrent = {
-time: loc.time
-};
-
-drawDreamTimeRing(svg);
-
-state.dreamCurrent = oldCurrent;
-
+drawTimeRingByValue(svg, loc.time);
 });
 
 }

@@ -3762,6 +3762,9 @@ drawSolarRing(svg);
 
 drawDreamTimeRing(svg);
 
+// тонкая навигационная сетка аналитики
+drawCompassGuideGrid(svg);
+
 // аналитическая подсветка зон
 drawAnalyticsZones(svg);
 
@@ -3789,12 +3792,11 @@ return;
 
 }
 
-if(state.step === "diagrams"){
+if(state.step === "diagrams" && !state.beam){
 return;
 }
 
-// в режиме диаграмм touch должен работать всегда
-if(!state.beam && state.step !== "diagrams") return;
+if(!state.beam) return;
 
 // центр (ДОМ)
 
@@ -4080,6 +4082,66 @@ style="pointer-events:none;"
 
 });
 
+}
+
+function drawCompassGuideGrid(svg){
+
+if(state.step !== "diagrams") return;
+
+const cx = 200;
+const cy = 200;
+
+const radii = [53,94,142,191];
+
+svg.innerHTML += `
+
+<g
+fill="none"
+stroke="#8f83b8"
+stroke-width="1"
+opacity="0.28"
+style="pointer-events:none;"
+>
+
+${radii.map(r=>`
+<circle
+cx="${cx}"
+cy="${cy}"
+r="${r}"
+/>
+`).join("")}
+
+${Array.from({length:8},(_,i)=>{
+
+const angle =
+-Math.PI / 2 - Math.PI / 8 + i * Math.PI / 4;
+
+const x1 =
+cx + Math.cos(angle) * 53;
+
+const y1 =
+cy + Math.sin(angle) * 53;
+
+const x2 =
+cx + Math.cos(angle) * 191;
+
+const y2 =
+cy + Math.sin(angle) * 191;
+
+return `
+<line
+x1="${x1}"
+y1="${y1}"
+x2="${x2}"
+y2="${y2}"
+/>
+`;
+
+}).join("")}
+
+</g>
+
+`;
 }
 
 function enableCompassTouch(svg){

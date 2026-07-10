@@ -669,6 +669,24 @@ function emotionByColor(color){
 return EMOTIONS.find(e=>e.color === color);
 }
 
+function emotionEnergy(color){
+
+const emotion =
+emotionByColor(color);
+
+return emotion ? emotion.energy : 0;
+
+}
+
+function emotionTitle(color){
+
+const emotion =
+emotionByColor(color);
+
+return emotion ? emotion.title : color;
+
+}
+
 const DREAM_CLUSTERS = [
 "Большой город",
 "Маленький городок",
@@ -4299,23 +4317,7 @@ return map[a] || a;
 }
 
 function emotionName(c){
-
-const map = {
-
-"#FFFFFF":"Осознанное творчество",
-"#FFD700":"Позитивная деятельность, радость",
-"#3F51B5":"Спокойствие, творчество, вдохновение",
-"#26C6DA":"Мечтательность, фантазёрство",
-"#808080":"Нейтральность, пассивное вовлечение",
-"#FF9800":"Соревновательность, самоуверенность",
-"#4CAF50":"Тоска, зависимость, тревожность",
-"#F44336":"Превосходство, гнев, агрессия",
-"#000000":"Отсутствие контроля, хаос, ужас"
-
-};
-
-return map[c] || c;
-
+return emotionTitle(c);
 }
 
 box.innerHTML = `
@@ -4589,40 +4591,7 @@ return map[a] || a;
 }
 
 function emotionName(c){
-
-const map = {
-
-"#FFFFFF":
-"Осознанное творчество",
-
-"#FFD700":
-"Позитивная деятельность, радость",
-
-"#3F51B5":
-"Спокойствие, творчество, вдохновение",
-
-"#26C6DA":
-"Мечтательность, фантазёрство",
-
-"#808080":
-"Нейтральность, пассивное вовлечение",
-
-"#FF9800":
-"Соревновательность, самоуверенность",
-
-"#4CAF50":
-"Тоска, зависимость, тревожность",
-
-"#F44336":
-"Превосходство, гнев, агрессия",
-
-"#000000":
-"Отсутствие контроля, хаос, ужас"
-
-};
-
-return map[c] || c;
-
+return emotionTitle(c);
 }
 
 box.innerHTML = `
@@ -5019,7 +4988,7 @@ activity: state.activity,
 emotion: state.emotion,
 
 energy:
-ENERGY[state.emotion] || 0,
+emotionEnergy(state.emotion),
 
 transformations: state.transformations,
 

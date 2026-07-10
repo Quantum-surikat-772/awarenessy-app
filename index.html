@@ -2444,8 +2444,8 @@ justify-content:flex-start;
 gap:10px;
 padding:0 12px;
 font-size:14px;
-border:${state.dreamCurrent.emotion===e.color ? '1px solid #7fd4ff' : '1px solid #333'};
-color:${state.dreamCurrent.emotion===e.color ? '#7fd4ff' : '#fff'};
+border:${state.dreamCurrent.emotion === e.color ? '1px solid #7fd4ff' : '1px solid #333'};
+color:${state.dreamCurrent.emotion === e.color ? '#7fd4ff' : '#fff'};
 "
 onclick="pickDreamLocationEmotion('${e.color}', ${e.energy})">
 
@@ -2456,37 +2456,10 @@ border-radius:50%;
 background:${e.color};
 border:1px solid #777;
 display:inline-block;
+flex-shrink:0;
 "></span>
 
 <span>${e.title}</span>
-
-</button>
-
-`).join("")}
-
-<button class="btn"
-style="
-display:flex;
-align-items:center;
-justify-content:flex-start;
-gap:10px;
-padding:0 12px;
-font-size:14px;
-border:${state.dreamCurrent.emotion === e[0] ? '1px solid #7fd4ff' : '1px solid #333'};
-color:${state.dreamCurrent.emotion === e[0] ? '#7fd4ff' : '#fff'};
-"
-onclick="pickDreamLocationEmotion('${e[0]}', ${e[2]})">
-
-<span style="
-width:18px;
-height:18px;
-border-radius:50%;
-background:${e[0]};
-border:1px solid #777;
-display:inline-block;
-"></span>
-
-<span>${e[1]}</span>
 
 </button>
 

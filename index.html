@@ -508,46 +508,6 @@ will-change:transform;
 <div id="bottom">BOTTOM OK</div>
 </div>
 
-@keyframes compassGridFloat{
-
-0%{
-transform:translate(-1.8px,-1.3px);
-}
-
-20%{
-transform:translate(0.4px,-2px);
-}
-
-40%{
-transform:translate(1.5px,0.2px);
-}
-
-60%{
-transform:translate(-0.2px,1.5px);
-}
-
-80%{
-transform:translate(-2.2px,0.4px);
-}
-
-100%{
-transform:translate(-1.8px,-1.3px);
-}
-
-}
-
-.compassGuideGrid{
-transform-box:view-box;
-transform-origin:200px 200px;
-
-animation:
-compassGridFloat 24s
-cubic-bezier(0.45,0,0.55,1)
-infinite;
-
-will-change:transform;
-}
-
 <script>
 
 const HAND_IMG = "https://i.postimg.cc/zXp9BVGf/Hands-1.png";

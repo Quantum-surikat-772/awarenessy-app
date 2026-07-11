@@ -456,10 +456,44 @@ animation:dreamPanelGlow 20s ease infinite;
 color:#fff;
 }
 
-@keyframes dreamPanelGlow{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+@keyframes compassGridFloat{
+
+0%{
+transform:translate(-1.8px,-1.3px);
+}
+
+20%{
+transform:translate(0.4px,-2px);
+}
+
+40%{
+transform:translate(1.5px,0.2px);
+}
+
+60%{
+transform:translate(-0.2px,1.5px);
+}
+
+80%{
+transform:translate(-2.2px,0.4px);
+}
+
+100%{
+transform:translate(-1.8px,-1.3px);
+}
+
+}
+
+.compassGuideGrid{
+transform-box:view-box;
+transform-origin:200px 200px;
+
+animation:
+compassGridFloat 24s
+cubic-bezier(0.45,0,0.55,1)
+infinite;
+
+will-change:transform;
 }
 
 </style>
@@ -473,6 +507,46 @@ color:#fff;
 <div id="top">TOP OK</div>
 <div id="bottom">BOTTOM OK</div>
 </div>
+
+@keyframes compassGridFloat{
+
+0%{
+transform:translate(-1.8px,-1.3px);
+}
+
+20%{
+transform:translate(0.4px,-2px);
+}
+
+40%{
+transform:translate(1.5px,0.2px);
+}
+
+60%{
+transform:translate(-0.2px,1.5px);
+}
+
+80%{
+transform:translate(-2.2px,0.4px);
+}
+
+100%{
+transform:translate(-1.8px,-1.3px);
+}
+
+}
+
+.compassGuideGrid{
+transform-box:view-box;
+transform-origin:200px 200px;
+
+animation:
+compassGridFloat 24s
+cubic-bezier(0.45,0,0.55,1)
+infinite;
+
+will-change:transform;
+}
 
 <script>
 

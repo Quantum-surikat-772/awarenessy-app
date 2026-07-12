@@ -1035,6 +1035,9 @@ dreamAnomalies: {},
 dreamClusterIndex: 0,
 dreamClusterView: "groups",
 dreamClusterGroup: null,
+dreamNewCluster: null,
+dreamNewClusterReturnView: "groups",
+dreamNewClusterReturnGroup: null,
 
 // будущий компас
 time: null,
@@ -7893,6 +7896,17 @@ return {
 total,
 stats
 };
+
+}
+
+function escapeHTML(value){
+
+return String(value || "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
 

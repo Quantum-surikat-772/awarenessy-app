@@ -3074,7 +3074,9 @@ const loc =
 locs[state.dreamClusterIndex || 0];
 
 if(!loc){
+
 return `
+
 <div class="dreamTitle" style="
 font-size:22px;
 font-weight:800;
@@ -3091,15 +3093,36 @@ color:#b388ff;
 onclick="state.step='dream_map';renderCompass();">
 ЛКС
 </button>
+
 `;
+
 }
+
+const currentGroup =
+CLUSTER_GROUPS.find(
+group => group.id === state.dreamClusterGroup
+);
+
+const groupClusters =
+currentGroup
+? CLUSTER_CATALOG.filter(
+cluster => cluster.group === currentGroup.id
+)
+: [];
+
+
+/* ─────────────────────────────
+   МЕНЮ ГРУПП
+───────────────────────────── */
+
+if(state.dreamClusterView !== "list"){
 
 return `
 
 <div class="dreamTitle" style="
 font-size:21px;
 font-weight:800;
-margin-bottom:12px;
+margin-bottom:8px;
 ">
 Кластер локации ${loc.letter}
 </div>
@@ -3108,10 +3131,87 @@ margin-bottom:12px;
 font-size:14px;
 color:#ddd;
 line-height:1.45;
-margin-bottom:14px;
+margin-bottom:16px;
 ">
-Выбери архетипический тип пространства
+Выбери группу пространства
 для этого Пузыря Восприятия.
+</div>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:9px;
+max-width:360px;
+margin:0 auto;
+">
+
+${CLUSTER_GROUPS.map(group=>`
+
+<button class="btn"
+style="
+justify-content:space-between;
+text-align:left;
+padding:0 14px;
+font-size:15px;
+"
+onclick="openDreamClusterGroup('${group.id}')">
+
+<span>
+${group.icon} ${group.title}
+</span>
+
+<span style="
+color:#7fd4ff;
+font-size:20px;
+">
+›
+</span>
+
+</button>
+
+`).join("")}
+
+<button class="btn"
+style="
+justify-content:flex-start;
+padding:0 14px;
+font-size:15px;
+border:1px solid #b388ff;
+color:#b388ff;
+margin-top:6px;
+"
+onclick="openDreamNewCluster()">
+✨ Новый кластер
+</button>
+
+</div>
+
+`;
+
+}
+
+
+/* ─────────────────────────────
+   КЛАСТЕРЫ ВЫБРАННОЙ ГРУППЫ
+───────────────────────────── */
+
+return `
+
+<div class="dreamTitle" style="
+font-size:21px;
+font-weight:800;
+margin-bottom:8px;
+">
+${currentGroup ? currentGroup.icon : "✨"}
+${currentGroup ? currentGroup.title : "Кластеры"}
+</div>
+
+<div style="
+font-size:14px;
+color:#ddd;
+margin-bottom:16px;
+">
+Пузырь Восприятия ${loc.letter}
 </div>
 
 <div style="
@@ -3119,10 +3219,10 @@ display:flex;
 flex-direction:column;
 gap:8px;
 max-width:360px;
-margin:0 auto 14px auto;
+margin:0 auto;
 ">
 
-${DREAM_CLUSTERS.map(c=>`
+${groupClusters.map(cluster=>`
 
 <button class="btn"
 style="
@@ -3130,48 +3230,37 @@ justify-content:flex-start;
 text-align:left;
 padding:0 12px;
 font-size:14px;
-border:${loc.cluster === c ? '1px solid #7fd4ff' : '1px solid #333'};
-color:${loc.cluster === c ? '#7fd4ff' : '#fff'};
 "
-onclick="pickDreamCluster('${c}')">
-${CLUSTER_ICONS[c] || "✨"} ${c}
+onclick="chooseDreamCluster('${cluster.id}')">
+${cluster.icon} ${cluster.title}
 </button>
 
 `).join("")}
 
-</div>
-
-<input
-id="dreamClusterCustomInput"
-placeholder="Свой вариант..."
-value="${loc.clusterCustom || ""}"
+<button class="btn"
 style="
-width:100%;
-max-width:360px;
-height:46px;
-border-radius:12px;
-border:1px solid #333;
-background:#111;
-color:#fff;
-font-size:16px;
-padding:0 12px;
-margin-bottom:14px;
-">
-
-<div style="
-display:flex;
-justify-content:center;
-margin-top:16px;
-">
+justify-content:flex-start;
+padding:0 14px;
+font-size:15px;
+border:1px solid #b388ff;
+color:#b388ff;
+margin-top:5px;
+"
+onclick="openDreamNewCluster()">
+✨ Новый кластер
+</button>
 
 <button class="btn"
 style="
-border:1px solid #7fd4ff;
-color:#7fd4ff;
-min-width:160px;
+justify-content:center;
+padding:0 14px;
+font-size:15px;
+border:1px solid #555;
+color:#ddd;
+margin-top:5px;
 "
-onclick="saveDreamClusterAndNext()">
-Далее →
+onclick="backToDreamClusterGroups()">
+← Все группы
 </button>
 
 </div>

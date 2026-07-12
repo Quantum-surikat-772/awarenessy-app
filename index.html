@@ -493,6 +493,11 @@ const EAS_IMG =
 let entries =
 JSON.parse(localStorage.getItem("awarenessy_entries") || "[]");
 
+let discoveredClusters =
+JSON.parse(
+localStorage.getItem("awarenessy_discovered_clusters") || "[]"
+);
+
 let compassFieldTimer = null;
 
 const TIME_LABELS = {

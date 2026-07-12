@@ -6697,11 +6697,11 @@ renderCompass();
 function pickDreamCluster(c){
 
 const loc =
-state.dreamLocations[state.dreamClusterIndex || 0];
+state.dreamAttentionStage = "clusters";
+state.dreamClusterIndex = 0;
 
-if(!loc) return;
-
-loc.cluster = c;
+state.dreamClusterView = "groups";
+state.dreamClusterGroup = null;
 
 renderCompass();
 

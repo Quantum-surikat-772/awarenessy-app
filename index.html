@@ -3281,6 +3281,234 @@ onclick="backToDreamClusterGroups()">
 
 }
 
+if(state.step === "dream_new_cluster"){
+
+const locs =
+state.dreamLocations || [];
+
+const loc =
+locs[state.dreamClusterIndex || 0];
+
+const draft =
+state.dreamNewCluster || {};
+
+topHTML = `
+
+<div style="
+flex:1;
+overflow:auto;
+padding:20px;
+text-align:center;
+">
+
+<div class="dreamTitle" style="
+font-size:23px;
+font-weight:800;
+margin-bottom:7px;
+color:#b388ff;
+">
+✨ Новый обнаруженный кластер
+</div>
+
+<div style="
+font-size:14px;
+color:#ddd;
+line-height:1.45;
+margin-bottom:18px;
+">
+${loc
+? `Пузырь Восприятия ${loc.letter}`
+: "Новая область исследования"}
+</div>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:13px;
+max-width:360px;
+margin:0 auto;
+text-align:left;
+">
+
+<label style="
+font-size:15px;
+font-weight:700;
+color:#7fd4ff;
+">
+Название кластера
+</label>
+
+<input
+id="newClusterTitle"
+type="text"
+maxlength="80"
+placeholder="Например: Лес отражений"
+value="${escapeHTML(draft.title || "")}"
+style="
+width:100%;
+min-height:52px;
+border-radius:13px;
+border:1px solid #444;
+background:#111;
+color:#fff;
+font-size:17px;
+padding:0 14px;
+outline:none;
+">
+
+<label style="
+font-size:15px;
+font-weight:700;
+color:#7fd4ff;
+">
+Группа пространства
+</label>
+
+<select
+id="newClusterGroup"
+style="
+width:100%;
+min-height:52px;
+border-radius:13px;
+border:1px solid #444;
+background:#111;
+color:#fff;
+font-size:16px;
+padding:0 12px;
+outline:none;
+">
+
+<option value="">
+Выбери группу
+</option>
+
+${CLUSTER_GROUPS.map(group=>`
+
+<option
+value="${group.id}"
+${draft.group === group.id ? "selected" : ""}
+>
+${group.icon} ${group.title}
+</option>
+
+`).join("")}
+
+</select>
+
+<label style="
+font-size:15px;
+font-weight:700;
+color:#7fd4ff;
+">
+Краткое описание
+</label>
+
+<textarea
+id="newClusterDescription"
+maxlength="700"
+placeholder="Что это за пространство? Чем оно отличается от уже известных?"
+style="
+width:100%;
+min-height:110px;
+resize:vertical;
+border-radius:13px;
+border:1px solid #444;
+background:#111;
+color:#fff;
+font-size:16px;
+line-height:1.4;
+padding:12px 14px;
+outline:none;
+">${escapeHTML(draft.description || "")}</textarea>
+
+<label style="
+font-size:15px;
+font-weight:700;
+color:#7fd4ff;
+">
+Характерные признаки
+</label>
+
+<textarea
+id="newClusterFeatures"
+maxlength="500"
+placeholder="Например: зеркальные деревья, отсутствие ветра, собственное эхо"
+style="
+width:100%;
+min-height:95px;
+resize:vertical;
+border-radius:13px;
+border:1px solid #444;
+background:#111;
+color:#fff;
+font-size:16px;
+line-height:1.4;
+padding:12px 14px;
+outline:none;
+">${escapeHTML(draft.features || "")}</textarea>
+
+<label style="
+font-size:15px;
+font-weight:700;
+color:#7fd4ff;
+">
+Хэштеги
+</label>
+
+<input
+id="newClusterHashtags"
+type="text"
+maxlength="250"
+placeholder="#лес #отражения #тишина"
+value="${escapeHTML(draft.hashtags || "")}"
+style="
+width:100%;
+min-height:52px;
+border-radius:13px;
+border:1px solid #444;
+background:#111;
+color:#fff;
+font-size:16px;
+padding:0 14px;
+outline:none;
+">
+
+<div style="
+font-size:13px;
+color:#999;
+line-height:1.4;
+margin-top:2px;
+">
+Кластер получит статус «требует подтверждения» и будет сохранён в разделе НОК.
+</div>
+
+<button class="btn"
+style="
+border:1px solid #b388ff;
+color:#b388ff;
+margin-top:7px;
+font-size:16px;
+"
+onclick="saveDreamNewCluster()">
+Сохранить открытие
+</button>
+
+<button class="btn"
+style="
+border:1px solid #555;
+color:#ddd;
+font-size:15px;
+"
+onclick="backFromDreamNewCluster()">
+← Вернуться к кластерам
+</button>
+
+</div>
+</div>
+`;
+
+}
+
 if(state.step === "south"){
 
 topHTML = `

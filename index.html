@@ -6783,6 +6783,24 @@ renderCompass();
 
 }
 
+function openDreamClusterGroup(groupId){
+
+state.dreamClusterGroup = groupId;
+state.dreamClusterView = "list";
+
+renderCompass();
+
+}
+
+function backToDreamClusterGroups(){
+
+state.dreamClusterGroup = null;
+state.dreamClusterView = "groups";
+
+renderCompass();
+
+}
+
 function pickDreamCluster(c){
 
 const loc =
@@ -6793,6 +6811,65 @@ state.dreamClusterView = "groups";
 state.dreamClusterGroup = null;
 
 renderCompass();
+
+}
+
+function chooseDreamCluster(clusterId){
+
+const loc =
+state.dreamLocations[state.dreamClusterIndex || 0];
+
+if(!loc) return;
+
+const cluster =
+CLUSTER_CATALOG.find(c => c.id === clusterId);
+
+if(!cluster) return;
+
+// Стабильные данные новой архитектуры
+loc.clusterId = cluster.id;
+loc.clusterGroup = cluster.group;
+
+// Совместимость со старой аналитикой и ЛКС
+loc.cluster = cluster.title;
+loc.clusterCustom = "";
+
+state.dreamClusterIndex++;
+
+// Каждый следующий ПВ снова начинается с меню групп
+state.dreamClusterView = "groups";
+state.dreamClusterGroup = null;
+
+if(
+state.dreamClusterIndex >=
+state.dreamLocations.length
+){
+
+state.step = "dream_map";
+
+}else{
+
+state.dreamAttentionStage = "clusters";
+
+}
+
+renderCompass();
+
+setTimeout(()=>{
+
+const topBox =
+document.getElementById("top");
+
+if(topBox){
+topBox.scrollTop = 0;
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+},80);
 
 }
 

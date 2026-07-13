@@ -7910,6 +7910,245 @@ return String(value || "")
 
 }
 
+function openDreamNewCluster(){
+
+state.dreamNewClusterReturnView =
+state.dreamClusterView || "groups";
+
+state.dreamNewClusterReturnGroup =
+state.dreamClusterGroup || null;
+
+state.dreamNewCluster = {
+title:"",
+group:state.dreamClusterGroup || "",
+description:"",
+features:"",
+hashtags:""
+};
+
+state.step = "dream_new_cluster";
+
+renderCompass();
+
+}
+
+function backFromDreamNewCluster(){
+
+state.step = "dream_attention";
+state.dreamAttentionStage = "clusters";
+
+state.dreamClusterView =
+state.dreamNewClusterReturnView || "groups";
+
+state.dreamClusterGroup =
+state.dreamNewClusterReturnGroup || null;
+
+state.dreamNewCluster = null;
+
+renderCompass();
+
+}
+
+function saveDreamNewCluster(){
+
+const titleInput =
+document.getElementById("newClusterTitle");
+
+const groupInput =
+document.getElementById("newClusterGroup");
+
+const descriptionInput =
+document.getElementById("newClusterDescription");
+
+const featuresInput =
+document.getElementById("newClusterFeatures");
+
+const hashtagsInput =
+document.getElementById("newClusterHashtags");
+
+if(
+!titleInput ||
+!groupInput ||
+!descriptionInput ||
+!featuresInput ||
+!hashtagsInput
+){
+return;
+}
+
+const title =
+titleInput.value.trim();
+
+const group =
+groupInput.value.trim();
+
+const description =
+descriptionInput.value.trim();
+
+const featuresText =
+featuresInput.value.trim();
+
+const hashtagsText =
+hashtagsInput.value.trim();
+
+if(!title){
+
+alert("Укажи название нового кластера.");
+
+titleInput.focus();
+
+return;
+
+}
+
+if(!group){
+
+alert("Выбери группу пространства.");
+
+groupInput.focus();
+
+return;
+
+}
+
+if(!description){
+
+alert("Добавь краткое описание пространства.");
+
+descriptionInput.focus();
+
+return;
+
+}
+
+if(!featuresText){
+
+alert("Укажи характерные признаки нового кластера.");
+
+featuresInput.focus();
+
+return;
+
+}
+
+const features =
+featuresText
+.split(/\n|,|;/)
+.map(item=>item.trim())
+.filter(Boolean);
+
+const hashtags =
+hashtagsText
+.split(/[\s,;]+/)
+.map(tag=>tag.trim())
+.filter(Boolean)
+.map(tag=>tag.startsWith("#") ? tag : "#" + tag);
+
+const loc =
+(state.dreamLocations || [])
+[state.dreamClusterIndex || 0];
+
+if(!loc) return;
+
+const id =
+"nok_" +
+Date.now() +
+"_" +
+Math.random().toString(36).slice(2,8);
+
+const groupData =
+CLUSTER_GROUPS.find(item=>item.id === group);
+
+const newCluster = {
+
+id,
+
+status:"candidate",
+
+title,
+group,
+
+groupTitle:
+groupData ? groupData.title : group,
+
+groupIcon:
+groupData ? groupData.icon : "✨",
+
+icon:"✨",
+
+description,
+features,
+hashtags,
+
+createdAt:
+new Date().toISOString(),
+
+dreamIndex:
+state.dreamIndex || 1,
+
+locationLetter:
+loc.letter || "",
+
+source:"dream"
+
+};
+
+discoveredClusters.push(newCluster);
+
+localStorage.setItem(
+"awarenessy_discovered_clusters",
+JSON.stringify(discoveredClusters)
+);
+
+// Назначаем новый кластер текущему ПВ
+loc.clusterId = id;
+loc.clusterGroup = group;
+loc.cluster = title;
+loc.clusterCustom = title;
+loc.clusterStatus = "candidate";
+loc.clusterSource = "nok";
+
+// Переходим к следующему ПВ
+state.dreamClusterIndex++;
+
+state.dreamClusterView = "groups";
+state.dreamClusterGroup = null;
+state.dreamNewCluster = null;
+
+if(
+state.dreamClusterIndex >=
+state.dreamLocations.length
+){
+
+state.step = "dream_map";
+
+}else{
+
+state.step = "dream_attention";
+state.dreamAttentionStage = "clusters";
+
+}
+
+renderCompass();
+
+setTimeout(()=>{
+
+const topBox =
+document.getElementById("top");
+
+if(topBox){
+topBox.scrollTop = 0;
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+},80);
+
+}
+
 </script>
 
 <div id="modal">

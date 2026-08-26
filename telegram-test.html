@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Telegram Test</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body{
+  margin:0;
+  padding:24px;
+  background:#050505;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+h1{
+  color:#c9a86a;
+  font-size:24px;
+}
+
+.card{
+  margin-top:20px;
+  padding:18px;
+  border:1px solid #333;
+  border-radius:14px;
+  background:#111;
+}
+
+.ok{color:#55ff88;}
+.bad{color:#ff5555;}
+
+pre{
+  white-space:pre-wrap;
+  word-break:break-word;
+  color:#ddd;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ОСоЗНАЙКА — Telegram Test</h1>
+
+<div class="card" id="result">
+Проверяем связь с Telegram...
+</div>
+
+<script>
+
+const result = document.getElementById("result");
+
+if (window.Telegram && window.Telegram.WebApp) {
+
+  const tg = window.Telegram.WebApp;
+
+  tg.ready();
+
+  const user = tg.initDataUnsafe?.user;
+
+  result.innerHTML = `
+    <div class="ok">
+      ✓ Telegram.WebApp обнаружен
+    </div>
+
+    <p><b>Platform:</b> ${tg.platform || "—"}</p>
+
+    <p><b>Version:</b> ${tg.version || "—"}</p>
+
+    <p><b>initData:</b>
+      ${tg.initData ? "ПОЛУЧЕНЫ ДАННЫЕ" : "ПУСТО"}
+    </p>
+
+    <p><b>User ID:</b>
+      ${user?.id || "НЕ ПОЛУЧЕН"}
+    </p>
+
+    <p><b>Имя:</b>
+      ${user?.first_name || "—"}
+    </p>
+
+    <p><b>Username:</b>
+      ${user?.username || "—"}
+    </p>
+
+    <p><b>Язык:</b>
+      ${user?.language_code || "—"}
+    </p>
+
+    <hr>
+
+    <b>initDataUnsafe:</b>
+
+    <pre>${JSON.stringify(tg.initDataUnsafe, null, 2)}</pre>
+  `;
+
+} else {
+
+  result.innerHTML = `
+    <div class="bad">
+      ✗ Telegram.WebApp НЕ обнаружен
+    </div>
+
+    <p>Страница открыта вне среды Telegram
+    или Telegram WebApp API не загрузился.</p>
+  `;
+
+}
+
+</script>
+
+</body>
+</html>

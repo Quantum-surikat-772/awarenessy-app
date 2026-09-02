@@ -1,10 +1,12 @@
 {
-  "name": "awarenessy-app",
+  "name": "awarenessy-server",
   "version": "1.0.0",
+  "description": "Awarenessy Emissary Messages Server",
+  "main": "server.js",
   "scripts": {
-    "start": "npx serve -s . -l $PORT"
+    "start": "node server.js"
   },
   "dependencies": {
-    "serve": "^14.2.4"
+    "express": "^5.1.0"
   }
 }

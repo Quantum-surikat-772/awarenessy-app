@@ -7,6 +7,36 @@ app.get("/", (req, res) => {
   res.send("AWARENESSY Emissary Server is alive");
 });
 
+const BOT_TOKEN = process.env.BOT_TOKEN;
+
+async function sendTelegramMessage(chatId, text) {
+  if (!BOT_TOKEN) {
+    throw new Error("BOT_TOKEN is not configured");
+  }
+
+  const response = await fetch(
+    `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text
+      })
+    }
+  );
+
+  const data = await response.json();
+
+  if (!data.ok) {
+    throw new Error(`Telegram error: ${data.description}`);
+  }
+
+  return data;
+}
+
 app.listen(PORT, () => {
   console.log(`AWARENESSY server running on port ${PORT}`);
 });

@@ -37,6 +37,22 @@ async function sendTelegramMessage(chatId, text) {
   return data;
 }
 
+const TEST_CHAT_ID = process.env.TEST_CHAT_ID;
+
+app.get("/test-message", async (req, res) => {
+  try {
+    await sendTelegramMessage(
+      TEST_CHAT_ID,
+      "👁 Послание Эмиссара\n\nНа мгновение обрати внимание: где ты сейчас?"
+    );
+
+    res.send("Послание Эмиссара отправлено.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Ошибка отправки: " + error.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`AWARENESSY server running on port ${PORT}`);
 });

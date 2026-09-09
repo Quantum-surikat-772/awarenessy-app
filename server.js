@@ -53,7 +53,7 @@ app.get("/test-message", async (req, res) => {
   }
 });
 
-// ===== ПРОТОТИП АВТОМАТИЧЕСКОГО ЭМИССАРА =====
+// ===== ПОСЛАНИЯ ЭМИССАРА =====
 
 const emissaryMessages = [
 

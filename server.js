@@ -171,6 +171,15 @@ const emissaryMessages = [
 
 ];
 
+// ===== ПОСЛАНИЯ-НАМЕРЕНИЯ =====
+
+const intentionMessages = [
+  {
+    weight: 5,
+    text: "👁 Послание Эмиссара\n\nЕсли в поле внимания появились твои руки, посмотри на них дольше обычного. Что-нибудь меняется? Если да, то переведи взгляд на другие объекты, а потом вновь вернись к рукам."
+  }
+];
+
 function randomDelay() {
   const min = 30 * 60 * 1000; // 30 минут
   const max = 60 * 60 * 1000; // 60 минут
@@ -189,10 +198,19 @@ app.get("/tick", async (req, res) => {
       return res.send("Эмиссар присутствует в пространстве. Пока тишина.");
     }
 
-    const message =
-      emissaryMessages[
-        Math.floor(Math.random() * emissaryMessages.length)
-      ];
+    // Выбираем обычное Послание или Послание-намерение с учётом веса.
+const weightedMessages = [...emissaryMessages];
+
+for (const intention of intentionMessages) {
+  for (let i = 0; i < intention.weight; i++) {
+    weightedMessages.push(intention.text);
+  }
+}
+
+const message =
+  weightedMessages[
+    Math.floor(Math.random() * weightedMessages.length)
+  ];
 
     await sendTelegramMessage(TEST_CHAT_ID, message);
 

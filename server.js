@@ -220,7 +220,7 @@ const message =
     res.send("Эмиссар решил отправить Послание.");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Ошибка Эмиссара: " + error.message);
+    res.status(200).send("Временная ошибка отправки. Cron продолжает работу.");
   }
 });
 

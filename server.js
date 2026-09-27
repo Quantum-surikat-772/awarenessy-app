@@ -21,6 +21,7 @@ async function sendTelegramMessage(chatId, text) {
       headers: {
         "Content-Type": "application/json"
       },
+      signal: AbortSignal.timeout(10000),
       body: JSON.stringify({
         chat_id: chatId,
         text: text

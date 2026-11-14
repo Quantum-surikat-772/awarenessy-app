@@ -181,21 +181,119 @@ const intentionMessages = [
   }
 ];
 
-function randomDelay() {
-  const min = 30 * 60 * 1000; // 30 минут
-  const max = 60 * 60 * 1000; // 60 минут
+// ===== ВРЕМЯ ЭМИССАРА: ИСПАНИЯ =====
 
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function getMadridTime() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(new Date());
+
+  const values = {};
+
+  for (const part of parts) {
+    if (part.type !== "literal") {
+      values[part.type] = part.value;
+    }
+  }
+
+  return {
+    day: `${values.year}-${values.month}-${values.day}`,
+    minute: Number(values.hour) * 60 + Number(values.minute)
+  };
 }
 
-// Первое автоматическое Послание тоже ждёт случайный интервал.
-let nextMessageTime = Date.now() + randomDelay();
+// ===== СЛУЧАЙНОСТЬ ДЛЯ КАЖДОГО ДНЯ =====
+
+function createDayRandom(day) {
+  let seed = 0;
+
+  for (const char of day) {
+    seed = (Math.imul(seed, 31) + char.charCodeAt(0)) >>> 0;
+  }
+
+  return function () {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+}
+
+// ===== ЕЖЕДНЕВНОЕ РАСПИСАНИЕ ЭМИССАРА =====
+
+function createDailySchedule(day) {
+  const random = createDayRandom(day);
+  random();
+  random();
+
+  // Случайное количество: от 3 до 7
+  const count = 3 + Math.floor(random() * 5);
+
+  const schedule = [];
+
+  while (schedule.length < count) {
+    // Время от 07:00 до 21:50
+    const minute = 420 + Math.floor(random() * 891);
+
+    // Минимум 45 минут между Посланиями
+    const tooClose = schedule.some(
+      existing => Math.abs(existing - minute) < 45
+    );
+
+    if (!tooClose) {
+      schedule.push(minute);
+    }
+  }
+
+  return schedule.sort((a, b) => a - b);
+}
+
+// ===== СОСТОЯНИЕ ЭМИССАРА =====
+
+let activeScheduleDay = null;
+let activeSchedule = [];
+let sentSlots = new Set();
+
+// ===== АКТИВАЦИЯ РАСПИСАНИЯ НА ТЕКУЩИЙ ДЕНЬ =====
+
+function ensureDailySchedule() {
+  const { day, minute } = getMadridTime();
+
+  if (activeScheduleDay !== day) {
+    activeScheduleDay = day;
+    activeSchedule = createDailySchedule(day);
+
+    // После перезапуска не повторяем прошедшие Послания
+    sentSlots = new Set(
+      activeSchedule.filter(slot => slot <= minute)
+    );
+  }
+
+  return minute;
+}
 
 app.get("/tick", async (req, res) => {
   try {
-    const now = Date.now();
+    const minute = ensureDailySchedule();
 
-    if (now < nextMessageTime) {
+    // Ночью Эмиссар молчит
+    if (minute < 420 || minute >= 1320) {
+      return res.send("Эмиссар молчит ночью.");
+    }
+
+    // Ищем Послание, время которого наступило
+    const dueSlot = activeSchedule.find(
+      slot =>
+        slot <= minute &&
+        minute - slot < 10 &&
+        !sentSlots.has(slot)
+    );
+
+    if (dueSlot === undefined) {
       return res.send("Эмиссар присутствует в пространстве. Пока тишина.");
     }
 
@@ -215,8 +313,8 @@ const message =
 
     await sendTelegramMessage(TEST_CHAT_ID, message);
 
-    // После каждого Послания назначаем новый случайный момент.
-    nextMessageTime = now + randomDelay();
+    // Отмечаем успешно отправленное Послание
+    sentSlots.add(dueSlot);
 
     res.send("Эмиссар решил отправить Послание.");
   } catch (error) {

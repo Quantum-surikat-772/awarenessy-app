@@ -498,6 +498,13 @@ JSON.parse(
 localStorage.getItem("awarenessy_discovered_clusters") || "[]"
 );
 
+// ===== СНОВИТЕКА — ПАМЯТЬ СНОВИДЕНИЙ =====
+
+let dreamteka = JSON.parse(
+  localStorage.getItem("awarenessy_dreamteka") ||
+  '{"quickNotes":[],"dreams":[]}'
+);
+  
 let compassFieldTimer = null;
 
 const TIME_LABELS = {

@@ -504,6 +504,13 @@ let dreamteka = JSON.parse(
   localStorage.getItem("awarenessy_dreamteka") ||
   '{"quickNotes":[],"dreams":[]}'
 );
+
+function saveDreamteka() {
+  localStorage.setItem(
+    "awarenessy_dreamteka",
+    JSON.stringify(dreamteka)
+  );
+}
   
 let compassFieldTimer = null;
 

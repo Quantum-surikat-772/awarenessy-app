@@ -2054,6 +2054,123 @@ margin-top:20px;
 
 }
 
+// ===== СНОВИТЕКА — ЗАПИСЬ СНОВИДЕНИЯ =====
+
+if(state.step === "dream_text_entry"){
+
+const lastNote = (dreamteka.quickNotes || []).slice(-1)[0];
+
+const safeNote = lastNote
+  ? String(lastNote.text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;")
+  : "Быстрая заметка пока отсутствует.";
+
+topHTML = `
+<div style="
+flex:1;
+overflow-y:auto;
+padding:20px;
+box-sizing:border-box;
+width:100%;
+">
+
+<div style="
+width:100%;
+max-width:400px;
+margin:0 auto;
+text-align:center;
+">
+
+<div style="
+font-size:26px;
+font-weight:700;
+color:#7fd4ff;
+margin-bottom:22px;
+">
+Сон ${state.dreamIndex}
+</div>
+
+<div style="
+font-size:20px;
+color:#c9a86a;
+margin-bottom:12px;
+">
+Быстрая заметка
+</div>
+
+<div style="
+background:#111;
+border:1px solid #c9a86a;
+border-radius:12px;
+padding:15px;
+color:#ddd;
+font-size:16px;
+line-height:1.5;
+white-space:pre-wrap;
+overflow-wrap:anywhere;
+text-align:left;
+margin-bottom:25px;
+">${safeNote}</div>
+
+<div style="
+font-size:22px;
+color:#7fd4ff;
+font-weight:700;
+margin-bottom:18px;
+">
+Запись сновидения
+</div>
+
+<textarea
+id="dreamTextInput"
+placeholder="Опиши своё сновидение..."
+style="
+box-sizing:border-box;
+width:100%;
+height:300px;
+background:#111;
+color:#fff;
+border:1px solid #7fd4ff;
+border-radius:12px;
+padding:15px;
+font-size:18px;
+font-family:Arial;
+resize:vertical;
+"
+></textarea>
+
+<button
+class="btn"
+onclick="saveWholeDream()"
+style="
+width:100%;
+margin-top:18px;
+color:#c9a86a;
+border-color:#c9a86a;
+">
+Сохранить сон
+</button>
+
+<button
+class="btn"
+onclick="state.step='dream_location_count';renderCompass()"
+style="
+width:100%;
+margin-top:12px;
+">
+Вернуться к исследованию
+</button>
+
+</div>
+</div>
+`;
+
+}
+
 if(state.step === "dream_zero"){
 
 topHTML = `
@@ -2226,6 +2343,18 @@ margin-bottom:10px;
 ">
 Сон ${state.dreamIndex}
 </div>
+
+<button
+  class="btn"
+  onclick="openDreamTextEntry()"
+  style="
+    width:100%;
+    margin-bottom:18px;
+    color:#c9a86a;
+    border-color:#c9a86a;
+  ">
+  Записать этот сон
+</button>
 
 <div class="dreamTitle" style="
 font-size:20px;

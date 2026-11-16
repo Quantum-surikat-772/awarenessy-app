@@ -7246,18 +7246,86 @@ renderCompass();
 
 }
 
-function openDreamTextEntry(){
+// ===== СНОВИТЕКА — ПАМЯТЬ ОТДЕЛЬНЫХ СНОВ =====
 
-state.step = "dream_text_entry";
+// Идентификатор сна: дата + номер сна
+function getCurrentDreamRecordId() {
+  const now = new Date();
 
-renderCompass();
+  const day = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0")
+  ].join("-");
 
+  return "dream_" + day + "_" + state.dreamIndex;
 }
 
-function saveWholeDream(){
+// Открытие записи сновидения
+function openDreamTextEntry() {
 
-alert("Сон записан");
+  state.step = "dream_text_entry";
+  renderCompass();
 
+  const input = document.getElementById("dreamTextInput");
+
+  const record = (dreamteka.dreams || []).find(
+    d => d.id === getCurrentDreamRecordId()
+  );
+
+  if (input && record) {
+    input.value = record.text || "";
+  }
+}
+
+// Сохранение сновидения
+function saveWholeDream() {
+
+  const input = document.getElementById("dreamTextInput");
+
+  if (!input) {
+    openDreamTextEntry();
+    return;
+  }
+
+  const text = input.value.trim();
+
+  if (!text) {
+    alert("Сначала запиши своё сновидение.");
+    return;
+  }
+
+  if (!Array.isArray(dreamteka.dreams)) {
+    dreamteka.dreams = [];
+  }
+
+  const id = getCurrentDreamRecordId();
+  const now = new Date().toISOString();
+
+  const record = dreamteka.dreams.find(
+    d => d.id === id
+  );
+
+  if (record) {
+
+    record.text = text;
+    record.updatedAt = now;
+
+  } else {
+
+    dreamteka.dreams.push({
+      id: id,
+      dreamIndex: state.dreamIndex,
+      text: text,
+      createdAt: now,
+      updatedAt: now
+    });
+
+  }
+
+  saveDreamteka();
+
+  alert("Сновидение сохранено в Сновитеке!");
 }
 
 function addNextDream(){

@@ -7246,6 +7246,23 @@ renderCompass();
 
 }
 
+// ===== СНОВИТЕКА — УНИКАЛЬНЫЙ ID ПЕРИОДА СНА =====
+
+function createDreamSessionId() {
+
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID === "function"
+  ) {
+    return "session_" + window.crypto.randomUUID();
+  }
+
+  return "session_" +
+    Date.now() + "_" +
+    Math.random().toString(36).slice(2);
+
+}
+
 // ===== СНОВИТЕКА — ПАМЯТЬ ОТДЕЛЬНЫХ СНОВ =====
 
 // Идентификатор сна: дата + номер сна

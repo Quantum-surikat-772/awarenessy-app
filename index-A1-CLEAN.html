@@ -4700,6 +4700,23 @@ function getActiveDreamSession() {
 
 }
 
+// ===== СНОВИТЕКА — ВОССТАНОВЛЕНИЕ ПЕРИОДА =====
+
+function restoreActiveDreamSession() {
+
+  const session = getActiveDreamSession();
+
+  if (!session) {
+    return false;
+  }
+
+  state.dreamSessionId = session.id;
+  state.dreamSessionDate = session.date;
+  state.dreamPeriodType = session.type;
+
+  return true;
+}
+
 function saveDreamCount(){
 
 const input =

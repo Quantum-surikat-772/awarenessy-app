@@ -1035,6 +1035,11 @@ dreamCount: null,
 dreamTime: null,
 dreamIntroSeen: false,
 
+// ===== СНОВИТЕКА — ПЕРИОД СНА =====
+dreamSessionId: null,
+dreamPeriodType: "night",
+dreamSessionDate: null,
+
 dreamTotal: 0,
 dreamIndex: 1,
 dreamLocationTotal: 0,
@@ -1818,6 +1823,51 @@ padding:20px;
   ">
   Быстрая заметка
 </button>
+
+<!-- ===== СНОВИТЕКА — ВЫБОР ПЕРИОДА СНА ===== -->
+
+<div style="
+  font-size:20px;
+  color:#7fd4ff;
+  margin-bottom:14px;
+  font-weight:700;
+">
+  Когда ты сновидел(а)?
+</div>
+
+<div style="
+  display:flex;
+  gap:10px;
+  margin-bottom:22px;
+">
+
+  <button
+    class="btn"
+    onclick="state.dreamPeriodType='night';renderCompass()"
+    style="
+      flex:1;
+      min-width:0;
+      font-size:16px;
+      color:${state.dreamPeriodType === "night" ? "#c9a86a" : "#777"};
+      border-color:${state.dreamPeriodType === "night" ? "#c9a86a" : "#333"};
+    ">
+    🌙 Ночной
+  </button>
+
+  <button
+    class="btn"
+    onclick="state.dreamPeriodType='day';renderCompass()"
+    style="
+      flex:1;
+      min-width:0;
+      font-size:16px;
+      color:${state.dreamPeriodType === "day" ? "#c9a86a" : "#777"};
+      border-color:${state.dreamPeriodType === "day" ? "#c9a86a" : "#333"};
+    ">
+    ☀️ Дневной
+  </button>
+
+</div>
 
 <div style="
 font-size:22px;

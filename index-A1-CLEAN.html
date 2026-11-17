@@ -4741,6 +4741,13 @@ renderCompass();
 return;
 }
 
+// ===== СНОВИТЕКА — ПОДКЛЮЧЕНИЕ ПЕРИОДА СНА =====
+
+// Создаём новый период, только если он ещё не выбран
+if (!state.dreamSessionId) {
+  createDreamSessionRecord();
+}
+
 if(!localStorage.getItem("dream_intro_seen") || Math.random() < 0.12){
 state.step = "dream_intro";
 localStorage.setItem("dream_intro_seen","1");

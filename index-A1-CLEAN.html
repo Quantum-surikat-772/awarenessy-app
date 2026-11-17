@@ -7319,6 +7319,35 @@ function createDreamSessionId() {
 
 }
 
+// ===== СНОВИТЕКА — СОЗДАНИЕ ПЕРИОДА СНА =====
+
+function createDreamSessionRecord() {
+
+  const now = new Date();
+
+  const date = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0")
+  ].join("-");
+
+  const session = {
+    id: createDreamSessionId(),
+    type: state.dreamPeriodType,
+    date: date,
+    createdAt: now.toISOString()
+  };
+
+  dreamteka.sessions.push(session);
+
+  state.dreamSessionId = session.id;
+  state.dreamSessionDate = session.date;
+
+  saveDreamteka();
+
+  return session;
+}
+
 // ===== СНОВИТЕКА — ПАМЯТЬ ОТДЕЛЬНЫХ СНОВ =====
 
 // Идентификатор сна: дата + номер сна

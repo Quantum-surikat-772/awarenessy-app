@@ -505,6 +505,12 @@ let dreamteka = JSON.parse(
   '{"quickNotes":[],"dreams":[]}'
 );
 
+// ===== СНОВИТЕКА — ПАМЯТЬ ПЕРИОДОВ СНА =====
+
+if (!Array.isArray(dreamteka.sessions)) {
+  dreamteka.sessions = [];
+}
+
 function saveDreamteka() {
   localStorage.setItem(
     "awarenessy_dreamteka",

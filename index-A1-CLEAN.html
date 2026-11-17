@@ -7343,6 +7343,9 @@ function createDreamSessionRecord() {
   state.dreamSessionId = session.id;
   state.dreamSessionDate = session.date;
 
+  // Запоминаем активный период сна
+  dreamteka.activeSessionId = session.id;
+
   saveDreamteka();
 
   return session;

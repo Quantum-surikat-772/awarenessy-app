@@ -1810,6 +1810,60 @@ const bottomBox = document.getElementById("bottom");
 // 🔝 ВЕРХ — КОНТЕНТ
 let topHTML = "";
 
+// ===== СНОВИТЕКА — ВЫБОР ЗАПИСИ СНОВИДЕНИЙ =====
+
+if (state.step === "dream_session_choice") {
+
+  const activeSession = getActiveDreamSession();
+
+  topHTML = `
+    <div style="
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+    ">
+
+      <div style="
+        font-size:26px;
+        font-weight:700;
+        color:#7fd4ff;
+        margin-bottom:30px;
+      ">
+        Сновитека
+      </div>
+
+      ${activeSession ? `
+        <button class="btn" style="
+          flex:0 0 56px;
+          width:100%;
+          max-width:340px;
+          margin-bottom:20px;
+          color:#c9a86a;
+          border-color:#c9a86a;
+        ">
+          🌙 Продолжить запись сновидений
+        </button>
+      ` : ""}
+
+      <button class="btn" style="
+        flex:0 0 56px;
+        width:100%;
+        max-width:340px;
+        color:#c9a86a;
+        border-color:#c9a86a;
+      ">
+        ✨ Записать сны новой ночи / дня
+      </button>
+
+    </div>
+  `;
+
+}
+
 if(state.step === "dream_count"){
 
 topHTML = `

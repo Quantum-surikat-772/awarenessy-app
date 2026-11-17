@@ -1435,9 +1435,14 @@ document.body.classList.remove("alert");
 state.mode = mode;
 
 if(mode === "dream"){
-state.step = "dream_count";
-renderCompass();
-return;
+
+  // Новый вход в СОН — период пока не выбран
+  state.dreamSessionId = null;
+  state.dreamSessionDate = null;
+  
+  state.step = "dream_count";
+  renderCompass();
+  return;
 }
 
 state.step = "south";

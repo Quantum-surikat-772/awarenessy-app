@@ -4684,6 +4684,22 @@ function saveDreamQuickNote() {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — ПОИСК АКТИВНОГО ПЕРИОДА =====
+
+function getActiveDreamSession() {
+
+  const id = dreamteka.activeSessionId;
+
+  if (!id || !Array.isArray(dreamteka.sessions)) {
+    return null;
+  }
+
+  return dreamteka.sessions.find(
+    session => session.id === id
+  ) || null;
+
+}
+
 function saveDreamCount(){
 
 const input =

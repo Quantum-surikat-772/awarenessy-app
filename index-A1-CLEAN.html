@@ -1440,7 +1440,7 @@ if(mode === "dream"){
   state.dreamSessionId = null;
   state.dreamSessionDate = null;
   
-  state.step = "dream_count";
+  state.step = "dream_session_choice";
   renderCompass();
   return;
 }
@@ -1837,7 +1837,10 @@ if (state.step === "dream_session_choice") {
       </div>
 
       ${activeSession ? `
-        <button class="btn" style="
+        <button
+          class="btn"
+          onclick="continueDreamSession()"
+          style="
           flex:0 0 56px;
           width:100%;
           max-width:340px;
@@ -1849,7 +1852,10 @@ if (state.step === "dream_session_choice") {
         </button>
       ` : ""}
 
-      <button class="btn" style="
+      <button
+        class="btn"
+        onclick="state.step='dream_count';renderCompass()"
+        style="
         flex:0 0 56px;
         width:100%;
         max-width:340px;
@@ -4774,6 +4780,45 @@ function restoreActiveDreamSession() {
   state.dreamPeriodType = session.type;
 
   return true;
+}
+
+// ===== СНОВИТЕКА — ПРОДОЛЖЕНИЕ ЗАПИСИ =====
+
+function continueDreamSession() {
+
+  // Восстанавливаем сохранённый период
+  if (!restoreActiveDreamSession()) {
+    alert("Сохранённый период сновидений не найден.");
+    return;
+  }
+
+  // Находим сновидения этого периода
+  const prefix = "dream_" + state.dreamSessionId + "_";
+
+  const indices = (dreamteka.dreams || [])
+    .filter(d =>
+      typeof d.id === "string" &&
+      d.id.startsWith(prefix)
+    )
+    .map(d => Number(d.id.slice(prefix.length)))
+    .filter(n => Number.isInteger(n) && n > 0);
+
+  // Определяем номер следующего сновидения
+  const nextIndex = Math.max(0, ...indices) + 1;
+
+  state.dreamIndex = nextIndex;
+  state.dreamCount = nextIndex;
+  state.dreamTotal = nextIndex;
+
+  // Подготавливаем новое исследование
+  state.dreamLocationIndex = 1;
+  state.dreamLocationTotal = 0;
+  state.dreamLocations = [];
+  state.dreamCurrent = {};
+
+  state.step = "dream_location_count";
+  renderCompass();
+
 }
 
 function saveDreamCount(){

@@ -7623,8 +7623,19 @@ function saveWholeDream() {
 
     dreamteka.dreams.push({
       id: id,
+
+      // Принадлежность к периоду сновидений
+      sessionId: state.dreamSessionId || null,
+      sessionDate: state.dreamSessionDate || null,
+      periodType: state.dreamPeriodType || "night",
+
+      // Номер сна внутри периода
       dreamIndex: state.dreamIndex,
+
+      // Содержание сновидения
       text: text,
+
+      // Время создания и изменения
       createdAt: now,
       updatedAt: now
     });

@@ -5092,7 +5092,12 @@ function continueDreamSession() {
   state.dreamCurrent = {};
 
   state.step = "dream_location_count";
+  try {
   renderCompass();
+} catch (error) {
+  alert("Ошибка открытия сна: " + error.message);
+  console.error(error);
+  }
 
 }
 

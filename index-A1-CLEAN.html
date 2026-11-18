@@ -2251,6 +2251,62 @@ const dreamsHTML = (dreamteka.dreams || [])
       ? new Date(dream.createdAt).toLocaleString("ru-RU")
       : "Дата неизвестна";
 
+    // ===== СНОВИТЕКА — ДАТА И ТИП ПЕРИОДА =====
+
+    const session = (dreamteka.sessions || []).find(
+      s => s.id === dream.sessionId
+    );
+
+    const sleepDate = dream.sessionDate ||
+      (session ? session.date : null);
+
+    const sleepType = dream.periodType ||
+      (session ? session.type : null);
+
+    // ===== СНОВИТЕКА — НАЗВАНИЕ ПЕРИОДА =====
+
+    let periodLabel = "";
+
+    if (sleepDate) {
+
+      const periodDate = new Date(sleepDate + "T12:00:00");
+
+      if (!Number.isNaN(periodDate.getTime())) {
+
+        const formatDate = d =>
+          d.toLocaleDateString("ru-RU", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+          });
+
+        if (sleepType === "night") {
+
+          const previousDay = new Date(periodDate);
+          previousDay.setDate(previousDay.getDate() - 1);
+
+          periodLabel =
+            "🌙 Ночь с " +
+            formatDate(previousDay) +
+            " на " +
+            formatDate(periodDate);
+
+        } else if (sleepType === "day") {
+
+          periodLabel =
+            "☀️ Дневной сон — " +
+            formatDate(periodDate);
+
+        } else {
+
+          periodLabel =
+            "Сновидение — " +
+            formatDate(periodDate);
+
+        }
+      }
+    }
+
     return `
       <div style="
         background:#111;
@@ -2268,6 +2324,17 @@ const dreamsHTML = (dreamteka.dreams || [])
         ">
           ${escapeText(date)}
         </div>
+
+        ${periodLabel ? `
+          <div style="
+            color:#7fd4ff;
+            font-size:16px;
+            margin-bottom:12px;
+            overflow-wrap:anywhere;
+          ">
+            ${escapeText(periodLabel)}
+          </div>
+`         : ""}
 
         <div style="
           color:#7fd4ff;

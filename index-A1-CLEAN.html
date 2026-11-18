@@ -2708,6 +2708,38 @@ margin-bottom:10px;
 Сон ${state.dreamIndex}
 </div>
 
+${state.dreamSessionDate ? (() => {
+
+  const end = new Date(state.dreamSessionDate + "T12:00:00");
+
+  if (Number.isNaN(end.getTime())) return "";
+
+  const start = new Date(end);
+  start.setDate(start.getDate() - 1);
+
+  const fmt = d => d.toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
+  const label = state.dreamPeriodType === "night"
+    ? "🌙 Ночь с " + fmt(start) + " на " + fmt(end)
+    : "☀️ Дневной сон — " + fmt(end);
+
+  return `
+    <div style="
+      color:#7fd4ff;
+      font-size:16px;
+      text-align:center;
+      margin-bottom:14px;
+    ">
+      ${escapeText(label)}
+    </div>
+  `;
+
+})() : ""}
+
 <button
   class="btn"
   onclick="openDreamTextEntry()"

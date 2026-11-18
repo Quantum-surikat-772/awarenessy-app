@@ -511,6 +511,29 @@ if (!Array.isArray(dreamteka.sessions)) {
   dreamteka.sessions = [];
 }
 
+// ===== СНОВИТЕКА — СКВОЗНАЯ НУМЕРАЦИЯ СНОВ =====
+
+if (
+  !Number.isSafeInteger(dreamteka.lastDreamNumber) ||
+  dreamteka.lastDreamNumber < 0
+) {
+
+  const existingDreams = Array.isArray(dreamteka.dreams)
+    ? dreamteka.dreams
+    : [];
+
+  dreamteka.lastDreamNumber = existingDreams.reduce(
+    (max, dream) => Math.max(
+      max,
+      Number.isSafeInteger(dream.globalNumber)
+        ? dream.globalNumber
+        : 0
+    ),
+    existingDreams.length
+  );
+
+}
+
 function saveDreamteka() {
   localStorage.setItem(
     "awarenessy_dreamteka",
@@ -7621,8 +7644,13 @@ function saveWholeDream() {
 
   } else {
 
+    // Новый постоянный номер сновидения
+    const nextGlobalNumber = dreamteka.lastDreamNumber + 1;
+    dreamteka.lastDreamNumber = nextGlobalNumber;
+
     dreamteka.dreams.push({
       id: id,
+      globalNumber: nextGlobalNumber,
 
       // Принадлежность к периоду сновидений
       sessionId: state.dreamSessionId || null,

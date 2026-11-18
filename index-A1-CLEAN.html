@@ -2021,6 +2021,45 @@ padding:20px;
 
 </div>
 
+<!-- ===== СНОВИТЕКА — ВЫБОР ДАТЫ ===== -->
+
+<div style="
+  margin-bottom:22px;
+  text-align:center;
+">
+
+  <div style="
+    font-size:18px;
+    color:#7fd4ff;
+    margin-bottom:12px;
+  ">
+    ${state.dreamPeriodType === "night"
+      ? "Дата окончания ночи"
+      : "Дата дневного сна"}
+  </div>
+
+  <input
+    type="date"
+    id="dreamSelectedDateInput"
+    value="${state.dreamSelectedDate || ""}"
+    onchange="state.dreamSelectedDate=this.value"
+    style="
+      width:100%;
+      box-sizing:border-box;
+      height:56px;
+      padding:10px;
+      background:#111;
+      color:#c9a86a;
+      border:1px solid #c9a86a;
+      border-radius:12px;
+      font-size:18px;
+      text-align:center;
+      color-scheme:dark;
+    "
+  >
+
+</div>
+
 <div style="
 font-size:22px;
 font-weight:700;

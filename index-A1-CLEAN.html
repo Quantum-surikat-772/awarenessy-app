@@ -7654,7 +7654,7 @@ function createDreamSessionRecord() {
   const session = {
     id: createDreamSessionId(),
     type: state.dreamPeriodType,
-    date: date,
+    date: state.dreamSelectedDate || date,
     createdAt: now.toISOString()
   };
 

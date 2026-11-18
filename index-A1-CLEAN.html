@@ -540,6 +540,53 @@ function saveDreamteka() {
     JSON.stringify(dreamteka)
   );
 }
+
+// ===== СНОВИТЕКА — НУМЕРАЦИЯ СТАРЫХ СНОВ =====
+
+const dreamsToNumber = Array.isArray(dreamteka.dreams)
+  ? dreamteka.dreams
+  : [];
+
+const occupiedNumbers = new Set(
+  dreamsToNumber
+    .map(d => d && d.globalNumber)
+    .filter(n => Number.isSafeInteger(n) && n > 0)
+);
+
+let candidateNumber = 1;
+let archiveUpdated = false;
+
+dreamsToNumber
+  .filter(d => d && !(
+    Number.isSafeInteger(d.globalNumber) &&
+    d.globalNumber > 0
+  ))
+  .sort((a, b) =>
+    (Date.parse(a.createdAt || "") || 0) -
+    (Date.parse(b.createdAt || "") || 0)
+  )
+  .forEach(dream => {
+
+    while (occupiedNumbers.has(candidateNumber)) {
+      candidateNumber++;
+    }
+
+    dream.globalNumber = candidateNumber;
+    occupiedNumbers.add(candidateNumber);
+    archiveUpdated = true;
+
+  });
+
+const biggestNumber = Math.max(0, ...occupiedNumbers);
+
+if (dreamteka.lastDreamNumber < biggestNumber) {
+  dreamteka.lastDreamNumber = biggestNumber;
+  archiveUpdated = true;
+}
+
+if (archiveUpdated) {
+  saveDreamteka();
+}
   
 let compassFieldTimer = null;
 

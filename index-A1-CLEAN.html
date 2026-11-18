@@ -1115,6 +1115,7 @@ dreamIntroSeen: false,
 dreamSessionId: null,
 dreamPeriodType: "night",
 dreamSessionDate: null,
+dreamSelectedDate: null,
 
 dreamTotal: 0,
 dreamIndex: 1,
@@ -1509,6 +1510,16 @@ if(mode === "dream"){
   // Новый вход в СОН — период пока не выбран
   state.dreamSessionId = null;
   state.dreamSessionDate = null;
+
+// ===== СНОВИТЕКА — ДАТА ПО УМОЛЧАНИЮ =====
+
+const today = new Date();
+
+state.dreamSelectedDate = [
+  today.getFullYear(),
+  String(today.getMonth() + 1).padStart(2, "0"),
+  String(today.getDate()).padStart(2, "0")
+].join("-");
   
   state.step = "dream_session_choice";
   renderCompass();

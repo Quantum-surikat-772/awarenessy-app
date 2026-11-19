@@ -5086,6 +5086,7 @@ function continueDreamSession() {
   const nextIndex = Math.max(0, ...indices) + 1;
 
   state.dreamIndex = nextIndex;
+  state.dreamAwarenessLevel = null;
   state.dreamCount = nextIndex;
   state.dreamTotal = nextIndex;
 

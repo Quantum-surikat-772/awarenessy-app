@@ -2744,6 +2744,26 @@ ${state.dreamSessionDate ? (() => {
 
 })() : ""}
 
+<!-- СНОВИТЕКА — СТЕПЕНЬ ОСОЗНАННОСТИ -->
+
+<div style="margin-bottom:18px;">
+
+  <div style="color:#7fd4ff;font-size:16px;margin-bottom:10px;">
+    Степень осознанности
+  </div>
+
+  <select
+    onchange="state.dreamAwarenessLevel=this.value || null"
+    style="width:100%;height:50px;background:#111;color:#fff;border:1px solid #c9a86a;border-radius:12px;font-size:16px;text-align:center;"
+  >
+    <option value="" ${state.dreamAwarenessLevel === null ? "selected" : ""}>Не определено</option>
+    <option value="ordinary" ${state.dreamAwarenessLevel === "ordinary" ? "selected" : ""}>Обычный</option>
+    <option value="semi" ${state.dreamAwarenessLevel === "semi" ? "selected" : ""}>◐ Полуосознанный</option>
+    <option value="lucid" ${state.dreamAwarenessLevel === "lucid" ? "selected" : ""}>✦ Осознанный</option>
+  </select>
+
+</div>
+
 <button
   class="btn"
   onclick="openDreamTextEntry()"

@@ -1955,6 +1955,47 @@ if (state.step === "dream_session_choice") {
 
 }
 
+// ===== СНОВИТЕКА — ВЫБОР СНОВИДЕНИЯ =====
+
+if (state.step === "dream_session_list") {
+
+  const session = getActiveDreamSession();
+
+  const sessionDreams = (dreamteka.dreams || [])
+    .filter(d => session && d.sessionId === session.id)
+    .sort((a, b) => (a.dreamIndex || 0) - (b.dreamIndex || 0));
+
+  topHTML = `
+    <div style="flex:1;padding:20px;text-align:center;">
+
+      <div style="font-size:26px;color:#7fd4ff;margin-bottom:24px;">
+        Выбери сновидение
+      </div>
+
+      ${sessionDreams.map(d => `
+        <div style="background:#111;border:1px solid #444;
+                    border-radius:12px;padding:16px;
+                    margin-bottom:12px;color:#7fd4ff;">
+          Сон ${Number(d.dreamIndex) || "—"}
+        </div>
+      `).join("")}
+
+      <button class="btn"
+        onclick="continueDreamSession()"
+        style="width:100%;margin-bottom:16px;color:#c9a86a;">
+        ＋ Записать новый сон
+      </button>
+
+      <button class="btn"
+        onclick="state.step='dream_session_choice';renderCompass()"
+        style="width:100%;">
+        Вернуться
+      </button>
+
+    </div>
+  `;
+}
+
 if(state.step === "dream_count"){
 
 topHTML = `

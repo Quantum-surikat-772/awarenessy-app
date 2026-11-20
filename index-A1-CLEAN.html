@@ -7957,6 +7957,7 @@ function saveWholeDream() {
   if (record) {
 
     record.text = text;
+    record.awarenessLevel = state.dreamAwarenessLevel ?? null;
     record.updatedAt = now;
 
   } else {

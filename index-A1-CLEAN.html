@@ -7868,6 +7868,35 @@ function getCurrentDreamRecordId() {
   return "dream_" + day + "_" + state.dreamIndex;
 }
 
+// ===== СНОВИТЕКА — ОТКРЫТИЕ СОХРАНЁННОГО СНА =====
+
+function openSavedDreamRecord(dreamIndex) {
+
+  // Восстанавливаем активный период сна
+  if (!restoreActiveDreamSession()) {
+    alert("Период сновидений не найден.");
+    return;
+  }
+
+  // Находим выбранное сновидение
+  const record = (dreamteka.dreams || []).find(d =>
+    d.sessionId === state.dreamSessionId &&
+    Number(d.dreamIndex) === Number(dreamIndex)
+  );
+
+  if (!record) {
+    alert("Запись сновидения не найдена.");
+    return;
+  }
+
+  // Восстанавливаем номер и степень осознанности
+  state.dreamIndex = Number(record.dreamIndex);
+  state.dreamAwarenessLevel = record.awarenessLevel ?? null;
+
+  // Открываем существующий редактор
+  openDreamTextEntry();
+}
+
 // Открытие записи сновидения
 function openDreamTextEntry() {
 

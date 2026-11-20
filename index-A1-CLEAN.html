@@ -2817,6 +2817,19 @@ ${state.dreamSessionDate ? (() => {
   Записать этот сон
 </button>
 
+<!-- СНОВИТЕКА — ВОЗВРАТ К ВЫБОРУ СНА -->
+
+<button
+  class="btn"
+  onclick="state.step='dream_session_list';renderCompass()"
+  style="
+    width:100%;
+    margin-bottom:18px;
+    color:#fff;
+  ">
+  Вернуться к выбору сновидения
+</button>
+
 <div class="dreamTitle" style="
 font-size:20px;
 font-weight:700;

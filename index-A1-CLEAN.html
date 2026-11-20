@@ -7905,8 +7905,9 @@ function openSavedDreamRecord(dreamIndex) {
   state.dreamIndex = Number(record.dreamIndex);
   state.dreamAwarenessLevel = record.awarenessLevel ?? null;
 
-  // Открываем существующий редактор
-  openDreamTextEntry();
+  // Открываем исследование выбранного сновидения
+  state.step = "dream_location_count";
+  renderCompass();
 }
 
 // Открытие записи сновидения

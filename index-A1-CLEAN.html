@@ -2216,10 +2216,18 @@ if (state.step === "dream_session_list") {
 
   const session = getActiveDreamSession();
 
-  const sessionDreams = (dreamteka.dreams || [])
-    .filter(d => session && d.sessionId === session.id)
-    .sort((a, b) => (a.dreamIndex || 0) - (b.dreamIndex || 0));
-
+  const sessionDreams =
+    (state.dreamSelectedDate && state.dreamSelectedPeriod
+      ? getDreamsForCalendarDate(state.dreamSelectedDate)
+          .filter(d =>
+            (d.periodType || "night") === state.dreamSelectedPeriod
+          )
+      : (dreamteka.dreams || [])
+          .filter(d => session && d.sessionId === session.id)
+    ).sort((a, b) =>
+      (a.dreamIndex || 0) - (b.dreamIndex || 0)
+    );
+  
   topHTML = `
     <div style="flex:1;padding:20px;text-align:center;">
 

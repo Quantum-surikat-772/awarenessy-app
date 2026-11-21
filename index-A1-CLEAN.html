@@ -2098,6 +2098,14 @@ const selectedDreams =
 
       ${renderDreamCalendarGrid()}
 
+      ${state.dreamSelectedDate
+  ? '<div style="margin:0 0 24px;text-align:center;font-size:20px;color:#7fd4ff;">' +
+      state.dreamSelectedDate.split("-").reverse().join(".") +
+      '<div style="color:#fff;font-size:18px;margin-top:10px;">' +
+      'Сновидений: ' + selectedDreams.length +
+      '</div></div>'
+  : ''}
+
       <button class="btn"
         onclick="state.step='dream_session_choice';renderCompass()"
         style="width:100%;">

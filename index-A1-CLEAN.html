@@ -1940,6 +1940,24 @@ function selectDreamCalendarDate(day) {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — ПОИСК СНОВ ПО ДАТЕ =====
+
+function getDreamsForCalendarDate(date) {
+
+  if (!date) return [];
+
+  return (dreamteka.dreams || []).filter(dream => {
+
+    const session = (dreamteka.sessions || []).find(
+      s => s.id === dream.sessionId
+    );
+
+    return (session?.date || dream.sessionDate) === date;
+
+  });
+
+}
+
 // ===== СНОВИТЕКА — КАЛЕНДАРНАЯ СЕТКА =====
 
 function renderDreamCalendarGrid() {

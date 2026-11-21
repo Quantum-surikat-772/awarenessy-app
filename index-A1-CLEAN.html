@@ -1907,6 +1907,21 @@ function openDreamCalendar() {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — ОТКРЫТИЕ ВЫБРАННОГО ПЕРИОДА =====
+
+function openDreamPeriod(period) {
+
+  if (!state.dreamSelectedDate) return;
+
+  if (period !== "night" && period !== "day") return;
+
+  state.dreamSelectedPeriod = period;
+
+  state.step = "dream_period_list";
+
+  renderCompass();
+}
+
 // ===== СНОВИТЕКА — ПЕРЕКЛЮЧЕНИЕ МЕСЯЦЕВ =====
 
 function changeDreamCalendarMonth(offset) {

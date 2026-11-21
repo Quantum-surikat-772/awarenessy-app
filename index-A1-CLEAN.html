@@ -1906,6 +1906,27 @@ function openDreamCalendar() {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — ПЕРЕКЛЮЧЕНИЕ МЕСЯЦЕВ =====
+
+function changeDreamCalendarMonth(offset) {
+
+  if (!state.dreamCalendarMonth) {
+    openDreamCalendar();
+  }
+
+  const [year, month] =
+    state.dreamCalendarMonth.split("-").map(Number);
+
+  const date = new Date(year, month - 1 + offset, 1);
+
+  state.dreamCalendarMonth =
+    date.getFullYear() + "-" +
+    String(date.getMonth() + 1).padStart(2, "0");
+
+  state.step = "dream_calendar";
+  renderCompass();
+}
+
 function renderCompass(){
 
 const topBox = document.getElementById("top");

@@ -1914,6 +1914,44 @@ const bottomBox = document.getElementById("bottom");
 // 🔝 ВЕРХ — КОНТЕНТ
 let topHTML = "";
 
+// ===== СНОВИТЕКА — ЭКРАН КАЛЕНДАРЯ =====
+
+if (state.step === "dream_calendar") {
+
+  topHTML = `
+    <div style="
+      flex:1;
+      padding:20px;
+      text-align:center;
+    ">
+
+      <div style="
+        font-size:26px;
+        color:#7fd4ff;
+        margin-bottom:24px;
+      ">
+        Календарь Сновитеки
+      </div>
+
+      <div style="
+        color:#c9a86a;
+        font-size:22px;
+        margin-bottom:24px;
+      ">
+        ${state.dreamCalendarMonth || ""}
+      </div>
+
+      <button class="btn"
+        onclick="state.step='dream_session_choice';renderCompass()"
+        style="width:100%;">
+        Вернуться
+      </button>
+
+    </div>
+  `;
+
+}
+
 // ===== СНОВИТЕКА — ВЫБОР ЗАПИСИ СНОВИДЕНИЙ =====
 
 if (state.step === "dream_session_choice") {

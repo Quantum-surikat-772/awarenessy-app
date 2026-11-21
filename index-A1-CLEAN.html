@@ -2265,7 +2265,7 @@ if (state.step === "dream_session_list") {
             font-size:18px;
             cursor:pointer;
           ">
-          Сон ${Number(d.dreamIndex) || "—"}
+          Сон ${Number(d.globalNumber) || Number(d.dreamIndex) || "—"} (${Number(d.dreamIndex) || "—"})
         </button>
       `).join("")}
 

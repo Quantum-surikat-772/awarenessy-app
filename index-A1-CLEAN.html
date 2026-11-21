@@ -1985,6 +1985,12 @@ function renderDreamCalendarGrid() {
 
   for (let day = 1; day <= daysInMonth; day++) {
 
+  const calendarDate =
+    state.dreamCalendarMonth + "-" +
+    String(day).padStart(2, "0");
+
+  const dayDreams = getDreamsForCalendarDate(calendarDate);
+
     cells += `
       <div
         onclick="selectDreamCalendarDate(${day})"

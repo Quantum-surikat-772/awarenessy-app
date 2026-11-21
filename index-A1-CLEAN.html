@@ -1927,6 +1927,19 @@ function changeDreamCalendarMonth(offset) {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — ВЫБОР ДАТЫ =====
+
+function selectDreamCalendarDate(day) {
+
+  if (!state.dreamCalendarMonth) return;
+
+  state.dreamSelectedDate =
+    state.dreamCalendarMonth + "-" +
+    String(day).padStart(2, "0");
+
+  renderCompass();
+}
+
 // ===== СНОВИТЕКА — КАЛЕНДАРНАЯ СЕТКА =====
 
 function renderDreamCalendarGrid() {

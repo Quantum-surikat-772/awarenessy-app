@@ -2038,6 +2038,9 @@ let topHTML = "";
 
 if (state.step === "dream_calendar") {
 
+const selectedDreams =
+  getDreamsForCalendarDate(state.dreamSelectedDate);
+
   topHTML = `
     <div style="
       flex:1;

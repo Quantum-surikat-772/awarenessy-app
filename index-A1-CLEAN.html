@@ -2232,7 +2232,11 @@ if (state.step === "dream_session_list") {
     <div style="flex:1;padding:20px;text-align:center;">
 
       <div style="font-size:26px;color:#7fd4ff;margin-bottom:24px;">
-        Выбери сновидение
+        ${state.dreamSelectedPeriod
+          ? (state.dreamSelectedPeriod === "night"
+              ? "🌙 Ночные сновидения"
+              : "☀️ Дневные сновидения")
+          : "Выбери сновидение"}
       </div>
 
       ${sessionDreams.map(d => `

@@ -1927,6 +1927,57 @@ function changeDreamCalendarMonth(offset) {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — КАЛЕНДАРНАЯ СЕТКА =====
+
+function renderDreamCalendarGrid() {
+
+  if (!state.dreamCalendarMonth) return "";
+
+  const [year, month] =
+    state.dreamCalendarMonth.split("-").map(Number);
+
+  const firstDay = new Date(year, month - 1, 1);
+
+  const offset = (firstDay.getDay() + 6) % 7;
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+
+  let cells = weekdays.map(day =>
+    `<div style="color:#888;font-size:14px;">${day}</div>`
+  ).join("");
+
+  for (let i = 0; i < offset; i++) {
+    cells += `<div></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+
+    cells += `
+      <div style="
+        padding:12px 0;
+        border:1px solid #333;
+        border-radius:8px;
+        color:#fff;
+      ">
+        ${day}
+      </div>
+    `;
+  }
+
+  return `
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:5px;
+      margin-bottom:24px;
+    ">
+      ${cells}
+    </div>
+  `;
+}
+
 function renderCompass(){
 
 const topBox = document.getElementById("top");

@@ -2239,6 +2239,16 @@ if (state.step === "dream_session_list") {
           : "Выбери сновидение"}
       </div>
 
+      ${state.dreamSelectedDate && state.dreamSelectedPeriod
+        ? `<div style="
+             font-size:20px;
+             color:#c9a86a;
+             margin-bottom:24px;
+           ">
+             ${state.dreamSelectedDate.split("-").reverse().join(".")}
+           </div>`
+        : ""}
+
       ${sessionDreams.map(d => `
         <button
           type="button"

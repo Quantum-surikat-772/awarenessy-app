@@ -2041,6 +2041,14 @@ if (state.step === "dream_calendar") {
 const selectedDreams =
   getDreamsForCalendarDate(state.dreamSelectedDate);
 
+const nightDreams = selectedDreams.filter(
+  d => (d.periodType || "night") === "night"
+);
+
+const dayDreams = selectedDreams.filter(
+  d => d.periodType === "day"
+);
+
   topHTML = `
     <div style="
       flex:1;

@@ -1968,7 +1968,9 @@ function renderDreamCalendarGrid() {
   for (let day = 1; day <= daysInMonth; day++) {
 
     cells += `
-      <div style="
+      <div
+        onclick="selectDreamCalendarDate(${day})"
+        style="
         padding:12px 0;
         border:1px solid #333;
         outline:${new Date(year, month - 1, day).toDateString() === new Date().toDateString() ? "2px solid #fff" : "none"};

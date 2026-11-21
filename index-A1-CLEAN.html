@@ -1958,6 +1958,7 @@ function renderDreamCalendarGrid() {
       <div style="
         padding:12px 0;
         border:1px solid #333;
+        outline:${new Date(year, month - 1, day).toDateString() === new Date().toDateString() ? "2px solid #fff" : "none"};
         border-radius:8px;
         color:#fff;
       ">

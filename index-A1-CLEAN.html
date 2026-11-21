@@ -2000,7 +2000,14 @@ function renderDreamCalendarGrid() {
         background:${state.dreamSelectedDate === state.dreamCalendarMonth + "-" + String(day).padStart(2, "0") ? "#342710" : "transparent"};
         outline:${new Date(year, month - 1, day).toDateString() === new Date().toDateString() ? "2px solid #fff" : "none"};
         border-radius:8px;
-        color:#fff;
+        color:${
+          dayDreams.some(d => d.awarenessLevel === "lucid")
+            ? "#c9a86a"
+            : dayDreams.some(d => d.awarenessLevel === "semi")
+              ? "#69b7ff"
+              : "#fff"
+        };
+        font-weight:${dayDreams.length ? "700" : "400"};
       ">
         ${day}
       </div>

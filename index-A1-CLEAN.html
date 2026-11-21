@@ -1955,11 +1955,43 @@ if (state.step === "dream_calendar") {
       </div>
 
       <div style="
-        color:#c9a86a;
-        font-size:22px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
         margin-bottom:24px;
       ">
-        ${state.dreamCalendarMonth || ""}
+
+        <button
+          type="button"
+          class="btn"
+          onclick="changeDreamCalendarMonth(-1)"
+          style="flex:0 0 56px;width:56px;padding:0;">
+          ◀
+        </button>
+
+        <div style="
+          flex:1;
+          color:#c9a86a;
+          font-size:22px;
+          text-align:center;
+        ">
+          ${new Date(
+            state.dreamCalendarMonth + "-01T12:00:00"
+          ).toLocaleDateString("ru-RU", {
+            month:"long",
+            year:"numeric"
+          }).replace(" г.", "").replace(/^./, c => c.toUpperCase())}
+        </div>
+
+        <button
+          type="button"
+          class="btn"
+          onclick="changeDreamCalendarMonth(1)"
+          style="flex:0 0 56px;width:56px;padding:0;">
+          ▶
+        </button>
+
       </div>
 
       <button class="btn"

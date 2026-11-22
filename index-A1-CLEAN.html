@@ -2166,8 +2166,10 @@ if (state.step === "dream_archive_view") {
         Архивное сновидение
       </div>
 
-      <div style="font-size:18px;color:#fff;margin-bottom:24px;">
-        ${archiveRecord ? "Запись найдена" : "Запись не найдена"}
+      <div style="font-size:22px;color:#c9a86a;margin-bottom:24px;">
+        ${archiveRecord
+          ? "Сон № " + (archiveRecord.globalNumber || archiveRecord.dreamIndex || "—")
+          : "Запись не найдена"}
       </div>
 
       <button class="btn"

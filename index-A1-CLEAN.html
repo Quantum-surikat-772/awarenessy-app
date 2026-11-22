@@ -8147,6 +8147,11 @@ function createDreamSessionRecord() {
 
 // Идентификатор сна: дата + номер сна
 function getCurrentDreamRecordId() {
+
+  if (state.dreamArchiveRecordId) {
+    return state.dreamArchiveRecordId;
+  }
+  
   // Уникальный ID сновидения внутри периода сна
   if (state.dreamSessionId) {
   return "dream_" + state.dreamSessionId + "_" + state.dreamIndex;

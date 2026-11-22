@@ -2151,6 +2151,35 @@ const dayDreams = selectedDreams.filter(
 
 }
 
+// ===== СНОВИТЕКА — ПРОСМОТР АРХИВНОГО СНОВИДЕНИЯ =====
+
+if (state.step === "dream_archive_view") {
+
+  const archiveRecord = (dreamteka.dreams || []).find(
+    d => d.id === state.dreamArchiveRecordId
+  );
+
+  topHTML = `
+    <div style="flex:1;padding:20px;text-align:center;">
+
+      <div style="font-size:26px;color:#7fd4ff;margin-bottom:24px;">
+        Архивное сновидение
+      </div>
+
+      <div style="font-size:18px;color:#fff;margin-bottom:24px;">
+        ${archiveRecord ? "Запись найдена" : "Запись не найдена"}
+      </div>
+
+      <button class="btn"
+        style="width:100%;"
+        onclick="state.dreamArchiveRecordId=null;state.step='dream_session_list';renderCompass()">
+        Вернуться к списку
+      </button>
+
+    </div>
+  `;
+}
+
 // ===== СНОВИТЕКА — ВЫБОР ЗАПИСИ СНОВИДЕНИЙ =====
 
 if (state.step === "dream_session_choice") {

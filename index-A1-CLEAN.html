@@ -8199,6 +8199,25 @@ function openSavedDreamRecord(dreamIndex) {
   renderCompass();
 }
 
+// ===== СНОВИТЕКА — ОТКРЫТИЕ АРХИВНОГО СНОВИДЕНИЯ =====
+
+function openArchivedDreamRecord(recordId) {
+
+  const record = (dreamteka.dreams || []).find(
+    d => d.id === recordId
+  );
+
+  if (!record) {
+    alert("Запись сновидения не найдена.");
+    return;
+  }
+
+  state.dreamArchiveRecordId = record.id;
+
+  state.step = "dream_archive_view";
+  renderCompass();
+  }
+
 // Открытие записи сновидения
 function openDreamTextEntry() {
 

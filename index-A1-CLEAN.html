@@ -2183,6 +2183,12 @@ if (state.step === "dream_archive_view") {
           : "Запись не найдена"}
       </div>
 
+      <div style="font-size:20px;color:#7fd4ff;margin-bottom:24px;">
+        ${archiveDate
+          ? "📅 " + archiveDate.split("-").reverse().join(".")
+          : "Дата не указана"}
+      </div>
+
       <button class="btn"
         style="width:100%;"
         onclick="state.dreamArchiveRecordId=null;state.step='dream_session_list';renderCompass()">

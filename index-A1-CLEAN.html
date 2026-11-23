@@ -2352,7 +2352,9 @@ if (state.step === "dream_session_list") {
       ${sessionDreams.map(d => `
         <button
           type="button"
-          onclick="openSavedDreamRecord(${Number(d.dreamIndex)})"
+          onclick="${state.dreamSelectedDate && state.dreamSelectedPeriod
+            ? `openArchivedDreamRecord('${d.id}')`
+            : `openSavedDreamRecord(${Number(d.dreamIndex)})`}"
           style="
             display:block;
             width:100%;

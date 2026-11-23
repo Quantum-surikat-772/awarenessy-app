@@ -2189,6 +2189,20 @@ if (state.step === "dream_archive_view") {
           : "Дата не указана"}
       </div>
 
+      <div style="font-size:20px;margin-bottom:24px;color:${
+        (archiveRecord?.periodType || archiveSession?.type) === "day"
+          ? "#c9a86a"
+          : "#7fd4ff"
+      };">
+        ${
+          (archiveRecord?.periodType || archiveSession?.type) === "day"
+            ? "☀️ Дневное сновидение"
+            : (archiveRecord?.periodType || archiveSession?.type) === "night"
+              ? "🌙 Ночное сновидение"
+              : "Период не указан"
+        }
+      </div>
+
       <button class="btn"
         style="width:100%;"
         onclick="state.dreamArchiveRecordId=null;state.step='dream_session_list';renderCompass()">

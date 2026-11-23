@@ -2378,7 +2378,7 @@ if (state.step === "dream_session_list") {
       </button>
 
       <button class="btn"
-        onclick="state.step='dream_session_choice';renderCompass()"
+        onclick="state.step=(state.dreamSelectedDate && state.dreamSelectedPeriod) ? 'dream_calendar' : 'dream_session_choice';renderCompass()"
         style="width:100%;">
         Вернуться
       </button>

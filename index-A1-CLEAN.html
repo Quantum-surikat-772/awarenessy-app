@@ -2159,6 +2159,17 @@ if (state.step === "dream_archive_view") {
     d => d.id === state.dreamArchiveRecordId
   );
 
+  const archiveSession = archiveRecord
+    ? (dreamteka.sessions || []).find(
+        s => s.id === archiveRecord.sessionId
+      )
+    : null;
+
+  const archiveDate =
+    archiveSession?.date ||
+    archiveRecord?.sessionDate ||
+    null;
+
   topHTML = `
     <div style="flex:1;padding:20px;text-align:center;">
 

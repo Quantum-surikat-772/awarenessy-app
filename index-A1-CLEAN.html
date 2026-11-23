@@ -2132,13 +2132,13 @@ const dayDreams = selectedDreams.filter(
   : ''}
 
       ${state.dreamSelectedDate
-      ? '<div style="margin-bottom:16px;color:#7fd4ff;font-size:20px;">' +
-          '🌙 Ночные сновидения: ' + nightDreams.length +
+        ? '<div onclick="openDreamPeriod(&quot;night&quot;)" style="margin-bottom:16px;color:#7fd4ff;font-size:20px;cursor:pointer;padding:8px 0;">' +
+           '🌙 Ночные сновидения: ' + nightDreams.length +
           '</div>' +
-          '<div style="margin-bottom:24px;color:#c9a86a;font-size:20px;">' +
+          '<div onclick="openDreamPeriod(&quot;day&quot;)" style="margin-bottom:24px;color:#c9a86a;font-size:20px;cursor:pointer;padding:8px 0;">' +
           '☀️ Дневные сновидения: ' + dayDreams.length +
           '</div>'
-      : ''}
+        : ''}
 
       <button class="btn"
         onclick="state.step='dream_session_choice';renderCompass()"

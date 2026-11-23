@@ -2203,6 +2203,24 @@ if (state.step === "dream_archive_view") {
         }
       </div>
 
+      <div style="font-size:20px;margin-bottom:24px;color:${
+        archiveRecord?.awarenessLevel === "lucid"
+          ? "#c9a86a"
+          : archiveRecord?.awarenessLevel === "semi"
+            ? "#69b7ff"
+            : "#fff"
+      };">
+        ${
+          !archiveRecord
+            ? "Запись не найдена"
+            : archiveRecord.awarenessLevel === "lucid"
+              ? "💎 Осознанное сновидение"
+              : archiveRecord.awarenessLevel === "semi"
+                ? "◈ Полуосознанное сновидение"
+                : "Обычное сновидение"
+        }
+      </div>
+
       <button class="btn"
         style="width:100%;"
         onclick="state.dreamArchiveRecordId=null;state.step='dream_session_list';renderCompass()">

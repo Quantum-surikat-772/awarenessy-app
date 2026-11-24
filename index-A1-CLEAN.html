@@ -2903,7 +2903,7 @@ font-weight:700;
 color:#7fd4ff;
 margin-bottom:22px;
 ">
-Сон ${state.dreamIndex}
+Сон ${state.dreamArchiveRecordId ? ((dreamteka.dreams || []).find(d => d.id === state.dreamArchiveRecordId)?.globalNumber ?? state.dreamIndex) + " (" + ((dreamteka.dreams || []).find(d => d.id === state.dreamArchiveRecordId)?.dreamIndex ?? state.dreamIndex) + ")" : state.dreamIndex}
 </div>
 
 <div style="

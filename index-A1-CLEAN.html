@@ -2241,6 +2241,12 @@ if (state.step === "dream_archive_view") {
         : "Текст сновидения не записан"}</div>
 
       <button class="btn"
+        onclick="state.dreamAwarenessLevel=(dreamteka.dreams||[]).find(d=>d.id===state.dreamArchiveRecordId)?.awarenessLevel??null;openDreamTextEntry()"
+        style="width:100%;margin-bottom:16px;color:#c9a86a;border-color:#c9a86a;">
+        ✏️ Редактировать сновидение
+      </button>
+
+      <button class="btn"
         style="width:100%;"
         onclick="state.dreamArchiveRecordId=null;state.step='dream_session_list';renderCompass()">
         Вернуться к списку
@@ -8370,6 +8376,11 @@ function saveWholeDream() {
     d => d.id === id
   );
 
+  if (state.dreamArchiveRecordId && !record) {
+    alert("Архивное сновидение не найдено. Изменения не сохранены.");
+    return;
+  }
+
   if (record) {
 
     record.text = text;
@@ -8410,6 +8421,12 @@ function saveWholeDream() {
   saveDreamteka();
 
   alert("Сновидение сохранено в Сновитеке!");
+
+  if (state.dreamArchiveRecordId) {
+    state.step = "dream_archive_view";
+    renderCompass();
+    return;
+  }
 }
 
 function addNextDream(){

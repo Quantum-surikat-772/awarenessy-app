@@ -2294,7 +2294,7 @@ if (state.step === "dream_session_choice") {
 
       <button
         class="btn"
-        onclick="state.step='dream_count';renderCompass()"
+        onclick="state.dreamSessionId=null;state.dreamSessionDate=null;state.dreamSelectedDate=null;state.dreamSelectedPeriod=null;state.dreamArchiveRecordId=null;state.step='dream_count';renderCompass()"
         style="
         flex:0 0 56px;
         width:100%;

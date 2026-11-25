@@ -505,6 +505,12 @@ let dreamteka = JSON.parse(
   '{"quickNotes":[],"dreams":[]}'
 );
 
+// ===== СНОВИТЕКА — ПАМЯТЬ БЫСТРЫХ ЗАМЕТОК =====
+
+if (!Array.isArray(dreamteka.quickNotes)) {
+  dreamteka.quickNotes = [];
+}
+  
 // ===== СНОВИТЕКА — ПАМЯТЬ ПЕРИОДОВ СНА =====
 
 if (!Array.isArray(dreamteka.sessions)) {

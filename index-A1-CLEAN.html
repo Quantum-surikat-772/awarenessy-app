@@ -2870,8 +2870,10 @@ margin-top:20px;
 
 if(state.step === "dream_text_entry"){
 
-const lastNote = (dreamteka.quickNotes || []).slice(-1)[0];
-
+const lastNote = state.dreamArchiveRecordId
+  ? null
+  : (dreamteka.quickNotes || []).slice(-1)[0];
+  
 const safeNote = lastNote
   ? String(lastNote.text)
       .replace(/&/g, "&amp;")

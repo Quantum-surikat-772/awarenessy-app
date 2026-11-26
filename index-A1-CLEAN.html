@@ -2894,8 +2894,15 @@ margin-bottom:18px;
 Быстрые заметки (${notes.length})
 </div>
 
-${notesHTML}
-
+<div style="
+    max-height:35vh;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    border-radius:12px;
+">
+    ${notesHTML}
+</div>
+   
 <div style="
 font-size:21px;
 color:#7fd4ff;
@@ -2905,7 +2912,14 @@ margin-bottom:18px;
 Записи сновидений (${dreamteka.dreams.length})
 </div>
 
-${dreamsHTML}
+<div style="
+    max-height:40vh;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    border-radius:12px;
+">
+    ${dreamsHTML}
+</div>
 
 <button
 class="btn"

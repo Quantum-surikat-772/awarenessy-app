@@ -2866,7 +2866,7 @@ const dreamsHTML = (dreamteka.dreams || [])
   .join("");
 
 topHTML = `
-<div style="
+<div id="dreamteka-scroll" style="
 flex:1;
 overflow-y:auto;
 padding:20px;
@@ -2932,6 +2932,30 @@ margin-top:20px;
 </button>
 
 </div>
+
+<div style="
+position:fixed;
+right:12px;
+bottom:80px;
+z-index:1000;
+display:flex;
+flex-direction:column;
+background:rgba(30,30,30,0.82);
+border:1px solid #555;
+border-radius:12px;
+overflow:hidden;
+">
+<button onclick="document.getElementById('dreamteka-scroll').scrollBy({top:-window.innerHeight*0.65,behavior:'smooth'})"
+style="background:transparent;color:#69caff;border:0;padding:10px 13px;font-size:25px;">
+⌃
+</button>
+<div style="height:1px;background:#555;"></div>
+<button onclick="document.getElementById('dreamteka-scroll').scrollBy({top:window.innerHeight*0.65,behavior:'smooth'})"
+style="background:transparent;color:#69caff;border:0;padding:10px 13px;font-size:25px;">
+⌄
+</button>
+</div>
+
 `;
 
 }

@@ -2926,17 +2926,34 @@ margin-top:20px;
 
 if(state.step === "dream_text_entry"){
 
-const currentSessionDate = state.dreamSessionDate;
-const currentPeriodType = state.dreamPeriodType;
+const archiveDream = state.dreamArchiveRecordId
+    ? (dreamteka.dreams || []).find(
+        d => d.id === state.dreamArchiveRecordId
+    )
+    : null;
 
-const periodNotes = state.dreamArchiveRecordId
-    ? []
-    : (dreamteka.quickNotes || [])
-        .filter(note =>
-            note.sessionDate === currentSessionDate &&
-            note.periodType === currentPeriodType
-        )
-        .sort((a, b) => (a.noteIndex || 0) - (b.noteIndex || 0));
+const archiveSession = archiveDream
+    ? (dreamteka.sessions || []).find(
+        s => s.id === archiveDream.sessionId
+    )
+    : null;
+
+const currentSessionDate = archiveDream
+    ? (archiveDream.sessionDate || archiveSession?.date)
+    : state.dreamSessionDate;
+
+const currentPeriodType = archiveDream
+    ? (archiveDream.periodType || archiveSession?.type)
+    : state.dreamPeriodType;
+
+const periodNotes = (dreamteka.quickNotes || [])
+    .filter(note =>
+        currentSessionDate &&
+        currentPeriodType &&
+        note.sessionDate === currentSessionDate &&
+        note.periodType === currentPeriodType
+    )
+    .sort((a, b) => (a.noteIndex || 0) - (b.noteIndex || 0));
 
 const lastNote = periodNotes.length
     ? { text: periodNotes.map(note =>

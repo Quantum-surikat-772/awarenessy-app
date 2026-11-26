@@ -5500,16 +5500,46 @@ function saveDreamQuickNote() {
     alert("Напиши хотя бы несколько слов о сновидении.");
     return;
   }
+  
+  const now = new Date();
+  const periodType = 
+      now.getHours() >= 12 && now.getHours() < 21
+          ? "day"
+          : "night";
 
+  const periodDate = new Date(now);
+
+  if (now.getHours() >= 21) {
+      periodDate.setDate(periodDate.getDate() + 1);
+  }
+
+  const sessionDate = [
+      periodDate.getFullYear(),
+      String(periodDate.getMonth() + 1).padStart(2, "0"),
+      String(periodDate.getDate()).padStart(2, "0")
+  ].join("-");
+  
+  const periodNotes = (dreamteka.quickNotes || []).filter(
+      note =>
+          note.sessionDate === sessionDate &&
+          note.periodType === periodType
+  );
+
+  if (periodNotes.length >= 5) {
+      alert("Для этого периода уже сохранено 5 Быстрых заметок.");
+      return;
+  }
+
+  const noteIndex = periodNotes.length + 1;
   
   dreamteka.quickNotes.push({
       id: "note_" + Date.now(),
       text: text,
       createdAt: new Date().toISOString(),
       sessionId: null,
-      sessionDate: null,
-      periodType: null,
-      noteIndex: null
+      sessionDate: sessionDate,
+      periodType: periodType,
+      noteIndex: noteIndex
   });
 
   saveDreamteka();

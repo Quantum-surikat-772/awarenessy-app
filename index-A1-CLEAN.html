@@ -2655,6 +2655,43 @@ margin-top:12px;
 if(state.step === "dreamteka_library"){
 
 const notes = dreamteka.quickNotes || [];
+  
+const groupedNotes = {};
+
+notes.forEach(note => {
+    const key = note.sessionDate && note.periodType
+        ? note.sessionDate + "_" + note.periodType
+        : "legacy";
+
+    if (!groupedNotes[key]) {
+        groupedNotes[key] = [];
+    }
+
+    groupedNotes[key].push(note);
+});
+  
+const sortedNoteGroups = Object.keys(groupedNotes)
+    .sort((a, b) => {
+        if (a === "legacy") return 1;
+        if (b === "legacy") return -1;
+        return b.localeCompare(a);
+    });
+  
+const formatNotePeriod = key => {
+    if (key === "legacy") {
+        return "Ранее сохранённые заметки";
+    }
+
+    const [date, type] = key.split("_");
+    const [year, month, day] = date.split("-").map(Number);
+
+    const formattedDate =
+        String(day).padStart(2, "0") + "." +
+        String(month).padStart(2, "0") + "." + year;
+
+    return (type === "night" ? "🌙 Ночные заметки — " :
+        "☀️ Дневные заметки — ") + formattedDate;
+};
 
 const escapeText = value =>
   String(value ?? "")
@@ -2664,8 +2701,18 @@ const escapeText = value =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-const notesHTML = notes.length
-  ? [...notes].reverse().map(note => `
+const notesHTML = sortedNoteGroups.length
+  ? sortedNoteGroups.map(key => `
+      <div style="
+          color:#c9a86a;
+          font-size:20px;
+          font-weight:700;
+          margin:24px 0 16px;
+          text-align:left;
+      ">${escapeText(formatNotePeriod(key))}</div>
+
+      ${groupedNotes[key].map(note => `
+    
     <div style="
       background:#111;
       border:1px solid #444;
@@ -2679,7 +2726,7 @@ const notesHTML = notes.length
         font-size:14px;
         margin-bottom:10px;
       ">
-        ${escapeText(new Date(note.createdAt).toLocaleString("ru-RU"))}
+        ${note.noteIndex ? "Заметка " + note.noteIndex + " · " : ""}${escapeText(new Date(note.createdAt).toLocaleTimeString("ru-RU", {hour:"2-digit", minute:"2-digit"}))}
       </div>
 
       <div style="
@@ -2689,7 +2736,10 @@ const notesHTML = notes.length
         font-size:17px;
       ">${escapeText(note.text)}</div>
     </div>
-  `).join("")
+  
+    `).join("")}
+`).join("")
+  
   : `<div style="color:#888;margin:20px 0;">
        Пока нет сохранённых заметок.
      </div>`;

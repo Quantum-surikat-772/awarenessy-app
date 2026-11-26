@@ -5501,10 +5501,15 @@ function saveDreamQuickNote() {
     return;
   }
 
+  
   dreamteka.quickNotes.push({
-    id: "note_" + Date.now(),
-    text: text,
-    createdAt: new Date().toISOString()
+      id: "note_" + Date.now(),
+      text: text,
+      createdAt: new Date().toISOString(),
+      sessionId: null,
+      sessionDate: null,
+      periodType: null,
+      noteIndex: null
   });
 
   saveDreamteka();

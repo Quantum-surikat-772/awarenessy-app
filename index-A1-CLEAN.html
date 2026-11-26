@@ -2926,9 +2926,27 @@ margin-top:20px;
 
 if(state.step === "dream_text_entry"){
 
-const lastNote = state.dreamArchiveRecordId
-  ? null
-  : (dreamteka.quickNotes || []).slice(-1)[0];
+const currentSessionDate = state.dreamSessionDate;
+const currentPeriodType = state.dreamPeriodType;
+
+const periodNotes = state.dreamArchiveRecordId
+    ? []
+    : (dreamteka.quickNotes || [])
+        .filter(note =>
+            note.sessionDate === currentSessionDate &&
+            note.periodType === currentPeriodType
+        )
+        .sort((a, b) => (a.noteIndex || 0) - (b.noteIndex || 0));
+
+const lastNote = periodNotes.length
+    ? { text: periodNotes.map(note =>
+        "Заметка " + note.noteIndex + " · " +
+        new Date(note.createdAt).toLocaleTimeString("ru-RU", {
+            hour: "2-digit",
+            minute: "2-digit"
+        }) + "\n" + note.text
+    ).join("\n\n") }
+    : null;
   
 const safeNote = lastNote
   ? String(lastNote.text)

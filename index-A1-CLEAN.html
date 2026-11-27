@@ -2048,6 +2048,50 @@ function renderDreamCalendarGrid() {
     </div>
   `;
 }
+  
+let dreamtekaScrollFrame = null;
+let dreamtekaScrollDirection = 0;
+let dreamtekaScrollLastTime = 0;
+
+function startDreamtekaScroll(direction){
+  stopDreamtekaScroll();
+
+  dreamtekaScrollDirection = direction;
+  dreamtekaScrollLastTime = 0;
+
+  function move(time){
+    if (!dreamtekaScrollDirection) return;
+
+    if (dreamtekaScrollLastTime){
+      const seconds = Math.min(
+        (time - dreamtekaScrollLastTime) / 1000,
+        0.05
+      );
+
+      window.scrollBy(
+        0,
+        dreamtekaScrollDirection * 200 * seconds
+      );
+    }
+
+    dreamtekaScrollLastTime = time;
+    dreamtekaScrollFrame = requestAnimationFrame(move);
+  }
+
+  dreamtekaScrollFrame = requestAnimationFrame(move);
+}
+
+function stopDreamtekaScroll(){
+  dreamtekaScrollDirection = 0;
+
+  if (dreamtekaScrollFrame !== null){
+    cancelAnimationFrame(dreamtekaScrollFrame);
+    dreamtekaScrollFrame = null;
+  }
+
+  dreamtekaScrollLastTime = 0;
+}
+  
 
 function renderCompass(){
 
@@ -2945,13 +2989,22 @@ border:1px solid #555;
 border-radius:12px;
 overflow:hidden;
 ">
-<button onclick="document.getElementById('dreamteka-scroll').scrollBy({top:-window.innerHeight*0.65,behavior:'smooth'})"
-style="background:transparent;color:#69caff;border:0;padding:10px 13px;font-size:25px;">
+<button
+onpointerdown="this.setPointerCapture(event.pointerId);startDreamtekaScroll(-1)"
+onpointerup="stopDreamtekaScroll()"
+onpointercancel="stopDreamtekaScroll()"
+onlostpointercapture="stopDreamtekaScroll()"
+style="touch-action:none;background:transparent;color:#69caff;border:0;padding:10px 13px;font-size:25px;"
 ⌃
 </button>
 <div style="height:1px;background:#555;"></div>
-<button onclick="window.scrollBy({top:window.innerHeight*0.65,behavior:'smooth'})"
-style="background:transparent;color:#69caff;border:0;padding:10px 13px;font-size:25px;">
+
+<button
+onpointerdown="this.setPointerCapture(event.pointerId);startDreamtekaScroll(1)"
+onpointerup="stopDreamtekaScroll()"
+onpointercancel="stopDreamtekaScroll()"
+onlostpointercapture="stopDreamtekaScroll()"
+style="touch-action:none;background:transparent;color:#69caff;border:0;padding:10px 13px;font-size:25px;">
 ⌄
 </button>
 </div>
